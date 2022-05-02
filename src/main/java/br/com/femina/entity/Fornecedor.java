@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @ToString
 @Entity
 @Table(schema="public", name="fornecedores")
-public class Fornecedor { // falta extends da abstract entily
+public class Fornecedor extends AbstractEntity {
 
     @Getter
     @Setter
