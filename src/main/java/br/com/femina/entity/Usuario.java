@@ -16,7 +16,7 @@ import java.util.Date;
 public abstract class Usuario extends AbstractEntity {
 
     @Getter @Setter
-    @Column(name = "nome", nullable = false, length = 50);
+    @Column(name = "nome", nullable = false, length = 50)
     private String nome;
 
     @Getter @Setter

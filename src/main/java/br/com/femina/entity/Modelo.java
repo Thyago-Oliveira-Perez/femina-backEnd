@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Entity
 @Table(name = "Nome", schema = "public" )
-public class Modelo extends AbstractEntily {
+public class Modelo extends AbstractEntity {
 
     @Getter
     @Setter
