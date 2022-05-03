@@ -14,11 +14,11 @@ import java.math.BigDecimal;
 public class Produto extends AbstractEntity {
 
     @Getter @Setter
-    @Column(name = "codigo", nullable = false, length = 20);
+    @Column(name = "codigo", nullable = false, length = 20)
     private String codigo;
 
     @Getter @Setter
-    @Column(name = "nome", nullable = false, length = 50);
+    @Column(name = "nome", nullable = false, length = 50)
     private String nome;
 
     @Getter @Setter
@@ -33,7 +33,7 @@ public class Produto extends AbstractEntity {
     @Getter @Setter
     @JoinColumn(name = "id_categoria")
     @ManyToOne(fetch = FetchType.EAGER)
-    private Categoria categoria;
+    private Categorias categoria;
 
     @Getter @Setter
     @JoinColumn(name = "id_modelo")
