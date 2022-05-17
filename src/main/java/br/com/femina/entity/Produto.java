@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class Produto extends AbstractEntity {
 
     @Getter @Setter
-    @Column(name = "codigo", nullable = false, length = 20)
+    @Column(name = "codigo", nullable = false, length = 20, unique = true)
     private String codigo;
 
     @Getter @Setter
@@ -25,10 +25,6 @@ public class Produto extends AbstractEntity {
     @Digits(integer = 5, fraction = 3)
     @Column(name = "valor", nullable = false)
     private BigDecimal valor;
-
-    @Getter @Setter
-    @Column(name = "quantidade", nullable = false)
-    private Integer quantidade;
 
     @Getter @Setter
     @JoinColumn(name = "id_categoria")
