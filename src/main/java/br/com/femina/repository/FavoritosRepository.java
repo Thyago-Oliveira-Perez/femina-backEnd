@@ -12,12 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
 
-    @Query(value = "SELECT favoritos FROM Favoritos favoritos " +
-            "WHERE favoritos.habilitado = true",
-            countQuery = "SELECT count(1) FROM Favoritos",
-            nativeQuery = true
-    )
-    public Page<Favoritos> listAllActive(Pageable page);
+    public Page<Favoritos> findAllByHabilitado(Boolean habilitado);
 
     @Modifying
     @Query("UPDATE Favoritos favoritos " +
