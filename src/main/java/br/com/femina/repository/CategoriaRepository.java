@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Repository
-@RequestMapping
 public interface CategoriaRepository extends JpaRepository<Categorias, Long> {
 
 

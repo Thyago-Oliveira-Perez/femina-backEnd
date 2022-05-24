@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.LocalDateTime;
 
 @Repository
-@RequestMapping
 public interface CorRepository extends JpaRepository<Cor, Long> {
  /*   @Modifying
     @Query("UPDATE Cor cor " +
