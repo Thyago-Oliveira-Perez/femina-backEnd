@@ -32,6 +32,6 @@ public abstract class AbstractEntity {
     @PrePersist
     private void dataCadastro(){this.cadastrado = LocalDateTime.now();};
 
-
+    @PreUpdate
     private void dataAtualizado(){this.atualizado = LocalDateTime.now();};
 }
