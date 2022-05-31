@@ -26,7 +26,7 @@ public class FavoritosService {
     }
 
     public Page<Favoritos> findAll(Pageable page) {
-        return this.favoritosRepository.listAllActive(page);
+        return this.favoritosRepository.findAllByHabilitado(true);
     }
 
     @Transactional
