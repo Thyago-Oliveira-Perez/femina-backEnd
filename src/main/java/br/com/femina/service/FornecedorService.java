@@ -21,7 +21,7 @@ public class FornecedorService {
     }
 
     public Page<Fornecedor> listAll (Pageable pageable) {
-        return this.fornecedorRepository.findAll(pageable);
+        return this.fornecedorRepository.findAllByHabilitado(true, pageable);
     }
 
     public Optional<Fornecedor> findById(Long id) {

@@ -1,6 +1,7 @@
 package br.com.femina.repository;
 import br.com.femina.entity.Cliente;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    public Page<Cliente> findAllByHabilitado(Boolean habilitado);
+    public Page<Cliente> findAllByHabilitado(Boolean habilitado, Pageable pageable);
 
     @Modifying
     @Query("UPDATE Cliente cliente " +

@@ -21,7 +21,7 @@ public class FuncionarioService {
     }
 
     public Page<Funcionario> listAll (Pageable pageable) {
-        return this.funcionarioRepository.findAll(pageable);
+        return this.funcionarioRepository.findAllByHabilitado(true, pageable);
     }
 
     public Optional<Funcionario> findById(Long id) {
