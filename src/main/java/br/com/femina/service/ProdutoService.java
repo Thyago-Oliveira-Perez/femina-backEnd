@@ -1,15 +1,12 @@
 package br.com.femina.service;
 
-import br.com.femina.entity.Categorias;
 import br.com.femina.entity.Produto;
-import br.com.femina.repository.CategoriaRepository;
 import br.com.femina.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 public class ProdutoService {
@@ -21,7 +18,7 @@ public class ProdutoService {
         return this.produtoRepository.findById(id);
     }
 
-    public Page<Produto> listAll(Pageable pageable){
+    public Page<Produto> visualizarTudo(Pageable pageable){
         return this.produtoRepository.findAll(pageable);
     }
 

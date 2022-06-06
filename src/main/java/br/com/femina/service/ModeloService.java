@@ -1,13 +1,10 @@
 package br.com.femina.service;
 
-import br.com.femina.entity.Favoritos;
 import br.com.femina.entity.Modelo;
 import br.com.femina.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,7 +30,7 @@ public class ModeloService {
     }
 
     @Transactional
-    public Page<Favoritos> findAll (Pageable pageable){
+    public Page<Modelo> findAll (Pageable pageable){
       return this.modeloRepository.listAllActive(pageable);
     }
 
@@ -45,7 +42,7 @@ public class ModeloService {
     @Transactional
     public void disable (Modelo modelo, long id){
         if(id == modelo.getId()){
-            this.modeloRepository.di
+            this.modeloRepository.disable(modelo.isHabilitado(), modelo.getId());
         }
     }
 
