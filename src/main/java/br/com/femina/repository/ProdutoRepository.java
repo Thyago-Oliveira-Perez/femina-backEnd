@@ -16,12 +16,12 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Modifying
     @Query("UPDATE Produto produto " +
-            "SET produto.habilitado =: habilitado " +
+            "SET produto.habilitado = :habilitado " +
             "WHERE produto.id = :id")
     public void disable(@Param("habilitado")boolean habilitado,
                        @Param("id")Long id);
 
-    @Query("SELECT count(ALL), nome FROM " +
+    @Query("SELECT count(id), nome FROM " +
             "Produto WHERE habilitado = true " +
             "GROUP BY nome")
     public List<Page<Produto>> visualizarTudo(Pageable pageable);
