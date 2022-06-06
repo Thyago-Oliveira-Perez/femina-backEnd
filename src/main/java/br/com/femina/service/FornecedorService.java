@@ -39,7 +39,7 @@ public class FornecedorService {
     @Transactional
     public void updateStatus(Long id, Fornecedor fornecedor) {
         if (id == fornecedor.getId()) {
-            this.fornecedorRepository.updateStatus(LocalDateTime.now(), fornecedor.getId());
+            this.fornecedorRepository.updateStatus(fornecedor.isHabilitado(), fornecedor.getId());
         } else {
             throw new RuntimeException();
         }

@@ -33,7 +33,7 @@ public class ClienteService {
     }
 
     public Page<Cliente> findAll(Pageable pageable){
-        return this.clienteRepository.findAllByHabilitado(true);
+        return this.clienteRepository.findAllByHabilitado(true, pageable);
     }
 
     public void update(Long id, Cliente cliente){

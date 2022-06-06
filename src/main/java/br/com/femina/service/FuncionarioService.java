@@ -39,7 +39,7 @@ public class FuncionarioService {
     @Transactional
     public void updateStatus(Long id, Funcionario funcionario) {
         if (id == funcionario.getId()) {
-            this.funcionarioRepository.updateStatus(LocalDateTime.now(), funcionario.getId());
+            this.funcionarioRepository.updateStatus(funcionario.isHabilitado(), funcionario.getId());
         } else {
             throw new RuntimeException();
         }
