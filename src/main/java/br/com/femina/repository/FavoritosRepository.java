@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
 
-    public Page<Favoritos> findAllByHabilitado(Boolean habilitado);
+    public Page<Favoritos> findAllByHabilitado(Boolean habilitado, Pageable pageable);
 
     @Modifying
     @Query("UPDATE Favoritos favoritos " +
