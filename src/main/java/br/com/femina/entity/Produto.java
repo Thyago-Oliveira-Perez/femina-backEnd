@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -15,15 +16,18 @@ public class Produto extends AbstractEntity {
 
     @Getter @Setter
     @Column(name = "codigo", nullable = false, length = 20, unique = true)
+    @NotNull(message = "Código é obrigatório")
     private String codigo;
 
     @Getter @Setter
     @Column(name = "nome", nullable = false, length = 50)
+    @NotNull(message = "Nome é obrigatório")
     private String nome;
 
     @Getter @Setter
     @Digits(integer = 5, fraction = 3)
     @Column(name = "valor", nullable = false)
+    @NotNull(message = "Valor é obrigatório")
     private BigDecimal valor;
 
     @Getter @Setter

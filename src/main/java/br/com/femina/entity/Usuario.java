@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -17,19 +18,23 @@ public abstract class Usuario extends AbstractEntity {
 
     @Getter @Setter
     @Column(name = "nome", nullable = false, length = 50)
+    @NotNull(message = "Nome é obrigatório")
     private String nome;
 
     @Getter @Setter
-    @Column(name = "login", nullable = false, length = 30)
+    @Column(name = "login", nullable = false, length = 30, unique = true)
+    @NotNull(message = "Nome de usuário é obrigatório")
     private String login;
 
     @Getter @Setter
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "senha", nullable = false, length = 32)
+    @Column(name = "senha", nullable = false, length = 32, unique = true)
+    @NotNull(message = "Senha é obrigatória")
     private String senha;
 
     @Getter @Setter
-    @Column(name = "cpf", nullable = false, length = 15)
+    @Column(name = "cpf", nullable = false, length = 15, unique = true)
+    @NotNull(message = "Cpf é obrigatório")
     private String cpf;
 
     @Getter @Setter
@@ -42,7 +47,8 @@ public abstract class Usuario extends AbstractEntity {
     private Date dataNascimento;
 
     @Getter @Setter
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique=true)
+    @NotNull(message = "E-mail é obrigatório")
     private String email;
 
     @Getter @Setter
