@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class FuncionarioService {
@@ -35,12 +36,12 @@ public class FuncionarioService {
         }
     }
 
-//    @Transactional
-//    public void updateStatus(Long id, Convenio convenio) {
-//        if (id == convenio.getId()) {
-//            this.convenioRepository.updateStatus(LocalDateTime.now(), convenio.getId());
-//        } else {
-//            throw new RuntimeException();
-//        }
-//    }
+    @Transactional
+    public void updateStatus(Long id, Funcionario funcionario) {
+        if (id == funcionario.getId()) {
+            this.funcionarioRepository.updateStatus(LocalDateTime.now(), funcionario.getId());
+        } else {
+            throw new RuntimeException();
+        }
+    }
 }
