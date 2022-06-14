@@ -24,7 +24,7 @@ public class MarcaController {
 
     @GetMapping
     public ResponseEntity<Page<Marca>> findAll(Pageable pageable){
-        return ResponseEntity.ok().body(this.marcaService.listAll(pageable));
+        return ResponseEntity.ok().body(this.marcaService.findAll(pageable));
     }
 
     @PostMapping

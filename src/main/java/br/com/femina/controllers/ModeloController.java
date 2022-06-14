@@ -31,7 +31,7 @@ public class ModeloController {
                                     @RequestBody Modelo modelo)
     {
         try{
-            this.modeloService.update(idModelo, modelo);
+            this.modeloService.delete(idModelo, modelo);
             return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
