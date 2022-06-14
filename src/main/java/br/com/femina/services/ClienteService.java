@@ -1,4 +1,5 @@
 package br.com.femina.services;
+
 import br.com.femina.entities.Cliente;
 import br.com.femina.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,8 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public void insert(Cliente cliente){
-        this.validarCliente(cliente);
-        this.save(cliente);
-    }
-
-    public void validarCliente(Cliente cliente){
-
-    }
-
     @Transactional
-    public void save(Cliente cliente){
+    public void insert(Cliente cliente){
         this.clienteRepository.save(cliente);
     }
 
@@ -32,25 +24,24 @@ public class ClienteService {
         return this.clienteRepository.findById(id);
     }
 
-    public Page<Cliente> findAll(Pageable pageable){
-        return this.clienteRepository.findAllByHabilitado(true, pageable);
-    }
+    public Page<Cliente> findAll(Pageable pageable) { return this.clienteRepository.findAll(pageable); }
 
-    public void update(Long id, Cliente cliente){
-        if(id == cliente.getId()){
-            this.validarCliente(cliente);
-            this.save(cliente);
+    @Transactional
+    public void update(Long id, Cliente cliente) {
+        if(id == cliente.getId()) {
+            this.clienteRepository.save(cliente);
         } else {
             throw new RuntimeException();
         }
     }
 
     @Transactional
-    public void disable(Long id, Cliente cliente){
-        if(id == cliente.getId()){
-            this.clienteRepository.disable(cliente.getId(), false);
+    public void delete(Long id, Cliente cliente) {
+        if(id == cliente.getId()) {
+            this.clienteRepository.delete(cliente);
         } else {
             throw new RuntimeException();
         }
     }
+
 }

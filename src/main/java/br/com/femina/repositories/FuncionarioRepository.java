@@ -10,19 +10,4 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
-
-    @Modifying
-    @Query("update Funcionario funcionario " +
-            "set funcionario.habilitado = :habilitado " +
-            "where funcionario.id = :idMarca")
-
-    public void updateStatus(
-            @Param("habilitado") Boolean habilitado,
-            @Param("idMarca") Long idMarca
-    );
-
-    Page<Funcionario> findAll(Pageable pageable);
-
-
-}
+public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> { }

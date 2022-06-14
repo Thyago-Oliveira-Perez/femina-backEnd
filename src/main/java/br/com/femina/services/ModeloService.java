@@ -16,33 +16,25 @@ public class ModeloService {
     @Autowired
     private ModeloRepository modeloRepository;
 
-    public void insert (Long id, Modelo modelo){
+    @Transactional
+    public void insert(Modelo modelo){
         this.modeloRepository.save(modelo);
     }
 
-    @Transactional
-    public void update(long id, Modelo modelo){
-        if(id == modelo.getId()) {
-            this.modeloRepository.save(modelo);
-        }else{
-            throw new RuntimeException();
-        }
-    }
-
-    @Transactional
-    public Page<Modelo> findAll (Pageable pageable){
-      return this.modeloRepository.listAllActive(pageable);
-    }
-
-    @Transactional
-    public Optional<Modelo> findById (long id){
+    public Optional<Modelo> findById(long id){
         return this.modeloRepository.findById(id);
     }
 
+    public Page<Modelo> findAll(Pageable pageable){
+        return this.modeloRepository.findAll(pageable);
+    }
+
     @Transactional
-    public void disable (Modelo modelo, long id){
+    public void delete(Long id, Modelo modelo) {
         if(id == modelo.getId()){
-            this.modeloRepository.disable(modelo.isHabilitado(), modelo.getId());
+            this.modeloRepository.delete(modelo);
+        } else {
+            throw new RuntimeException();
         }
     }
 

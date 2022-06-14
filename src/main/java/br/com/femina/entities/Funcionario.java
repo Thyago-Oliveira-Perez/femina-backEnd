@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(schema = "public", name = "funcionarios")
+@Table(name = "funcionarios", schema = "public")
 public class Funcionario extends Usuario {
 
     @Getter
@@ -22,7 +22,5 @@ public class Funcionario extends Usuario {
     @Enumerated(EnumType.STRING)
     @Column(name = "cargo", nullable = false)
     private Cargo cargo;
-
-
 
 }

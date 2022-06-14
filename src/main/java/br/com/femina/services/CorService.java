@@ -12,30 +12,30 @@ import java.util.Optional;
 
 @Service
 public class CorService {
-    @Autowired
 
+    @Autowired
     private CorRepository corRepository;
+
+    @Transactional
+    public void insert(Cor cor){
+        this.corRepository.save(cor);
+    }
 
     public Optional<Cor> findById(Long id){
         return this.corRepository.findById(id);
     }
 
-    public Page<Cor> listAlL(Pageable pageable){
+    public Page<Cor> findAll(Pageable pageable){
         return this.corRepository.findAll(pageable);
     }
 
     @Transactional
-    public void update (Long id, Cor cor){
-        if(id == cor.getId()){
-            this.corRepository.save(cor);
-        }
-        else{
+    public void delete(Long id, Cor cor) {
+        if(id == cor.getId()) {
+            this.corRepository.delete(cor);
+        } else {
             throw new RuntimeException();
         }
-    }
-    @Transactional
-    public void insert (Cor cor){
-        this.corRepository.save(cor);
     }
 
 }

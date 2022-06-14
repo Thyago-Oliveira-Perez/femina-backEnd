@@ -25,13 +25,10 @@ public abstract class AbstractEntity {
     @Column(name="atualizado")
     private LocalDateTime atualizado;
 
-    @Getter @Setter
-    @Column(name="habilitado")
-    private boolean habilitado;
-
     @PrePersist
-    private void dataCadastro(){this.cadastrado = LocalDateTime.now();};
+    private void dataCadastro() { this.cadastrado = LocalDateTime.now(); };
 
     @PreUpdate
-    private void dataAtualizado(){this.atualizado = LocalDateTime.now();};
+    private void dataAtualizado() { this.atualizado = LocalDateTime.now(); };
+
 }

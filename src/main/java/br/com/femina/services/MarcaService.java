@@ -18,32 +18,25 @@ public class MarcaService {
     private MarcaRepository marcaRepository;
 
     @Transactional
-    public void insert (Marca marca) {
+    public void insert(Marca marca) {
         this.marcaRepository.save(marca);
-    }
-
-    public Page<Marca> listAll(Pageable pageable) {
-        return this.marcaRepository.findAll(pageable);
     }
 
     public Optional<Marca> findById(Long id) {
         return this.marcaRepository.findById(id);
     }
 
-    public void update(Long id, Marca marca) {
-        if(id == marca.getId()) {
-            this.marcaRepository.save(marca);
-        } else {
-            throw new RuntimeException("Erro ao atualizar marca");
-        }
+    public Page<Marca> findAll(Pageable pageable) {
+        return this.marcaRepository.findAll(pageable);
     }
 
     @Transactional
-    public void updateStatus(Long id, Marca marca) {
+    public void delete(Long id, Marca marca) {
         if(id == marca.getId()) {
-            this.marcaRepository.updateStatus(LocalDateTime.now(), marca.getId());
+            this.marcaRepository.delete(marca);
         } else {
-            throw new RuntimeException("Erro ao excluir marca");
+            throw new RuntimeException();
         }
     }
+
 }

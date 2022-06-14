@@ -12,17 +12,4 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 
 @Repository
-public interface MarcaRepository extends JpaRepository<Marca, Long> {
-
-    @Modifying
-    @Query("update Marca marca " +
-            "set marca.habilitado = :dataExcluido " +
-            "where marca.id = :marca")
-
-    public void updateStatus(
-            @Param("dataExcluido")LocalDateTime dataExcluido,
-            @Param("marca") Long idMarca
-            );
-
-    Page<Marca> findAll(Pageable pageable);
-}
+public interface MarcaRepository extends JpaRepository<Marca, Long> { }

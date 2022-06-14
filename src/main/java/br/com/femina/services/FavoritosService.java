@@ -25,23 +25,15 @@ public class FavoritosService {
         return this.favoritosRepository.findById(id);
     }
 
-    public Page<Favoritos> findAll(Pageable page) {return this.favoritosRepository.findAllByHabilitado(true, page);}
+    public Page<Favoritos> findAll(Pageable pageable) { return this.favoritosRepository.findAll(pageable); }
 
     @Transactional
-    public void update(Favoritos favoritos, Long id) {
-        if (id == favoritos.getId()) {
-            this.favoritosRepository.save(favoritos);
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    @Transactional
-    public void disable(Long id,Favoritos favoritos) {
+    public void delete(Long id, Favoritos favoritos) {
         if (id == favoritos.getId()){
-            this.favoritosRepository.disable(favoritos.getId(), false);
+            this.favoritosRepository.delete(favoritos);
         } else {
             throw new RuntimeException();
         }
     }
+
 }

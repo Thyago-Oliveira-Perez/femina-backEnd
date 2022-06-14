@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/api/cores")
 public class CorController {
@@ -17,21 +19,21 @@ public class CorController {
     private CorService corService;
 
     @GetMapping("/{idCor}")
-    public ResponseEntity<Cor> findById(@PathVariable("idCor")Long idCor){
+    public ResponseEntity<Cor> findById(@PathVariable("idCor")Long idCor) {
         return ResponseEntity.ok().body(this.corService.findById(idCor).get());
     }
 
     @GetMapping
-    public ResponseEntity<Page<Cor>> findAll(Pageable pageable){
-        return ResponseEntity.ok().body(this.corService.listAlL(pageable));
+    public ResponseEntity<Page<Cor>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(this.corService.findAll(pageable));
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody Cor cor){
-        try{
+    public ResponseEntity<?> insert(@Valid @RequestBody Cor cor) {
+        try {
             this.corService.insert(cor);
             return ResponseEntity.ok().body("Cor cadastrada com sucesso!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -41,10 +43,11 @@ public class CorController {
                                     @RequestBody Cor cor)
     {
         try {
-            this.corService.update(idCor, cor);
+            this.corService.delete(idCor, cor);
             return ResponseEntity.ok().body("Cor deletada com sucesso!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }

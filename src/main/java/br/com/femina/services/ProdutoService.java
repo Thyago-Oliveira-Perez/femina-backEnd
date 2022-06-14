@@ -18,7 +18,7 @@ public class ProdutoService {
         return this.produtoRepository.findById(id);
     }
 
-    public Page<Produto> visualizarTudo(Pageable pageable){
+    public Page<Produto> findAll(Pageable pageable){
         return this.produtoRepository.findAll(pageable);
     }
 
@@ -28,20 +28,21 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void disable(Produto produto, Long id){
+    public void update(Long id, Produto produto) {
         if(id == produto.getId()){
-            this.produtoRepository.disable(produto.isHabilitado(), id);
-        }else{
+            this.produtoRepository.save(produto);
+        } else {
             throw new RuntimeException();
         }
     }
 
     @Transactional
-    public void update(Produto produto, Long id){
+    public void disable(Long id, Produto produto) {
         if(id == produto.getId()){
-            this.produtoRepository.save(produto);
-        }else{
+            this.produtoRepository.delete(produto);
+        } else {
             throw new RuntimeException();
         }
     }
+
 }

@@ -13,9 +13,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "public" , name = "cor")
+@Table(name = "cores", schema = "public")
 public class Cor extends AbstractEntity  {
-//nome hexadecimal
+
     @Getter
     @Setter
     @Column(name = "nome", nullable = false, length = 50, unique = true)
