@@ -23,11 +23,11 @@ public class MarcaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Marca>> findById(Pageable pageable){
+    public ResponseEntity<Page<Marca>> findAll(Pageable pageable){
         return ResponseEntity.ok().body(this.marcaService.listAll(pageable));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody Marca marca){
         try{
             this.marcaService.insert(marca);
@@ -37,11 +37,11 @@ public class MarcaController {
         }
     }
 
-    @PutMapping("/{idMarca}")
+    @DeleteMapping("/{idMarca}")
     public ResponseEntity<?> delete(@PathVariable("idMarca") Long idMarca){
         try {
             this.marcaService.delete(idMarca);
-            return ResponseEntity.ok().body("Cor deletada com sucesso!");
+            return ResponseEntity.ok().body("Marca deletada com sucesso!");
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
