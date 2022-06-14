@@ -12,30 +12,30 @@ import java.util.Optional;
 
 @Service
 public class CategoriaService {
+
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Transactional
+    public void insert(Categorias categorias) {
+        this.categoriaRepository.save(categorias);
+    }
 
     public Optional<Categorias> findById(Long id){
         return this.categoriaRepository.findById(id);
     }
 
-    public Page<Categorias> listAll(Pageable pageable){
+    public Page<Categorias> findAll(Pageable pageable){
         return this.categoriaRepository.findAll(pageable);
     }
 
     @Transactional
-    public void update (Long id, Categorias categorias){
-        if((id == categorias.getId())){
-            this.categoriaRepository.save(categorias);
-        }
-        else{
+    public void delete(Long id, Categorias categorias) {
+        if(id ==  categorias.getId()) {
+            this.categoriaRepository.delete(categorias);
+        } else {
             throw new RuntimeException();
         }
-    }
-
-    @Transactional
-    public void insert (Categorias categorias){
-        this.categoriaRepository.save(categorias);
     }
 
 }

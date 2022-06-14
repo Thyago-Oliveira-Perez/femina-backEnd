@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(schema="public", name="fornecedores")
+@Table(name = "fornecedores", schema = "public")
 public class Fornecedor extends AbstractEntity {
 
     @Getter
@@ -67,6 +67,5 @@ public class Fornecedor extends AbstractEntity {
     @Setter
     @Column(name = "pais", nullable = false)
     private String pais;
-
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name= "Favoritos", schema = "Public")
+@Table(name= "favoritos", schema = "public")
 public class Favoritos extends AbstractEntity{
 
     @Getter
@@ -22,4 +22,5 @@ public class Favoritos extends AbstractEntity{
     @JoinColumn(name = "id_produto")
     @ManyToOne(fetch = FetchType.EAGER)
     public Produto produto;
+
 }

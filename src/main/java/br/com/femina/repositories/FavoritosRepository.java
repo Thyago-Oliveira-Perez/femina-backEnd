@@ -10,16 +10,4 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
-
-    public Page<Favoritos> findAllByHabilitado(Boolean habilitado, Pageable pageable);
-
-    @Modifying
-    @Query("UPDATE Favoritos favoritos " +
-            "SET favoritos.habilitado = :habilitado " +
-            "WHERE favoritos.id = :favoritos")
-    public void disable(
-            @Param("favoritos") Long idFavoritos,
-            @Param("habilitado") Boolean habilitado
-    );
-}
+public interface FavoritosRepository extends JpaRepository<Favoritos, Long> { }

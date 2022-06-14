@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Nome", schema = "public" )
+@Table(name = "modelos", schema = "public" )
 public class Modelo extends AbstractEntity {
 
     @Getter

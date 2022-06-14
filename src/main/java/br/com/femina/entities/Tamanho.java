@@ -10,6 +10,6 @@ public enum Tamanho {
 
     private final String valor;
 
-    private Tamanho(String valor){this.valor = valor;};
+    private Tamanho(String valor) { this.valor = valor; };
 
 }
