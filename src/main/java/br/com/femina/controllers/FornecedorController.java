@@ -1,0 +1,62 @@
+package br.com.femina.controllers;
+
+import br.com.femina.entities.Fornecedor;
+import br.com.femina.services.FornecedorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/api/fornecedores")
+public class FornecedorController {
+
+    @Autowired
+    private FornecedorService fornecedorService;
+
+    @GetMapping("/{idFornecedor}")
+    public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor){
+        return ResponseEntity.ok().body(this.fornecedorService.findById(idFornecedor).get());
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Fornecedor>> findAll(Pageable pageable){
+        return ResponseEntity.ok().body(this.fornecedorService.listAll(pageable));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor){
+        try{
+            this.fornecedorService.insert(fornecedor);
+            return ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{idFornecedor}")
+    public ResponseEntity<?> update(@PathVariable("idFornecedor") Long idFornecedor,
+                                    @RequestBody Fornecedor fornecedor){
+        try {
+            this.fornecedorService.update(idFornecedor, fornecedor);
+            return ResponseEntity.ok().body("Fornecedor editado com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{idFornecedor}")
+    public ResponseEntity<?> delete(@PathVariable("idFornecedor") Long idFornecedor,
+                                    @RequestBody Fornecedor fornecedor)
+    {
+        try {
+            this.fornecedorService.delete(idFornecedor, fornecedor);
+            return ResponseEntity.ok().body("Fornecedor deletado com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
