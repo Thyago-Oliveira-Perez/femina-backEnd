@@ -1,7 +1,7 @@
-package br.com.femina.controller;
+package br.com.femina.controllers;
 
-import br.com.femina.entity.Funcionario;
-import br.com.femina.service.FuncionarioService;
+import br.com.femina.entities.Funcionario;
+import br.com.femina.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ public class FuncionarioController {
 
     @GetMapping
     public ResponseEntity<Page<Funcionario>> listAll(Pageable pageable) {
-        return ResponseEntity.ok().body(this.funcionarioService.listAll(pageable));
+        return ResponseEntity.ok().body(this.funcionarioService.findAll(pageable));
     }
 
     @GetMapping("/{idFuncionario}")
@@ -49,7 +49,7 @@ public class FuncionarioController {
     @PutMapping("/status/{idFuncionario}")
     public ResponseEntity<?> updateStatus(@RequestBody Funcionario funcionario, @PathVariable Long idFuncionario) {
         try{
-            this.funcionarioService.updateStatus(idFuncionario, funcionario);
+            this.funcionarioService.delete(idFuncionario, funcionario);
             return ResponseEntity.ok().body("Funcionario desabilitada com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

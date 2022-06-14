@@ -1,7 +1,7 @@
-package br.com.femina.controller;
+package br.com.femina.controllers;
 
-import br.com.femina.entity.Cliente;
-import br.com.femina.service.ClienteService;
+import br.com.femina.entities.Cliente;
+import br.com.femina.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

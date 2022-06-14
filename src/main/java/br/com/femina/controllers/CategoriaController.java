@@ -23,7 +23,7 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<Page<Categorias>> findAll(Pageable pageable){
-        return ResponseEntity.ok().body(this.categoriaService.listAll(pageable));
+        return ResponseEntity.ok().body(this.categoriaService.findAll(pageable));
     }
 
     @PutMapping

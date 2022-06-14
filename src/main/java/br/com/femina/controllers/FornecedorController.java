@@ -24,7 +24,7 @@ public class FornecedorController {
 
     @GetMapping
     public ResponseEntity<Page<Fornecedor>> findAll(Pageable pageable){
-        return ResponseEntity.ok().body(this.fornecedorService.listAll(pageable));
+        return ResponseEntity.ok().body(this.fornecedorService.findAll(pageable));
     }
 
     @PutMapping
