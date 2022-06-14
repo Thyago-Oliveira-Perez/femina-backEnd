@@ -39,9 +39,10 @@ public class ModeloController {
     }
 
     @DeleteMapping("/{idModelo}")
-    public ResponseEntity<?> delete(@PathVariable("idModelo") Long idModelo){
+    public ResponseEntity<?> delete(@PathVariable("idModelo") Long idModelo,
+                                    @RequestBody Modelo modelo){
         try{
-            this.modeloService.delete(idModelo);
+            this.modeloService.delete(idModelo, modelo);
             return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());

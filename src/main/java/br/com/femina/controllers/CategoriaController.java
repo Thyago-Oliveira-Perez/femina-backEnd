@@ -37,9 +37,10 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> delete(@PathVariable("idCategoria") Long idCategoria){
+    public ResponseEntity<?> delete(@PathVariable("idCategoria") Long idCategoria,
+                                    @RequestBody Categorias categorias){
         try {
-            this.categoriaService.delete(idCategoria);
+            this.categoriaService.delete(idCategoria, categorias);
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());

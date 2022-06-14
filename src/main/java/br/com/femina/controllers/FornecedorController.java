@@ -49,9 +49,11 @@ public class FornecedorController {
     }
 
     @DeleteMapping("/{idFornecedor}")
-    public ResponseEntity<?> delete(@PathVariable("idFornecedor") Long idFornecedor){
+    public ResponseEntity<?> delete(@PathVariable("idFornecedor") Long idFornecedor,
+                                    @RequestBody Fornecedor fornecedor)
+    {
         try {
-            this.fornecedorService.delete(idFornecedor);
+            this.fornecedorService.delete(idFornecedor, fornecedor);
             return ResponseEntity.ok().body("Fornecedor deletado com sucesso!");
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
