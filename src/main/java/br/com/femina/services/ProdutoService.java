@@ -37,7 +37,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void disable(Long id, Produto produto) {
+    public void delete(Long id, Produto produto) {
         if(id == produto.getId()){
             this.produtoRepository.delete(produto);
         } else {
