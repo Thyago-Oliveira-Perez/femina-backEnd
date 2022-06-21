@@ -18,17 +18,17 @@ public class FornecedorController {
     private FornecedorService fornecedorService;
 
     @GetMapping("/{idFornecedor}")
-    public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor){
+    public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor) {
         return ResponseEntity.ok().body(this.fornecedorService.findById(idFornecedor).get());
     }
 
     @GetMapping
-    public ResponseEntity<Page<Fornecedor>> findAll(Pageable pageable){
+    public ResponseEntity<Page<Fornecedor>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.fornecedorService.findAll(pageable));
     }
 
-    @PutMapping
-    public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor){
+    @PostMapping
+    public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor) {
         try{
             this.fornecedorService.insert(fornecedor);
             return ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!");
@@ -37,9 +37,10 @@ public class FornecedorController {
         }
     }
 
-    @PutMapping("/update/{idFornecedor}")
+    @PutMapping("/{idFornecedor}")
     public ResponseEntity<?> update(@PathVariable("idFornecedor") Long idFornecedor,
-                                    @RequestBody Fornecedor fornecedor){
+                                    @RequestBody Fornecedor fornecedor)
+    {
         try {
             this.fornecedorService.update(idFornecedor, fornecedor);
             return ResponseEntity.ok().body("Fornecedor editado com sucesso!");

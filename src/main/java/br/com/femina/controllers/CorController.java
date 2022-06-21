@@ -38,7 +38,7 @@ public class CorController {
         }
     }
 
-    @PutMapping("/{idCor}")
+    @DeleteMapping("/{idCor}")
     public ResponseEntity<?> delete(@PathVariable("idCor") Long idCor,
                                     @RequestBody Cor cor)
     {

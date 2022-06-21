@@ -10,24 +10,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("api/Funcionarios")
+@RequestMapping("api/funcionarios")
 public class FuncionarioController {
 
     @Autowired
     private FuncionarioService funcionarioService;
-
-    @GetMapping
-    public ResponseEntity<Page<Funcionario>> listAll(Pageable pageable) {
-        return ResponseEntity.ok().body(this.funcionarioService.findAll(pageable));
-    }
 
     @GetMapping("/{idFuncionario}")
     public ResponseEntity<Funcionario> findById(@PathVariable("idFuncionario") Long idFuncionario) {
         return ResponseEntity.ok().body(this.funcionarioService.findById(idFuncionario).get());
     }
 
+    @GetMapping
+    public ResponseEntity<Page<Funcionario>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(this.funcionarioService.findAll(pageable));
+    }
+
     @PostMapping
-    public ResponseEntity<?> insertFuncionario(@RequestBody Funcionario funcionario) {
+    public ResponseEntity<?> insert(@RequestBody Funcionario funcionario) {
         try{
             this.funcionarioService.insert(funcionario);
             return ResponseEntity.ok().body("Funcionario cadastrado com sucesso");
@@ -37,7 +37,9 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{idFuncionario}")
-    public ResponseEntity<?> update(@RequestBody Funcionario funcionario, @PathVariable Long idFuncionario) {
+    public ResponseEntity<?> update(@RequestBody Funcionario funcionario,
+                                    @PathVariable Long idFuncionario)
+    {
         try{
             this.funcionarioService.update(idFuncionario, funcionario);
             return ResponseEntity.ok().body("Funcionario atualizada com sucesso");
@@ -46,8 +48,10 @@ public class FuncionarioController {
         }
     }
 
-    @PutMapping("/status/{idFuncionario}")
-    public ResponseEntity<?> updateStatus(@RequestBody Funcionario funcionario, @PathVariable Long idFuncionario) {
+    @DeleteMapping("/{idFuncionario}")
+    public ResponseEntity<?> updateStatus(@RequestBody Funcionario funcionario,
+                                          @PathVariable Long idFuncionario)
+    {
         try{
             this.funcionarioService.delete(idFuncionario, funcionario);
             return ResponseEntity.ok().body("Funcionario desabilitada com sucesso");

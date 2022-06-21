@@ -17,12 +17,12 @@ public class ModeloController {
     private ModeloService modeloService;
 
     @GetMapping("/{idModelo}")
-    public ResponseEntity<Modelo> findById(@PathVariable("idModelo") Long idModelo){
+    public ResponseEntity<Modelo> findById(@PathVariable("idModelo") Long idModelo) {
         return ResponseEntity.ok().body(this.modeloService.findById(idModelo).get());
     }
 
     @GetMapping
-    public ResponseEntity<Page<Modelo>> findAll(Pageable pageable){
+    public ResponseEntity<Page<Modelo>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.modeloService.findAll(pageable));
     }
 

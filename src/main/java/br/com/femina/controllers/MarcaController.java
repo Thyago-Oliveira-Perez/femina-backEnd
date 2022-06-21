@@ -39,7 +39,8 @@ public class MarcaController {
 
     @DeleteMapping("/{idMarca}")
     public ResponseEntity<?> delete(@PathVariable("idMarca") Long idMarca,
-                                    @RequestBody Marca marca){
+                                    @RequestBody Marca marca)
+    {
         try {
             this.marcaService.delete(idMarca, marca);
             return ResponseEntity.ok().body("Marca deletada com sucesso!");

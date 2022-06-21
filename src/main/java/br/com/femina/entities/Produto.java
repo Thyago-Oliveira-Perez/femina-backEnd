@@ -8,11 +8,16 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @Table(name = "produtos", schema = "public")
 public class Produto extends AbstractEntity {
+
+    @OneToMany(mappedBy = "produto")
+    private Set<Favoritos> favoritos;
 
     @Getter @Setter
     @Column(name = "codigo", nullable = false, length = 20, unique = true)
