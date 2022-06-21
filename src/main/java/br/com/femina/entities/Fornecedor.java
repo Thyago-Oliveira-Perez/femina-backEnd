@@ -35,7 +35,7 @@ public class Fornecedor extends AbstractEntity {
     @Getter
     @Setter
     @Column(name = "numero", nullable = false)
-    private int numero;
+    private String numero;
 
     @Getter
     @Setter
