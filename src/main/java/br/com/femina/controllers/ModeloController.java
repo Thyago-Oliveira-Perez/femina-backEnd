@@ -26,7 +26,7 @@ public class ModeloController {
         return ResponseEntity.ok().body(this.modeloService.findAll(pageable));
     }
 
-    @PutMapping("{/idModelo}")
+    @PutMapping("/{idModelo}")
     public ResponseEntity<?> update(@PathVariable("idModelo")Long idModelo,
                                     @RequestBody Modelo modelo)
     {
