@@ -17,17 +17,17 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping("/{idCategoria}")
-    public ResponseEntity<Categorias> findById(@PathVariable("idCategoria") Long idCategoria){
+    public ResponseEntity<Categorias> findById(@PathVariable("idCategoria") Long idCategoria) {
         return ResponseEntity.ok().body(this.categoriaService.findById(idCategoria).get());
     }
 
     @GetMapping
-    public ResponseEntity<Page<Categorias>> findAll(Pageable pageable){
+    public ResponseEntity<Page<Categorias>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.categoriaService.findAll(pageable));
     }
 
-    @PutMapping
-    public ResponseEntity<?> insert(@RequestBody Categorias categorias){
+    @PostMapping
+    public ResponseEntity<?> insert(@RequestBody Categorias categorias) {
         try {
             this.categoriaService.insert(categorias);
             return ResponseEntity.ok().body("Categoria cadastrada com sucesso!");
@@ -36,9 +36,10 @@ public class CategoriaController {
         }
     }
 
-    @PostMapping
+    @DeleteMapping("/{idCategoria}")
     public ResponseEntity<?> delete(@PathVariable("idCategoria") Long idCategoria,
-                                    @RequestBody Categorias categorias){
+                                    @RequestBody Categorias categorias)
+    {
         try {
             this.categoriaService.delete(idCategoria, categorias);
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");

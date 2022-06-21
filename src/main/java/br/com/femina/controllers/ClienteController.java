@@ -9,24 +9,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping
-    public ResponseEntity<Page<Cliente>> listAll(Pageable pageable) {
-        return ResponseEntity.ok().body(this.clienteService.findAll(pageable));
-    }
-
     @GetMapping("/{idCliente}")
-    public ResponseEntity<Cliente> findById(@PathVariable("idCliente") Long idCliente){
+    public ResponseEntity<Cliente> findById(@PathVariable("idCliente") Long idCliente) {
         return ResponseEntity.ok().body(this.clienteService.findById(idCliente).get());
     }
 
+    @GetMapping
+    public ResponseEntity<Page<Cliente>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(this.clienteService.findAll(pageable));
+    }
+
     @PostMapping
-    public ResponseEntity<?> insertCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<?> insert(@Valid @RequestBody Cliente cliente) {
         try{
             this.clienteService.insert(cliente);
             return ResponseEntity.ok().body("Cliente cadastrado com sucesso");
@@ -36,7 +39,9 @@ public class ClienteController {
     }
 
     @PutMapping("/{idCliente}")
-    public ResponseEntity<?> update(@RequestBody Cliente cliente, @PathVariable Long idCliente ){
+    public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente,
+                                    @PathVariable Long idCliente)
+    {
         try{
             this.clienteService.update(idCliente,cliente);
             return ResponseEntity.ok().body("Funcionario atualizada com sucesso");
@@ -45,8 +50,10 @@ public class ClienteController {
         }
     }
 
-    @PutMapping("/status/{idCliente}")
-    public ResponseEntity<?> delete(@RequestBody Cliente cliente, @PathVariable Long idCliente ){
+    @DeleteMapping("/{idCliente}")
+    public ResponseEntity<?> delete(@RequestBody Cliente cliente,
+                                    @PathVariable Long idCliente)
+    {
         try{
             this.clienteService.delete(idCliente, cliente);
             return ResponseEntity.ok().body("Funcionario atualizada com sucesso");
