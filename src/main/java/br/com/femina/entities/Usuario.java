@@ -78,7 +78,7 @@ public abstract class Usuario extends AbstractEntity {
 
     @Getter @Setter
     @Column(name = "numero", nullable = false)
-    private Integer numero;
+    private String numero;
 
     @Getter @Setter
     @Pattern(regexp = "([0-9]{5}-[0-9]{3}$)")
