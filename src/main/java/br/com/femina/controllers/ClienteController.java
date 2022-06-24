@@ -52,14 +52,13 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{idCliente}")
-    public ResponseEntity<?> delete(@RequestBody Cliente cliente,
-                                    @PathVariable Long idCliente)
+    public ResponseEntity<?> delete(@PathVariable Long idCliente)
     {
         try{
-            this.clienteService.delete(idCliente, cliente);
+            this.clienteService.delete(idCliente);
             return ResponseEntity.ok().body("Cliente deletado com sucesso!");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Cliente não existe no banco.");
         }
     }
 

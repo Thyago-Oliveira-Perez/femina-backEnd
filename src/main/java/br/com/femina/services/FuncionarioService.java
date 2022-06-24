@@ -39,9 +39,9 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public void delete(Long id, Funcionario funcionario) {
-        if (id == funcionario.getId()) {
-            this.funcionarioRepository.delete(funcionario);
+    public void delete(Long id) {
+        if (this.funcionarioRepository.findById(id).isPresent()) {
+            this.funcionarioRepository.deleteById(id);
         } else {
             throw new RuntimeException();
         }

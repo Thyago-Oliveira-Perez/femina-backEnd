@@ -42,14 +42,13 @@ public class FavoritosController {
     }
 
     @DeleteMapping("/{idFavorito}")
-    public ResponseEntity<?> delete(@PathVariable("idFavorito") Long idFavorito,
-                                    @RequestBody Favoritos favoritos)
+    public ResponseEntity<?> delete(@PathVariable("idFavorito") Long idFavorito)
     {
         try{
-            this.favoritosService.delete(idFavorito, favoritos);
+            this.favoritosService.delete(idFavorito);
             return ResponseEntity.ok().body("Desfavoritado com sucesso!");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Favorito não existe no banco.");
         }    
     }
 

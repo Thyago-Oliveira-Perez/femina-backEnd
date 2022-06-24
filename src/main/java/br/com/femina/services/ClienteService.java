@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,12 +38,11 @@ public class ClienteService {
     }
 
     @Transactional
-    public void delete(Long id, Cliente cliente) {
-        if(id == cliente.getId()) {
-            this.clienteRepository.delete(cliente);
+    public void delete(Long id) {
+        if(this.clienteRepository.findById(id).isPresent()) {
+            this.clienteRepository.deleteById(id);
         } else {
             throw new RuntimeException();
         }
     }
-
 }

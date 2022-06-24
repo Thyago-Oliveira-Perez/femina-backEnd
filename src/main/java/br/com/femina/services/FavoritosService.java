@@ -39,9 +39,9 @@ public class FavoritosService {
     public Page<Favoritos> findAll(Pageable pageable) { return this.favoritosRepository.findAll(pageable); }
 
     @Transactional
-    public void delete(Long id, Favoritos favoritos) {
-        if (id == favoritos.getId()){
-            this.favoritosRepository.delete(favoritos);
+    public void delete(Long id) {
+        if (this.favoritosRepository.findById(id).isPresent()){
+            this.favoritosRepository.deleteById(id);
         } else {
             throw new RuntimeException();
         }

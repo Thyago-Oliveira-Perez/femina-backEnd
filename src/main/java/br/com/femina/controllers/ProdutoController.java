@@ -50,14 +50,13 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{idProduto}")
-    public ResponseEntity<?> delete(@RequestBody Produto produto,
-                                    @PathVariable Long idProduto)
+    public ResponseEntity<?> delete(@PathVariable Long idProduto)
     {
         try{
-            this.produtoService.delete(idProduto, produto);
+            this.produtoService.delete(idProduto);
             return ResponseEntity.ok().body("Produto atualizada com sucesso");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Produto não existe no banco.");
         }
     }
 

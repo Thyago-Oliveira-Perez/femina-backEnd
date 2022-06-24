@@ -51,14 +51,13 @@ public class FornecedorController {
     }
 
     @DeleteMapping("/{idFornecedor}")
-    public ResponseEntity<?> delete(@PathVariable("idFornecedor") Long idFornecedor,
-                                    @RequestBody Fornecedor fornecedor)
+    public ResponseEntity<?> delete(@PathVariable("idFornecedor") Long idFornecedor)
     {
         try {
-            this.fornecedorService.delete(idFornecedor, fornecedor);
+            this.fornecedorService.delete(idFornecedor);
             return ResponseEntity.ok().body("Fornecedor deletado com sucesso!");
         }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Fornecedor não existe no banco.");
         }
     }
 }

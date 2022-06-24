@@ -37,27 +37,14 @@ public class ModeloController {
         }
     }
 
-    @PutMapping("/{idModelo}")
-    public ResponseEntity<?> update(@PathVariable("idModelo")Long idModelo,
-                                    @RequestBody Modelo modelo)
-    {
-        try{
-            this.modeloService.delete(idModelo, modelo);
-            return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     @DeleteMapping("/{idModelo}")
-    public ResponseEntity<?> delete(@PathVariable("idModelo") Long idModelo,
-                                    @RequestBody Modelo modelo)
+    public ResponseEntity<?> delete(@PathVariable("idModelo") Long idModelo)
     {
         try{
-            this.modeloService.delete(idModelo, modelo);
+            this.modeloService.delete(idModelo);
             return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Modelo não existe no banco.");
         }
     }
 }

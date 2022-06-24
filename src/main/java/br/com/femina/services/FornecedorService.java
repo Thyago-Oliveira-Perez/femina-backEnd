@@ -39,9 +39,9 @@ public class FornecedorService {
     }
 
     @Transactional
-    public void delete(Long id, Fornecedor fornecedor) {
-        if (id == fornecedor.getId()) {
-            this.fornecedorRepository.delete(fornecedor);
+    public void delete(Long id) {
+        if (this.fornecedorRepository.findById(id).isPresent()) {
+            this.fornecedorRepository.deleteById(id);
         } else {
             throw new RuntimeException();
         }
