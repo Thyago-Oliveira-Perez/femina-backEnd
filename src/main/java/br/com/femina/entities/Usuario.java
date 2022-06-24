@@ -37,7 +37,7 @@ public abstract class Usuario extends AbstractEntity {
 
     @Getter @Setter
     @Column(name = "cpf", nullable = false, length = 15, unique = true)
-    @CPF(message = "CPF é inválido")
+    @Pattern(regexp = "([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}$)")
     @NotNull(message = "Cpf é obrigatório")
     private String cpf;
 
