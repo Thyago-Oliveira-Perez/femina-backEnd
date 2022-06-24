@@ -44,7 +44,7 @@ public class ClienteController {
     {
         try{
             this.clienteService.update(idCliente,cliente);
-            return ResponseEntity.ok().body("Funcionario atualizada com sucesso");
+            return ResponseEntity.ok().body("Cliente atualizado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -56,7 +56,7 @@ public class ClienteController {
     {
         try{
             this.clienteService.delete(idCliente, cliente);
-            return ResponseEntity.ok().body("Funcionario atualizada com sucesso");
+            return ResponseEntity.ok().body("Cliente deletado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

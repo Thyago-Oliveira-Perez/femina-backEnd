@@ -26,6 +26,16 @@ public class ModeloController {
         return ResponseEntity.ok().body(this.modeloService.findAll(pageable));
     }
 
+    @PostMapping
+    public ResponseEntity<?> insert(@RequestBody Modelo modelo) {
+        try {
+            this.modeloService.insert(modelo);
+            return ResponseEntity.ok().body("Modelo cadastrado com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{idModelo}")
     public ResponseEntity<?> update(@PathVariable("idModelo")Long idModelo,
                                     @RequestBody Modelo modelo)
@@ -33,18 +43,19 @@ public class ModeloController {
         try{
             this.modeloService.delete(idModelo, modelo);
             return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{idModelo}")
     public ResponseEntity<?> delete(@PathVariable("idModelo") Long idModelo,
-                                    @RequestBody Modelo modelo){
+                                    @RequestBody Modelo modelo)
+    {
         try{
             this.modeloService.delete(idModelo, modelo);
             return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

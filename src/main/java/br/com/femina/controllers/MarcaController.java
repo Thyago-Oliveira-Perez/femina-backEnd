@@ -18,21 +18,21 @@ public class MarcaController {
     private MarcaService marcaService;
 
     @GetMapping("/{idMarca}")
-    public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca){
+    public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca) {
         return ResponseEntity.ok().body(this.marcaService.findById(idMarca).get());
     }
 
     @GetMapping
-    public ResponseEntity<Page<Marca>> findAll(Pageable pageable){
+    public ResponseEntity<Page<Marca>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.marcaService.findAll(pageable));
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody Marca marca){
+    public ResponseEntity<?> insert(@RequestBody Marca marca) {
         try{
             this.marcaService.insert(marca);
             return ResponseEntity.ok().body("Marca cadastrada com sucesso!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -44,7 +44,7 @@ public class MarcaController {
         try {
             this.marcaService.delete(idMarca, marca);
             return ResponseEntity.ok().body("Marca deletada com sucesso!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

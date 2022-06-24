@@ -16,18 +16,18 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    @GetMapping
-    public ResponseEntity<Page<Produto>> listAll(Pageable pageable) {
-        return ResponseEntity.ok().body(this.produtoService.findAll(pageable));
-    }
-
     @GetMapping("/{idProduto}")
-    public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto){
+    public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto) {
         return ResponseEntity.ok().body(this.produtoService.findById(idProduto).get());
     }
 
+    @GetMapping
+    public ResponseEntity<Page<Produto>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(this.produtoService.findAll(pageable));
+    }
+
     @PostMapping
-    public ResponseEntity<?> insertProduto(@RequestBody Produto produto) {
+    public ResponseEntity<?> insert(@RequestBody Produto produto) {
         try{
             this.produtoService.insert(produto);
             return ResponseEntity.ok().body("Produto cadastrado com sucesso");
@@ -37,7 +37,9 @@ public class ProdutoController {
     }
 
     @PutMapping("/{idProduto}")
-    public ResponseEntity<?> update(@RequestBody Produto produto, @PathVariable Long idProduto ){
+    public ResponseEntity<?> update(@RequestBody Produto produto,
+                                    @PathVariable Long idProduto)
+    {
         try{
             this.produtoService.update(idProduto,produto);
             return ResponseEntity.ok().body("Produto atualizada com sucesso");
@@ -46,8 +48,10 @@ public class ProdutoController {
         }
     }
 
-    @PutMapping("/status/{idProduto}")
-    public ResponseEntity<?> delete(@RequestBody Produto produto, @PathVariable Long idProduto ){
+    @DeleteMapping("/{idProduto}")
+    public ResponseEntity<?> delete(@RequestBody Produto produto,
+                                    @PathVariable Long idProduto)
+    {
         try{
             this.produtoService.delete(idProduto, produto);
             return ResponseEntity.ok().body("Produto atualizada com sucesso");
@@ -55,6 +59,5 @@ public class ProdutoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
 }

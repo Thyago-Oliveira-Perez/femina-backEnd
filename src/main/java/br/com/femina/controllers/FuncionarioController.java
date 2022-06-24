@@ -42,19 +42,19 @@ public class FuncionarioController {
     {
         try{
             this.funcionarioService.update(idFuncionario, funcionario);
-            return ResponseEntity.ok().body("Funcionario atualizada com sucesso");
+            return ResponseEntity.ok().body("Funcionario atualizado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{idFuncionario}")
-    public ResponseEntity<?> updateStatus(@RequestBody Funcionario funcionario,
+    public ResponseEntity<?> delete(@RequestBody Funcionario funcionario,
                                           @PathVariable Long idFuncionario)
     {
         try{
             this.funcionarioService.delete(idFuncionario, funcionario);
-            return ResponseEntity.ok().body("Funcionario desabilitada com sucesso");
+            return ResponseEntity.ok().body("Funcionario deletado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
