@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
