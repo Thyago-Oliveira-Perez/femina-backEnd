@@ -2,11 +2,11 @@ package br.com.femina.entities;
 
 public enum Tamanho {
 
-    pp("PP"),
-        p("P"),
-            m("M"),
-                g("G"),
-                    gg("GG");
+    PP("PP"),
+        P("P"),
+            M("M"),
+                G("G"),
+                    GG("GG");
 
     private final String valor;
 

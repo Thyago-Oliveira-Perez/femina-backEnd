@@ -2,9 +2,9 @@ package br.com.femina.entities;
 
 public enum Sexo {
 
-    masculino("MASCULINO"),
-    feminino("FEMININO"),
-    outro("OUTRO");
+    MASCULINO("MASCULINO"),
+    FEMININO("FEMININO"),
+    OUTRO("OUTRO");
 
     public final String valor;
 

@@ -2,9 +2,9 @@ package br.com.femina.entities;
 
 public enum Cargo {
 
-    funcionario("Funcionario"),
-    gerente("Gerente"),
-    admin("Admin");
+    FUNCIONARIO("FUNCIONARIO"),
+    GERENTE("GERENTE"),
+    ADMIN("ADMIN");
 
     public final String valor;
 
