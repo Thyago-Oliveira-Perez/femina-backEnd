@@ -12,4 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long> { }
+public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+    @Modifying
+    @Query("update Produto produto set  produto.categoria.id = null where produto.categoria.id = :idCategoria")
+    public void updateByIdCategoria(@Param("idCategoria") Long id);
+
+}
