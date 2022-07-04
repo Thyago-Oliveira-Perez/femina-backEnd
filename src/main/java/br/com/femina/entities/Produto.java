@@ -3,10 +3,12 @@ package br.com.femina.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +30,10 @@ public class Produto extends AbstractEntity {
     @Column(name = "nome", nullable = false, length = 50)
     @NotNull(message = "Nome é obrigatório")
     private String nome;
+
+    @Getter @Setter
+    @Column(name = "imagem")
+    private String imagem;
 
     @Getter @Setter
     @Digits(integer = 5, fraction = 3)
