@@ -8,4 +8,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> { }
+public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
+
+    public Page<Fornecedor> findAllByIsActive(Pageable pageable, Boolean active);
+
+    @Modifying
+    @Query("UPDATE Fornecedor fornecedor " +
+            "SET fornecedor.isActive = false " +
+            "WHERE fornecedor.id = :id")
+    public void updateStatus(@Param("id") Long id);
+
+}

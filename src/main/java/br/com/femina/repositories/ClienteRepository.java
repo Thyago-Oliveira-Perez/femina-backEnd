@@ -10,4 +10,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long> { }
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+
+    public Page<Cliente> findAllByIsActive(Pageable pageable, Boolean active);
+
+    @Modifying
+    @Query("UPDATE Cliente cliente " +
+            "SET cliente.isActive = false " +
+            "WHERE cliente.id = :id")
+    public void updateStatus(@Param("id") Long id);
+
+}
