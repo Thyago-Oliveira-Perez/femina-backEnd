@@ -49,10 +49,10 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/{idFuncionario}")
-    public ResponseEntity<?> delete(@PathVariable Long idFuncionario)
+    public ResponseEntity<?> updateStatus(@PathVariable Long idFuncionario)
     {
         try{
-            this.funcionarioService.delete(idFuncionario);
+            this.funcionarioService.updateStatus(idFuncionario);
             return ResponseEntity.ok().body("Funcionario deletado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Funcionario não existe no banco.");

@@ -35,12 +35,12 @@ public class CategoriaService {
     }
 
     @Transactional
-    public boolean delete(Long id){
+    public boolean updateStatus(Long id){
         List<Long> listaDeIds = this.categoriaRepository.findAllIds();
 
         if(listaDeIds.contains(id)){
             this.produtoRepository.updateByIdCategoria(id);
-            this.categoriaRepository.deleteById(id);
+            this.categoriaRepository.updateStatus(id);
             return true;
         }else{
             return false;

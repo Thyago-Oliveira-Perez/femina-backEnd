@@ -30,9 +30,9 @@ public class CorService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if(this.corRepository.findById(id).isPresent()) {
-            this.corRepository.deleteById(id);
+            this.corRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

@@ -37,10 +37,10 @@ public class ModeloController {
     }
 
     @DeleteMapping("/{idModelo}")
-    public ResponseEntity<?> delete(@PathVariable("idModelo") Long idModelo)
+    public ResponseEntity<?> updateStatus(@PathVariable("idModelo") Long idModelo)
     {
         try{
-            this.modeloService.delete(idModelo);
+            this.modeloService.updateStatus(idModelo);
             return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Modelo não existe no banco.");

@@ -39,9 +39,9 @@ public class FornecedorService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if (this.fornecedorRepository.findById(id).isPresent()) {
-            this.fornecedorRepository.deleteById(id);
+            this.fornecedorRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

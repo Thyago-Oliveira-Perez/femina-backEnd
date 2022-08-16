@@ -39,9 +39,9 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if(this.produtoRepository.findById(id).isPresent()){
-            this.produtoRepository.deleteById(id);
+            this.produtoRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

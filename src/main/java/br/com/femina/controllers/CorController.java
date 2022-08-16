@@ -39,10 +39,10 @@ public class CorController {
     }
 
     @DeleteMapping("/{idCor}")
-    public ResponseEntity<?> delete(@PathVariable("idCor") Long idCor)
+    public ResponseEntity<?> updateStatus(@PathVariable("idCor") Long idCor)
     {
         try {
-            this.corService.delete(idCor);
+            this.corService.updateStatus(idCor);
             return ResponseEntity.ok().body("Cor deletada com sucesso!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Cor não existe no banco.");

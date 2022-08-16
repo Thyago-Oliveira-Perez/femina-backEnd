@@ -30,9 +30,9 @@ public class ModeloService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if(this.modeloRepository.findById(id).isPresent()){
-            this.modeloRepository.deleteById(id);
+            this.modeloRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

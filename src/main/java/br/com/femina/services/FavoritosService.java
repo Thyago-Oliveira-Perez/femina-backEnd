@@ -39,9 +39,9 @@ public class FavoritosService {
     public Page<Favoritos> findAll(Pageable pageable) { return this.favoritosRepository.findAll(pageable); }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if (this.favoritosRepository.findById(id).isPresent()){
-            this.favoritosRepository.deleteById(id);
+            this.favoritosRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

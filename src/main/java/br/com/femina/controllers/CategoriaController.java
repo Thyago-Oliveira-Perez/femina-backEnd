@@ -37,8 +37,8 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/{idCategoria}")
-    public ResponseEntity<?> delete(@PathVariable("idCategoria") Long idCategoria){
-        if(this.categoriaService.delete(idCategoria)){
+    public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
+        if(this.categoriaService.updateStatus(idCategoria)){
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
         }else {
             return ResponseEntity.badRequest().body("Categoria não existe no banco!");

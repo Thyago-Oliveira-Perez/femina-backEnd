@@ -38,9 +38,9 @@ public class ClienteService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if(this.clienteRepository.findById(id).isPresent()) {
-            this.clienteRepository.deleteById(id);
+            this.clienteRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

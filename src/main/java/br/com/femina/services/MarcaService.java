@@ -31,9 +31,9 @@ public class MarcaService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void updateStatus(Long id) {
         if(this.marcaRepository.findById(id).isPresent()) {
-            this.marcaRepository.deleteById(id);
+            this.marcaRepository.updateStatus(id);
         } else {
             throw new RuntimeException();
         }

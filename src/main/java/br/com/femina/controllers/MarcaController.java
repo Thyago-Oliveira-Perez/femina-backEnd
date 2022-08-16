@@ -37,10 +37,10 @@ public class MarcaController {
     }
 
     @DeleteMapping("/{idMarca}")
-    public ResponseEntity<?> delete(@PathVariable("idMarca") Long idMarca)
+    public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca)
     {
         try {
-            this.marcaService.delete(idMarca);
+            this.marcaService.updateStatus(idMarca);
             return ResponseEntity.ok().body("Marca deletada com sucesso!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Marca não existe no banco.");
