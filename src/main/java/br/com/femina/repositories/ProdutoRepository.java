@@ -9,12 +9,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+
     @Modifying
     @Query("update Produto produto set  produto.categoria.id = null where produto.categoria.id = :idCategoria")
     public void updateByIdCategoria(@Param("idCategoria") Long id);
+
+    public Page<Produto> findAllByIsActive(Pageable pageable, Boolean active);
+
+    @Modifying
+    @Query("UPDATE Produto produto " +
+            "SET produto.isActive = false " +
+            "WHERE produto.id = :id")
+    public void updateStatus(@Param("id") Long id);
 
 }
