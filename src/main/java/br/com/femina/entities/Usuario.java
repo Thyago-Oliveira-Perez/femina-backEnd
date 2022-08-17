@@ -57,6 +57,7 @@ public abstract class Usuario extends AbstractEntity {
     private String email;
 
     @Getter @Setter
+    @Pattern(regexp = "([0-9]{11})")
     @Column(name = "telefone", nullable = false, length = 18)
     private String telefone;
 
