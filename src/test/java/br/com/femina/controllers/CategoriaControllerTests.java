@@ -54,6 +54,17 @@ public class CategoriaControllerTests {
     }
 
     @Test
+    public void postCategoriaNull() throws Exception {
+        Categorias categorias = new Categorias(null);
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/categorias")
+                        .content(asJsonString(categorias))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void getCategoria() throws Exception {
         Pageable pageable = PageRequest.of(1,4);
         Categorias categorias = new Categorias("teste");
