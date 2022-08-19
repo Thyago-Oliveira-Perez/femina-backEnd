@@ -36,7 +36,7 @@ public class MarcaController {
         }
     }
 
-    @DeleteMapping("/{idMarca}")
+    @PutMapping("/disable/{idMarca}")
     public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca)
     {
         try {
