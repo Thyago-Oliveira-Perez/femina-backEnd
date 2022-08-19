@@ -94,7 +94,7 @@ public class ClienteControllerTests {
         doReturn(Optional.of(client)).when(clienteService).findById(1L);
 
         this.mockMvc.perform(get("/api/clientes/{id}", 1L))
-                .andExpect(result -> assertTrue(result.getResponse().getContentAsString().contains("\"id\": \"null\"")));
+                .andExpect(result -> assertTrue(result.getResponse().getContentAsString().contains("\"id\":null")));
     }
 
     @Test
