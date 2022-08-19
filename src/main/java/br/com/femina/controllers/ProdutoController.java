@@ -48,7 +48,7 @@ public class ProdutoController {
         }
     }
 
-    @DeleteMapping("/{idProduto}")
+    @PutMapping("/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto)
     {
         try{

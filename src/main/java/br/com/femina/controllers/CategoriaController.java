@@ -38,7 +38,7 @@ public class CategoriaController {
         }
     }
 
-    @DeleteMapping("/{idCategoria}")
+    @PutMapping("/disable/{idCategoria}")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
         if(this.categoriaService.updateStatus(idCategoria)){
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
