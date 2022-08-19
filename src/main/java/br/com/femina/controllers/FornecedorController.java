@@ -50,7 +50,7 @@ public class FornecedorController {
         }
     }
 
-    @DeleteMapping("/{idFornecedor}")
+    @PutMapping("/disable/{idFornecedor}")
     public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor)
     {
         try {

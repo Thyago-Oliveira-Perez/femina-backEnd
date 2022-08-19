@@ -48,7 +48,7 @@ public class FuncionarioController {
         }
     }
 
-    @DeleteMapping("/{idFuncionario}")
+    @PutMapping("/disable/{idFuncionario}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idFuncionario)
     {
         try{

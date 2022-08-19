@@ -50,7 +50,7 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/{idCliente}")
+    @PutMapping("/disable/{idCliente}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idCliente)
     {
         try{

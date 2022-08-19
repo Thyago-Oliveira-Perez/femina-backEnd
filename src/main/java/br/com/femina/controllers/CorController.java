@@ -38,7 +38,7 @@ public class CorController {
         }
     }
 
-    @DeleteMapping("/{idCor}")
+    @PutMapping("/disable/{idCor}")
     public ResponseEntity<?> updateStatus(@PathVariable("idCor") Long idCor)
     {
         try {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.Column;
@@ -30,8 +31,8 @@ public abstract class Usuario extends AbstractEntity {
     private String login;
 
     @Getter @Setter
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "senha", nullable = false, length = 32, unique = true)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "senha", nullable = false, length = 32)
     @NotNull(message = "Senha é obrigatória")
     private String senha;
 
@@ -57,6 +58,7 @@ public abstract class Usuario extends AbstractEntity {
     private String email;
 
     @Getter @Setter
+    @Pattern(regexp = "([0-9]{11})")
     @Column(name = "telefone", nullable = false, length = 18)
     private String telefone;
 

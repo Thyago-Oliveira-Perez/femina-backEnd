@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/categorias")
@@ -27,7 +29,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody Categorias categorias) {
+    public ResponseEntity<?> insert(@RequestBody @Valid Categorias categorias) {
         try {
             this.categoriaService.insert(categorias);
             return ResponseEntity.ok().body("Categoria cadastrada com sucesso!");
@@ -36,7 +38,7 @@ public class CategoriaController {
         }
     }
 
-    @DeleteMapping("/{idCategoria}")
+    @PutMapping("/disable/{idCategoria}")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
         if(this.categoriaService.updateStatus(idCategoria)){
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
