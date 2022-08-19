@@ -21,9 +21,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -48,8 +53,9 @@ public class ClienteControllerTests {
     }
 
     @Test
-    @DisplayName("Inserir 1 cliente")
-    public void postClient() throws Exception {
+    @DisplayName("Get client by id")
+    public void getByIdClient() throws Exception {
+
         Cliente client = new Cliente();
 
         client.setId((long) 1);
@@ -71,20 +77,32 @@ public class ClienteControllerTests {
         client.setNumero("48");
         client.setCep("00000-000");
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/clientes")
-                        .content(asJsonString(client))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+
+        doReturn(Optional.of(client)).when(clienteService).findById(1L);
+
+        this.mockMvc.perform(get("/api/clientes/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
-    @DisplayName("Inserir clientes com os mesmos dados")
-    public void clientsWithSameDatas() throws Exception{
+    @DisplayName("get by non-existent id")
+    public void getByIdNotRegistered() throws Exception{
 
         Cliente client = new Cliente();
-        Cliente client1 = new Cliente();
+
+        doReturn(Optional.of(client)).when(clienteService).findById(1L);
+
+        this.mockMvc.perform(get("/api/clientes/{id}", 1L))
+                .andExpect(result -> assertTrue(result.getResponse().getContentAsString().contains("\"id\": \"null\"")));
+    }
+
+    @Test
+    @DisplayName("insert one client")
+    public void postClient() throws Exception {
+        Cliente client = new Cliente();
+
+        doNothing().when(clienteService).insert(client);
 
         client.setId((long) 1);
         client.setCadastrado(LocalDateTime.now());
@@ -105,32 +123,11 @@ public class ClienteControllerTests {
         client.setNumero("48");
         client.setCep("00000-000");
 
-        client1.setId((long) 1);
-        client1.setCadastrado(LocalDateTime.now());
-        client1.setAtualizado(LocalDateTime.now());
-        client1.setIsActive(true);
-        client1.setNome("teste01");
-        client1.setLogin("testeLogin00");
-        client1.setSenha("1234");
-        client1.setSexo(Sexo.MASCULINO);
-        client1.setDataNascimento(new Date());
-        client1.setCpf("000.000.000-00");
-        client1.setEmail("teste@gmail.com");
-        client1.setTelefone("0000-0000");
-        client1.setPais("Brasil");
-        client1.setEstado("Parana");
-        client1.setCidade("Foz do Iguaçu");
-        client1.setLogradouro("Vila Yolanda");
-        client1.setNumero("48");
-        client1.setCep("00000-000");
-
-        clienteService.insert(client);
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/clientes")
-                        .content(asJsonString(client1))
+        this.mockMvc.perform(
+                        post("/api/clientes")
+                        .content(asJsonString(client))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                        .andExpect(status().isOk());
     }
 }
