@@ -26,8 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -129,5 +128,57 @@ public class ClienteControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("edit client")
+    public void editClient() throws Exception{
+        Cliente client = new Cliente();
+        Cliente client1 = new Cliente();
+
+        client1.setId((long) 1);
+        client1.setCadastrado(LocalDateTime.now());
+        client1.setAtualizado(LocalDateTime.now());
+        client1.setIsActive(true);
+        client1.setNome("teste01");
+        client1.setLogin("loginBonitao");
+        client1.setSenha("1234");
+        client1.setSexo(Sexo.MASCULINO);
+        client1.setDataNascimento(new Date());
+        client1.setCpf("000.000.000-00");
+        client1.setEmail("teste@gmail.com");
+        client1.setTelefone("0000-0000");
+        client1.setPais("Brasil");
+        client1.setEstado("Parana");
+        client1.setCidade("Foz do Iguaçu");
+        client1.setLogradouro("Vila Yolanda");
+        client1.setNumero("48");
+        client1.setCep("00000-000");
+
+        client.setId((long) 1);
+        client.setCadastrado(LocalDateTime.now());
+        client.setAtualizado(LocalDateTime.now());
+        client.setIsActive(true);
+        client.setNome("teste01");
+        client.setLogin("testeLogin00");
+        client.setSenha("1234");
+        client.setSexo(Sexo.MASCULINO);
+        client.setDataNascimento(new Date());
+        client.setCpf("000.000.000-00");
+        client.setEmail("teste@gmail.com");
+        client.setTelefone("0000-0000");
+        client.setPais("Brasil");
+        client.setEstado("Parana");
+        client.setCidade("Foz do Iguaçu");
+        client.setLogradouro("Vila Yolanda");
+        client.setNumero("48");
+        client.setCep("00000-000");
+
+        doNothing().when(clienteService).insert(client);
+
+        this.mockMvc.perform(put("/api/clientes/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(client1)))
+                .andExpect(status().isOk());
     }
 }
