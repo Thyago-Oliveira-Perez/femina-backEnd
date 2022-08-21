@@ -2,7 +2,6 @@ package br.com.femina.controllers;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.hamcrest.Matchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
