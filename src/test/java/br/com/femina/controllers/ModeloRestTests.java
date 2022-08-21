@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class CategoriaRestTests {
+public class ModeloRestTests {
 
     @BeforeClass
     public static void setup() {
@@ -15,42 +15,42 @@ public class CategoriaRestTests {
     }
 
     @Test
-    public void insertCategoriaCode200() {
+    public void insertModeloCode200() {
         RestAssured.given()
             .body("{\"nome\": \"Teste\"}")
             .contentType(ContentType.JSON)
                 .when()
-                    .post("/categorias")
+                    .post("/modelos")
                 .then()
                     .statusCode(200);
     }
 
     @Test
-    public void getCategoriasCode200() {
+    public void getModelosCode200() {
         RestAssured.given()
             .when()
-                .get("/categorias")
+                .get("/modelos")
             .then()
                 .statusCode(200);
     }
 
     @Test
-    public void getCategoriaByIdCode200() {
+    public void getModeloByIdCode200() {
         RestAssured.given()
             .when()
-                .get("/categorias/{id}",1)
+                .get("/modelos/{id}",1)
             .then()
                 .statusCode(200)
                 .body("id", equalTo(1));
     }
 
     @Test
-    public void disableCategoriasCode200() {
+    public void disableModelosCode200() {
         RestAssured.given()
             .body("{\"nome\": \"teste\"}")
             .contentType(ContentType.JSON)
                 .when()
-                    .put("/categorias/disable/1")
+                    .put("/modelos/disable/1")
                 .then()
                     .statusCode(200);
     }
