@@ -23,4 +23,5 @@ public class Funcionario extends Usuario {
     @Column(name = "cargo", nullable = false)
     private Cargo cargo;
 
+
 }
