@@ -41,5 +41,15 @@ public class FornecedorRepositoryTests {
         List<Fornecedor> fornedorList = FornecedorRepositoy.findAll();
         assertNotNull(fornedorList);
     }
+    @Test
+    public void verifyCnpj(){
+        Fornecedor fornecedor = new Fornecedor("day","456123","999999","895623","day@gmail.com","858800","pr","Santos","Foz","br");
+        FornecedorRepositoy.save(fornecedor);
+        Integer countFornecedor = FornecedorRepositoy.findAll().size();
+        assertEquals(1, countFornecedor);
+
+    }
 
 }
+
+

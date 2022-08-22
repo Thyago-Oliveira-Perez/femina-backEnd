@@ -47,4 +47,19 @@ public class FornecedorControllerTests {
         assertThat(fornecedorPage.getContent().get(0).getEmail(), equalTo("anna@gmail.com"));
     }
 
+    @Test
+    public void verifyCnpj() throws Exception {
+        Pageable pageable = PageRequest.of(1, 10);
+        Fornecedor fornecedor = new Fornecedor("day", "01.234.567/0001-23","456123","12","874512","85880","pr","santos","foz","br");
+
+        List<Fornecedor> fornecedorList = new ArrayList<>();
+        fornecedorList.add(fornecedor);
+
+        Page<Fornecedor> fornecedorPage = new PageImpl(fornecedorList);
+
+        when(fornecedorService.findAll(pageable)).thenReturn(fornecedorPage);
+        this.mockMvc.perform(get("/api/fornecedores")).andExpect(status().isOk());
+        assertThat(fornecedorPage.getContent().get(0).getCnpj(), equalTo("01.234.567/0001-23"));
+    }
 }
+
