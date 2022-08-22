@@ -23,7 +23,7 @@ public class ClienteService {
     }
 
     public Optional<Cliente> findById(Long id){
-        return this.clienteRepository.findById(id);
+        return this.clienteRepository.findById(id).isPresent() ? this.clienteRepository.findById(id) : null;
     }
 
     public Page<Cliente> findAll(Pageable pageable) { return this.clienteRepository.findAll(pageable); }

@@ -22,7 +22,7 @@ public class FornecedorService {
     }
 
     public Optional<Fornecedor> findById(Long id) {
-        return this.fornecedorRepository.findById(id);
+        return this.fornecedorRepository.findById(id).isPresent() ? this.fornecedorRepository.findById(id) : null;
     }
 
     public Page<Fornecedor> findAll(Pageable pageable) {

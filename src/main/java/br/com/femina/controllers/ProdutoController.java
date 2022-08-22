@@ -18,7 +18,11 @@ public class ProdutoController {
 
     @GetMapping("/{idProduto}")
     public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto) {
-        return ResponseEntity.ok().body(this.produtoService.findById(idProduto).get());
+        if(this.produtoService.findById(idProduto).isPresent()){
+            return ResponseEntity.ok().body(this.produtoService.findById(idProduto).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Produto());
+        }
     }
 
     @GetMapping

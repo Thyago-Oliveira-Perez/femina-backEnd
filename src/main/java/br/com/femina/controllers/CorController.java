@@ -20,7 +20,11 @@ public class CorController {
 
     @GetMapping("/{idCor}")
     public ResponseEntity<Cor> findById(@PathVariable("idCor")Long idCor) {
-        return ResponseEntity.ok().body(this.corService.findById(idCor).get());
+        if(this.corService.findById(idCor).isPresent()){
+            return ResponseEntity.ok().body(this.corService.findById(idCor).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Cor());
+        }
     }
 
     @GetMapping

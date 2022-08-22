@@ -18,7 +18,11 @@ public class FavoritosController {
 
     @GetMapping("/{idFavorito}")
     public ResponseEntity<Favoritos> findById(@PathVariable("idFavorito") Long idFavorito) {
-        return ResponseEntity.ok().body(favoritosService.findById(idFavorito).get());
+        if(favoritosService.findById(idFavorito).isPresent()){
+            return ResponseEntity.ok().body(this.favoritosService.findById(idFavorito).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Favoritos());
+        }
     }
 
     @GetMapping
