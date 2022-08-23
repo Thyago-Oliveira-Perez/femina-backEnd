@@ -4,9 +4,14 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.hamcrest.Matchers.equalTo;
 
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(ModeloController.class)
 public class ModeloRestTests {
 
     @BeforeClass
@@ -17,29 +22,29 @@ public class ModeloRestTests {
     @Test
     public void insertModeloCode200() {
         RestAssured.given()
-            .body("{\"nome\": \"Teste\"}")
-            .contentType(ContentType.JSON)
+                .body("{\"nome\": \"Teste\", \"isActive\": "+true+" }")
+                .contentType(ContentType.JSON)
                 .when()
-                    .post("/modelos")
+                .post("/modelos")
                 .then()
-                    .statusCode(200);
+                .statusCode(200);
     }
 
     @Test
     public void getModelosCode200() {
         RestAssured.given()
-            .when()
+                .when()
                 .get("/modelos")
-            .then()
+                .then()
                 .statusCode(200);
     }
 
     @Test
     public void getModeloByIdCode200() {
         RestAssured.given()
-            .when()
+                .when()
                 .get("/modelos/{id}",1)
-            .then()
+                .then()
                 .statusCode(200)
                 .body("id", equalTo(1));
     }
@@ -47,12 +52,12 @@ public class ModeloRestTests {
     @Test
     public void disableModelosCode200() {
         RestAssured.given()
-            .body("{\"nome\": \"teste\"}")
-            .contentType(ContentType.JSON)
+                .body("{\"nome\": \"teste\"}")
+                .contentType(ContentType.JSON)
                 .when()
-                    .put("/modelos/disable/1")
+                .put("/modelos/disable/1")
                 .then()
-                    .statusCode(200);
+                .statusCode(200);
     }
 
 }
