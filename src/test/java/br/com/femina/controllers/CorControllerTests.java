@@ -4,10 +4,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.core.annotation.Order;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class CorRestTests {
+public class CorControllerTests {
 
     @BeforeClass
     public static void setup() {
@@ -15,6 +16,7 @@ public class CorRestTests {
     }
 
     @Test
+    @Order(1)
     public void insertCorCode200() {
         RestAssured.given()
             .body("{\"nome\": \"Teste\", \"hexadecimal\": \"#000000\"}")
@@ -26,6 +28,7 @@ public class CorRestTests {
     }
 
     @Test
+    @Order(2)
     public void getCorCode200() {
         RestAssured.given()
             .when()
@@ -35,6 +38,7 @@ public class CorRestTests {
     }
 
     @Test
+    @Order(3)
     public void getCorByIdCode200() {
         RestAssured.given()
             .when()
@@ -45,6 +49,7 @@ public class CorRestTests {
     }
 
     @Test
+    @Order(4)
     public void disableCorCode200() {
         RestAssured.given()
             .body("{\"nome\": \"teste\", \"hexadecimal\": \"#000000\"}")
