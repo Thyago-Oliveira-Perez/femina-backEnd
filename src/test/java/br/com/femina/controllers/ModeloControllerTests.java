@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -12,7 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ModeloController.class)
-public class ModeloRestTests {
+public class ModeloControllerTests {
 
     @BeforeClass
     public static void setup() {
@@ -20,6 +21,7 @@ public class ModeloRestTests {
     }
 
     @Test
+    @Order(1)
     public void insertModeloCode200() {
         RestAssured.given()
                 .body("{\"nome\": \"Teste\", \"isActive\": "+true+" }")
@@ -31,6 +33,7 @@ public class ModeloRestTests {
     }
 
     @Test
+    @Order(2)
     public void getModelosCode200() {
         RestAssured.given()
                 .when()
@@ -40,6 +43,7 @@ public class ModeloRestTests {
     }
 
     @Test
+    @Order(3)
     public void getModeloByIdCode200() {
         RestAssured.given()
                 .when()
@@ -50,6 +54,7 @@ public class ModeloRestTests {
     }
 
     @Test
+    @Order(4)
     public void disableModelosCode200() {
         RestAssured.given()
                 .body("{\"nome\": \"teste\"}")
