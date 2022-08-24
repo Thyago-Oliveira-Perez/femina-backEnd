@@ -15,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import java.util.Objects;
 
 @NoArgsConstructor
 @MappedSuperclass
@@ -87,4 +88,16 @@ public abstract class Usuario extends AbstractEntity {
     @Column(name = "cep", nullable = false, length = 10)
     private String cep;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(senha, usuario.senha);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(senha);
+    }
 }
