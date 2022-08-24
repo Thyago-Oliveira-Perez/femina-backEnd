@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("api/funcionarios")
+@RequestMapping("/api/funcionarios")
 public class FuncionarioController {
 
     @Autowired
@@ -20,6 +20,7 @@ public class FuncionarioController {
     public ResponseEntity<Funcionario> findById(@PathVariable("idFuncionario") Long idFuncionario) {
         return ResponseEntity.ok().body(this.funcionarioService.findById(idFuncionario).get());
     }
+
 
     @GetMapping
     public ResponseEntity<Page<Funcionario>> findAll(Pageable pageable) {
