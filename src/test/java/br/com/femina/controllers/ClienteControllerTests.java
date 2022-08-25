@@ -42,7 +42,7 @@ public class ClienteControllerTests {
 
     @Test
     @DisplayName("Get client by id")
-    public void getByIdClient() throws Exception {
+    public void getByIdClient_status200() {
 
         Cliente client = new Cliente();
 
@@ -80,7 +80,7 @@ public class ClienteControllerTests {
 
     @Test
     @DisplayName("get by non-existent id")
-    public void getByIdNotRegistered() throws Exception{
+    public void getByIdNotRegistered_status400() {
 
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -95,7 +95,7 @@ public class ClienteControllerTests {
 
     @Test
     @DisplayName("insert one client")
-    public void postClient() {
+    public void postClient_status200() {
         Cliente client = new Cliente();
 
         client.setCadastrado(LocalDateTime.now());
@@ -165,4 +165,17 @@ public class ClienteControllerTests {
         assertEquals(200, response.statusCode());
     }
 
+    @Test
+    @DisplayName("disable client")
+    public void disableClient_status200(){
+        Response response = given()
+                .header("Content-type", "application/json")
+                .pathParam("id", "1")
+                .when()
+                .put("/clientes/disable/{id}")
+                .then()
+                .extract().response();
+
+        assertEquals(200, response.statusCode());
+    }
 }
