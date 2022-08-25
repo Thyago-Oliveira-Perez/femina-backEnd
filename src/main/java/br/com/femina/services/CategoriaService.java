@@ -27,7 +27,7 @@ public class CategoriaService {
     }
 
     public Optional<Categorias> findById(Long id){
-        return this.categoriaRepository.findById(id);
+        return this.categoriaRepository.findById(id).isPresent() ? this.categoriaRepository.findById(id) : null;
     }
 
     public Page<Categorias> findAll(Pageable pageable){

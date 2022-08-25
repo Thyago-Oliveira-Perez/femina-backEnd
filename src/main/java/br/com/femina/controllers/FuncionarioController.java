@@ -18,7 +18,11 @@ public class FuncionarioController {
 
     @GetMapping("/{idFuncionario}")
     public ResponseEntity<Funcionario> findById(@PathVariable("idFuncionario") Long idFuncionario) {
-        return ResponseEntity.ok().body(this.funcionarioService.findById(idFuncionario).get());
+        if(this.funcionarioService.findById(idFuncionario).isPresent()){
+            return ResponseEntity.ok().body(this.funcionarioService.findById(idFuncionario).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Funcionario());
+        }
     }
 
 

@@ -22,7 +22,7 @@ public class FuncionarioService {
     }
 
     public Optional<Funcionario> findById(Long id) {
-        return this.funcionarioRepository.findById(id);
+        return this.funcionarioRepository.findById(id).isPresent() ? this.funcionarioRepository.findById(id) : null;
     }
 
     public Page<Funcionario> findAll(Pageable pageable) {

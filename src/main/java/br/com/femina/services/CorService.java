@@ -22,7 +22,7 @@ public class CorService {
     }
 
     public Optional<Cor> findById(Long id){
-        return this.corRepository.findById(id);
+        return this.corRepository.findById(id).isPresent() ? this.corRepository.findById(id) : null;
     }
 
     public Page<Cor> findAll(Pageable pageable){

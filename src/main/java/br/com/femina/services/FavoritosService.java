@@ -33,7 +33,7 @@ public class FavoritosService {
     }
 
     public Optional<Favoritos> findById(Long id) {
-        return this.favoritosRepository.findById(id);
+        return this.favoritosRepository.findById(id).isPresent() ? this.favoritosRepository.findById(id) : null;
     }
 
     public Page<Favoritos> findAll(Pageable pageable) { return this.favoritosRepository.findAll(pageable); }

@@ -20,7 +20,11 @@ public class CategoriaController {
 
     @GetMapping("/{idCategoria}")
     public ResponseEntity<Categorias> findById(@PathVariable("idCategoria") Long idCategoria) {
-        return ResponseEntity.ok().body(this.categoriaService.findById(idCategoria).get());
+        if(this.categoriaService.findById(idCategoria).isPresent()){
+            return ResponseEntity.ok().body(this.categoriaService.findById(idCategoria).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Categorias());
+        }
     }
 
     @GetMapping

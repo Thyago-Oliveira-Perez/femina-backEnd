@@ -23,7 +23,7 @@ public class MarcaService {
     }
 
     public Optional<Marca> findById(Long id) {
-        return this.marcaRepository.findById(id);
+        return this.marcaRepository.findById(id).isPresent() ? this.marcaRepository.findById(id) : null;
     }
 
     public Page<Marca> findAll(Pageable pageable) {

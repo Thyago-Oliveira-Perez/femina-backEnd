@@ -18,7 +18,11 @@ public class MarcaController {
 
     @GetMapping("/{idMarca}")
     public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca) {
-        return ResponseEntity.ok().body(this.marcaService.findById(idMarca).get());
+        if(this.marcaService.findById(idMarca).isPresent()){
+            return ResponseEntity.ok().body(this.marcaService.findById(idMarca).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Marca());
+        }
     }
 
     @GetMapping

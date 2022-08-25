@@ -3,41 +3,30 @@ package br.com.femina.controllers;
 
 import br.com.femina.entities.Cliente;
 import br.com.femina.entities.Sexo;
-import br.com.femina.repositories.ClienteRepository;
 import br.com.femina.services.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.annotations.Comment;
-import org.hibernate.type.LocalDateType;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = ClienteController.class)
 public class ClienteControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @BeforeAll
+    public static void setup() {
+        RestAssured.baseURI = "http://localhost:8080/api";
+    }
 
-    @MockBean
+    @Autowired
     private ClienteService clienteService;
 
     public static String asJsonString(final Object obj) {
@@ -76,34 +65,39 @@ public class ClienteControllerTests {
         client.setNumero("48");
         client.setCep("00000-000");
 
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .pathParam("id", "1")
+                .when()
+                .get("/clientes/{id}")
+                .then()
+                .extract().response();
 
-        doReturn(Optional.of(client)).when(clienteService).findById(1L);
+        assertEquals(200, response.statusCode());
 
-        this.mockMvc.perform(get("/api/clientes/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        assertNotNull(response.contentType());
     }
 
     @Test
     @DisplayName("get by non-existent id")
     public void getByIdNotRegistered() throws Exception{
 
-        Cliente client = new Cliente();
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .pathParam("id", "20")
+                .when()
+                .get("/clientes//{id}")
+                .then()
+                .extract().response();
 
-        doReturn(Optional.of(client)).when(clienteService).findById(1L);
-
-        this.mockMvc.perform(get("/api/clientes/{id}", 1L))
-                .andExpect(result -> assertTrue(result.getResponse().getContentAsString().contains("\"id\":null")));
+        assertEquals(400, response.statusCode());
     }
 
     @Test
     @DisplayName("insert one client")
-    public void postClient() throws Exception {
+    public void postClient() {
         Cliente client = new Cliente();
 
-        doNothing().when(clienteService).insert(client);
-
-        client.setId((long) 1);
         client.setCadastrado(LocalDateTime.now());
         client.setAtualizado(LocalDateTime.now());
         client.setIsActive(true);
@@ -112,9 +106,9 @@ public class ClienteControllerTests {
         client.setSenha("1234");
         client.setSexo(Sexo.MASCULINO);
         client.setDataNascimento(new Date());
-        client.setCpf("000.000.000-00");
-        client.setEmail("teste@gmail.com");
-        client.setTelefone("0000-0000");
+        client.setCpf("12345678909-38");
+        client.setEmail("emailDemail@gmail.com");
+        client.setTelefone("87937129922");
         client.setPais("Brasil");
         client.setEstado("Parana");
         client.setCidade("Foz do Iguaçu");
@@ -122,51 +116,35 @@ public class ClienteControllerTests {
         client.setNumero("48");
         client.setCep("00000-000");
 
-        this.mockMvc.perform(
-                        post("/api/clientes")
-                        .content(asJsonString(client))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(asJsonString(client))
+                .when()
+                .post("/clientes")
+                .then()
+                .extract().response();
+
+        assertEquals(200, response.statusCode());
     }
 
     @Test
     @DisplayName("edit client")
-    public void editClient() throws Exception{
+    public void editClient_status200() {
         Cliente client = new Cliente();
-        Cliente client1 = new Cliente();
-
-        client1.setId((long) 1);
-        client1.setCadastrado(LocalDateTime.now());
-        client1.setAtualizado(LocalDateTime.now());
-        client1.setIsActive(true);
-        client1.setNome("teste01");
-        client1.setLogin("loginBonitao");
-        client1.setSenha("1234");
-        client1.setSexo(Sexo.MASCULINO);
-        client1.setDataNascimento(new Date());
-        client1.setCpf("000.000.000-00");
-        client1.setEmail("teste@gmail.com");
-        client1.setTelefone("0000-0000");
-        client1.setPais("Brasil");
-        client1.setEstado("Parana");
-        client1.setCidade("Foz do Iguaçu");
-        client1.setLogradouro("Vila Yolanda");
-        client1.setNumero("48");
-        client1.setCep("00000-000");
 
         client.setId((long) 1);
         client.setCadastrado(LocalDateTime.now());
         client.setAtualizado(LocalDateTime.now());
         client.setIsActive(true);
         client.setNome("teste01");
-        client.setLogin("testeLogin00");
+        client.setLogin("testeLogin12");
         client.setSenha("1234");
         client.setSexo(Sexo.MASCULINO);
         client.setDataNascimento(new Date());
-        client.setCpf("000.000.000-00");
+        client.setCpf("12276438912-38");
         client.setEmail("teste@gmail.com");
-        client.setTelefone("0000-0000");
+        client.setTelefone("87937129922");
         client.setPais("Brasil");
         client.setEstado("Parana");
         client.setCidade("Foz do Iguaçu");
@@ -174,11 +152,17 @@ public class ClienteControllerTests {
         client.setNumero("48");
         client.setCep("00000-000");
 
-        doNothing().when(clienteService).insert(client);
+        Response response = given()
+                            .contentType(ContentType.JSON)
+                            .header("Content-type", "application/json")
+                            .pathParam("id", "1")
+                            .body(asJsonString(client))
+                            .when()
+                            .put("/clientes/{id}")
+                            .then()
+                            .extract().response();
 
-        this.mockMvc.perform(put("/api/clientes/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(client1)))
-                .andExpect(status().isOk());
+        assertEquals(200, response.statusCode());
     }
+
 }

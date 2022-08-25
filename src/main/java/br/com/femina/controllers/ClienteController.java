@@ -20,7 +20,11 @@ public class ClienteController {
 
     @GetMapping("/{idCliente}")
     public ResponseEntity<Cliente> findById(@PathVariable("idCliente") Long idCliente) {
-        return ResponseEntity.ok().body(this.clienteService.findById(idCliente).get());
+        if(this.clienteService.findById(idCliente).isPresent()){
+            return ResponseEntity.ok().body(this.clienteService.findById(idCliente).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Cliente());
+        }
     }
 
     @GetMapping

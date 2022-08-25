@@ -20,7 +20,11 @@ public class FornecedorController {
 
     @GetMapping("/{idFornecedor}")
     public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor) {
-        return ResponseEntity.ok().body(this.fornecedorService.findById(idFornecedor).get());
+        if(this.fornecedorService.findById(idFornecedor).isPresent()){
+            return ResponseEntity.ok().body(this.fornecedorService.findById(idFornecedor).get());
+        }else{
+            return ResponseEntity.badRequest().body(new Fornecedor());
+        }
     }
 
     @GetMapping

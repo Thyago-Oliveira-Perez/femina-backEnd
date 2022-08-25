@@ -22,7 +22,7 @@ public class ModeloService {
     }
 
     public Optional<Modelo> findById(long id){
-        return this.modeloRepository.findById(id);
+        return this.modeloRepository.findById(id).isPresent() ? this.modeloRepository.findById(id) : null;
     }
 
     public Page<Modelo> findAll(Pageable pageable){

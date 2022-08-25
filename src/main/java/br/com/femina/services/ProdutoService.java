@@ -17,7 +17,7 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     public Optional<Produto> findById(Long id){
-        return this.produtoRepository.findById(id);
+        return this.produtoRepository.findById(id).isPresent() ? this.produtoRepository.findById(id) : null;
     }
 
     public Page<Produto> findAll(Pageable pageable){
