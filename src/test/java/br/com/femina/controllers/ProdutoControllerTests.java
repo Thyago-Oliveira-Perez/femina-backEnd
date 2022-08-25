@@ -50,7 +50,6 @@ public class ProdutoControllerTests {
                 .get("/produtos/1")
                 .then()
                 .statusCode(200);
-
     }
 
     @Test
@@ -64,7 +63,7 @@ public class ProdutoControllerTests {
     }
 
     @Test
-    public void postFuncionarios() throws Exception {
+    public void postProduto() throws Exception {
         RestAssured.given()
                 .body("{\n" +
 
