@@ -158,27 +158,9 @@ public class FuncionarioControllerTests {
     @Test
     public void disableFuncionario() {
         RestAssured.given()
-                .body("{\n" +
-                        "    \"nome\": \"teste\",\n" +
-                        "    \"login\": \"teste\",\n" +
-                        "    \"senha\": \"123\",\n" +
-                        "    \"cpf\": \"000.000.000-00\",\n" +
-                        "    \"sexo\": \"MASCULINO\",\n" +
-                        "    \"dataNascimento\": \"2022-08-24T19:24:28.948358\",\n" +
-                        "    \"email\": \"vitor@vitor.com\",\n" +
-                        "    \"telefone\": \"00000000000\",\n" +
-                        "    \"pais\": \"br\",\n" +
-                        "    \"estado\": \"pr\",\n" +
-                        "    \"cidade\": \"teste\",\n" +
-                        "    \"logradouro\": \"teste\",\n" +
-                        "    \"numero\": \"123\",\n" +
-                        "    \"cep\": \"00000-000\",\n" +
-                        "    \"salario\": 100.000,\n" +
-                        "    \"cargo\": \"FUNCIONARIO\"\n" +
-                        "}")
                 .contentType(ContentType.JSON)
                 .when()
-                .put("/funcionarios/disable/9")
+                .put("/funcionarios/disable/3")
                 .then()
                 .statusCode(200);
     }
