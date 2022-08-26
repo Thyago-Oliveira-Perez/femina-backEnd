@@ -42,7 +42,7 @@ public class FavoritosController {
     public ResponseEntity<?> updateStatus(@PathVariable("idFavorito") Long idFavorito)
     {
         try{
-            this.favoritosService.updateStatus(idFavorito);
+            this.favoritosService.delete(idFavorito);
             return ResponseEntity.ok().body("Desfavoritado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Favorito não existe no banco.");
