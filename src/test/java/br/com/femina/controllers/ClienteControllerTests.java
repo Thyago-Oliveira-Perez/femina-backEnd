@@ -44,27 +44,6 @@ public class ClienteControllerTests {
     @DisplayName("Get client by id")
     public void getByIdClient_status200() {
 
-        Cliente client = new Cliente();
-
-        client.setId((long) 1);
-        client.setCadastrado(LocalDateTime.now());
-        client.setAtualizado(LocalDateTime.now());
-        client.setIsActive(true);
-        client.setNome("teste01");
-        client.setLogin("testeLogin00");
-        client.setSenha("1234");
-        client.setSexo(Sexo.MASCULINO);
-        client.setDataNascimento(new Date());
-        client.setCpf("000.000.000-00");
-        client.setEmail("teste@gmail.com");
-        client.setTelefone("0000-0000");
-        client.setPais("Brasil");
-        client.setEstado("Parana");
-        client.setCidade("Foz do Iguaçu");
-        client.setLogradouro("Vila Yolanda");
-        client.setNumero("48");
-        client.setCep("00000-000");
-
         Response response = given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", "1")
@@ -74,7 +53,6 @@ public class ClienteControllerTests {
                 .extract().response();
 
         assertEquals(200, response.statusCode());
-
         assertNotNull(response.contentType());
     }
 
@@ -86,7 +64,7 @@ public class ClienteControllerTests {
                 .contentType(ContentType.JSON)
                 .pathParam("id", "20")
                 .when()
-                .get("/clientes//{id}")
+                .get("/clientes/{id}")
                 .then()
                 .extract().response();
 
