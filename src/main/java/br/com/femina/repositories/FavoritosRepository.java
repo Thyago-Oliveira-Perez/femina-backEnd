@@ -14,10 +14,4 @@ public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
 
     public Page<Favoritos> findAllByIsActive(Pageable pageable, Boolean active);
 
-    @Modifying
-    @Query("UPDATE Favoritos favoritos " +
-            "SET favoritos.isActive = false " +
-            "WHERE favoritos.id = :id")
-    public void updateStatus(@Param("id") Long id);
-
 }
