@@ -1,7 +1,6 @@
 package br.com.femina.services;
 
 import br.com.femina.entities.Favoritos;
-import br.com.femina.repositories.ClienteRepository;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

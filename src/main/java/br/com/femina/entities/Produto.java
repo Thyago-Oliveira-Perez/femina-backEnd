@@ -1,16 +1,14 @@
 package br.com.femina.entities;
 
+import br.com.femina.entities.enums.Tamanho;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,10 +28,6 @@ public class Produto extends AbstractEntity {
     @Column(name = "nome", nullable = false, length = 50)
     @NotNull(message = "Nome é obrigatório")
     private String nome;
-
-    @Getter @Setter
-    @Column(name = "imagem")
-    private String imagem;
 
     @Getter @Setter
     @Digits(integer = 5, fraction = 3)
@@ -62,9 +56,8 @@ public class Produto extends AbstractEntity {
     private Marca marca;
 
     @Getter @Setter
-    @JoinColumn(name = "id_cor")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Cor cor;
+    @JoinColumn(name = "cor")
+    private String cor;
 
     @Getter @Setter
     @Enumerated(EnumType.STRING)
@@ -74,6 +67,10 @@ public class Produto extends AbstractEntity {
     @Getter @Setter
     @Column(name = "descricao", columnDefinition = "TEXT")
     private String descricao;
+
+    @Getter @Setter
+    @Column(name = "imagem")
+    private String imagem;
 
     @Getter @Setter
     @Column(name = "destaque", columnDefinition = "boolean default false", nullable = false)

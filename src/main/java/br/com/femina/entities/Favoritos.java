@@ -2,8 +2,10 @@ package br.com.femina.entities;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @NoArgsConstructor
@@ -16,7 +18,7 @@ public class Favoritos extends AbstractEntity {
     @Setter
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    public Cliente cliente;
+    public Usuario usuario;
 
     @Getter
     @Setter

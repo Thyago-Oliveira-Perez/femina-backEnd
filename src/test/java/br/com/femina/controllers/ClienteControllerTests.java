@@ -1,9 +1,7 @@
 package br.com.femina.controllers;
 
 
-import br.com.femina.entities.Cliente;
-import br.com.femina.entities.Sexo;
-import br.com.femina.services.ClienteService;
+import br.com.femina.entities.enums.Sexo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;

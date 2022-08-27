@@ -1,5 +1,4 @@
 package br.com.femina.repositories;
-import br.com.femina.entities.Cor;
 import br.com.femina.entities.Fornecedor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

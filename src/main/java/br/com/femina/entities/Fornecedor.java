@@ -34,38 +34,8 @@ public class Fornecedor extends AbstractEntity {
 
     @Getter
     @Setter
-    @Column(name = "numero", nullable = false)
-    private String numero;
-
-    @Getter
-    @Setter
     @Column(name = "email", nullable = false, unique = true)
     @NotNull(message = "E-mail é obrigatório")
     private String email;
-
-    @Getter
-    @Setter
-    @Column(name = "cep", nullable = false)
-    private String cep;
-
-    @Getter
-    @Setter
-    @Column(name = "estado", nullable = false)
-    private String estado;
-
-    @Getter
-    @Setter
-    @Column(name = "logradouro", nullable = false)
-    private String logradouro;
-
-    @Getter
-    @Setter
-    @Column(name = "cidade", nullable = false)
-    private String cidade;
-
-    @Getter
-    @Setter
-    @Column(name = "pais", nullable = false)
-    private String pais;
 
 }

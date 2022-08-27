@@ -1,6 +1,5 @@
 package br.com.femina.services;
 
-import br.com.femina.entities.Cor;
 import br.com.femina.repositories.CorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
