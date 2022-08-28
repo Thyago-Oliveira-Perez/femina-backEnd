@@ -1,8 +1,14 @@
 package br.com.femina.controllers;
 
+import br.com.femina.entities.Categorias;
 import br.com.femina.entities.Fornecedor;
 import br.com.femina.services.FornecedorService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -11,7 +17,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -21,16 +31,106 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlTemplate;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(FornecedorController.class)
 public class FornecedorControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @BeforeAll
+        public static void setup() {
+            RestAssured.baseURI = "http://localhost:8080/api";
+        }
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private FornecedorService fornecedorService;
+        @MockBean
+        private FornecedorService fornecedorService;
+
+    // insert get getById Put diseable
+        public static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+        @Test
+        public void getFornecedor(){
+            RestAssured.given()
+                    .when()
+                    .get("/fornecedores")
+                    .then()
+                    .statusCode(200);
+        }
+
+        @Test
+        public void getFornecedorById() {
+            RestAssured.given()
+                    .when()
+                    .get("/fornecedores/1")
+                    .then()
+                    .statusCode(200);
+        }
+
+        @Test
+        public void getByIdNotRegistered() {
+            RestAssured.given()
+                    .when()
+                    .get("/fornecedores/10")
+                    .then()
+                    .statusCode(500);
+        }
+        @Test
+        public void postFornecedores() throws Exception {
+            RestAssured.given()
+                    .body("{\n" +
+                            "    \"nome\": \"teste\",\n" +
+                            "    \"cnpj\": \"00.000.000/0000-00\",\n" +
+                            "    \"telefone\": \"00000000000\",\n" +
+                            "    \"numero\": \"00000000000\",\n" +
+                            "    \"email\": \"day@gmail.com\",\n" +
+                            "    \"estado\": \"pr\",\n" +
+                            "    \"cidade\": \"foz\",\n" +
+                            "    \"logradouro\": \"santa\",\n" +
+                            "    \"numero\": \"123\",\n" +
+                            "    \"cep\": \"00000-000\",\n" +
+                            "    \"pais\": \"br\",\n" +
+                            "}")
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .post("/fornecedores")
+                    .then()
+                    .statusCode(400);
+        }
+
+        @Test
+        public void putFuncionario() {
+            RestAssured.given()
+                    .body("{\n" +
+                            "    \"nome\": \"teste\",\n" +
+                            "    \"cnpj\": \"00.000.000/0000-00\",\n" +
+                            "    \"telefone\": \"00000000000\",\n" +
+                            "    \"numero\": \"00000000000\",\n" +
+                            "    \"email\": \"day@gmail.com\",\n" +
+                            "    \"estado\": \"pr\",\n" +
+                            "    \"cidade\": \"foz\",\n" +
+                            "    \"logradouro\": \"santa\",\n" +
+                            "    \"numero\": \"123\",\n" +
+                            "    \"cep\": \"00000-000\",\n" +
+                            "    \"pais\": \"br\",\n" +
+                            "}")
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .put("/fornecedores/9")
+                    .then()
+                    .statusCode(400);
+        }
+
+
 
     @Test
     public void verifyEmail() throws Exception {

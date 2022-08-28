@@ -22,14 +22,14 @@ public class FornecedorRepositoryTests {
 
     @Test
     public void insertFornecedor() {
-        Fornecedor fav = new Fornecedor("lojinha","89899","989898", "99905406", "mj@gmal.com", "pr","aduana", "foz","foz", "br");
+        Fornecedor fav = new Fornecedor("teste","89899","989898", "99905406", "mj@gmal.com", "pr","aduana", "foz","foz", "br");
         FornecedorRepositoy.save(fav);
         int countFavoritos = FornecedorRepositoy.findAll().size();
         assertEquals(1, countFavoritos);
     }
     @Test
     public void insertExistingFornecedor() {
-        Fornecedor fornecedor = new Fornecedor("lojinha","89899","989898", "99905406", "mj@gmal.com", "pr","aduana", "foz","foz", "br");
+        Fornecedor fornecedor = new Fornecedor("teste","89899","989898", "99905406", "mj@gmal.com", "pr","aduana", "foz","foz", "br");
         FornecedorRepositoy.save(fornecedor);
         FornecedorRepositoy.save(fornecedor);
         int countFornecedor = FornecedorRepositoy.findAll().size();
@@ -43,7 +43,7 @@ public class FornecedorRepositoryTests {
     }
     @Test
     public void verifyCnpj(){
-        Fornecedor fornecedor = new Fornecedor("day","456123","999999","895623","day@gmail.com","858800","pr","Santos","Foz","br");
+        Fornecedor fornecedor = new Fornecedor("teste","456123","999999","895623","day@gmail.com","858800","pr","Santos","Foz","br");
         FornecedorRepositoy.save(fornecedor);
         Integer countFornecedor = FornecedorRepositoy.findAll().size();
         assertEquals(1, countFornecedor);
