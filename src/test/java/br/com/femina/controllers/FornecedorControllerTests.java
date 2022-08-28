@@ -129,7 +129,15 @@ public class FornecedorControllerTests {
                     .then()
                     .statusCode(400);
         }
-
+        @Test
+        public void disableFornecedor() {
+            RestAssured.given()
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .put("/forecedores/disable/3")
+                    .then()
+                    .statusCode(404);
+        }
 
 
     @Test
