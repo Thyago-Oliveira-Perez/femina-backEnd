@@ -3,6 +3,7 @@ package br.com.femina.services;
 import br.com.femina.entities.Favoritos;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
+import br.com.femina.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public class FavoritosService {
     private FavoritosRepository favoritosRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -26,7 +27,7 @@ public class FavoritosService {
     @Transactional
     public void insert(Long idProduto, Long idCliente) {
         Favoritos favoritos = new Favoritos();
-        favoritos.setCliente(clienteRepository.getById(idCliente));
+        favoritos.setUsuario(usuarioRepository.getById(idCliente));
         favoritos.setProduto(produtoRepository.getById(idProduto));
         this.favoritosRepository.save(favoritos);
     }

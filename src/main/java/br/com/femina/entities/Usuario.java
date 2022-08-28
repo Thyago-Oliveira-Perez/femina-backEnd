@@ -14,11 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Usuario implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Usuario extends AbstractEntity implements UserDetails{
 
     @Getter @Setter
     @Column(name = "name", nullable = false, length = 30, unique = true)
@@ -51,6 +47,7 @@ public class Usuario implements UserDetails {
     @Pattern(regexp = "([0-9]{20})")
     private String telefone;
 
+    @Getter @Setter
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Perfil> perfis = new ArrayList<>();
 
