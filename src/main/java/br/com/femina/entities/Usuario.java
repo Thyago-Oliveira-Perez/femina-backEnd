@@ -27,7 +27,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
     private String login;
 
     @Getter @Setter
-    @Column(name = "password", nullable = false, length = 30, unique = true)
+    @Column(name = "password", nullable = false, length = 255, unique = true)
     @NotNull(message = "Senha de usuário é obrigatório")
     private String senha;
 

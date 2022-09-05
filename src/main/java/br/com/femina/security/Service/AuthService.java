@@ -1,8 +1,10 @@
-package br.com.femina.configuration.security;
+package br.com.femina.security.Service;
 
+import br.com.femina.security.Repository.AuthRepository;
 import br.com.femina.entities.Usuario;
-import br.com.femina.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,21 +14,22 @@ import org.webjars.NotFoundException;
 import java.util.Optional;
 
 @Service
-public class AutenticacaoService implements UserDetailsService {
+public class AuthService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private AuthRepository authRepository;
+
+    private AuthenticationManager authenticationManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<Usuario> usuario = this.usuarioRepository.findByLoginOrEmail(username);
+        Optional<Usuario> usuario = this.authRepository.findByLoginOrEmail(username);
 
-        if(usuario.isPresent()){
+        if(usuario.isPresent() && usuario.get().isAccountNonExpired()){
             return usuario.get();
-        }
-        else{
-            throw new NotFoundException("Dados inválidos");
+        }else{
+            return null;
         }
     }
 }

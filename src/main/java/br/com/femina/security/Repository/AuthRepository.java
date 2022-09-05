@@ -1,4 +1,4 @@
-package br.com.femina.repositories;
+package br.com.femina.security.Repository;
 
 import br.com.femina.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface AuthRepository extends JpaRepository<Usuario, Long> {
 
-    @Modifying
-    @Query("UPDATE Usuario usuario SET usuario.isActive = false WHERE usuario.id = :id")
-    void disable(@Param("id") Long id);
+    @Query("FROM Usuario usuario WHERE usuario.email = :input OR usuario.login = :input")
+    Optional<Usuario> findByLoginOrEmail(@Param("input")String input);
+
 }
