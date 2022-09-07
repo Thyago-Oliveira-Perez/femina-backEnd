@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,11 +28,13 @@ public class FornecedorController {
     }
 
     @GetMapping
+    @Cacheable(value = "fornecedoresFindAll")
     public ResponseEntity<Page<Fornecedor>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.fornecedorService.findAll(pageable));
     }
 
     @PostMapping
+    @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor) {
         try{
             this.fornecedorService.insert(fornecedor);
@@ -41,6 +45,7 @@ public class FornecedorController {
     }
 
     @PutMapping("/{idFornecedor}")
+    @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> update(@PathVariable("idFornecedor") Long idFornecedor,
                                     @RequestBody Fornecedor fornecedor)
     {
@@ -53,6 +58,7 @@ public class FornecedorController {
     }
 
     @PutMapping("/disable/{idFornecedor}")
+    @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor)
     {
         try {

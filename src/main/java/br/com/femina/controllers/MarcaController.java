@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,11 +28,13 @@ public class MarcaController {
     }
 
     @GetMapping
+    @Cacheable(value = "marcaFindAll")
     public ResponseEntity<Page<Marca>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.marcaService.findAll(pageable));
     }
 
     @PostMapping
+    @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> insert(@RequestBody Marca marca) {
         try{
             this.marcaService.insert(marca);
@@ -41,6 +45,7 @@ public class MarcaController {
     }
 
     @PutMapping("/disable/{idMarca}")
+    @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca)
     {
         try {

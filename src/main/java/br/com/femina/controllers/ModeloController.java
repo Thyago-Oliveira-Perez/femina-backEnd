@@ -3,6 +3,8 @@ package br.com.femina.controllers;
 import br.com.femina.entities.Modelo;
 import br.com.femina.services.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +28,13 @@ public class ModeloController {
     }
 
     @GetMapping
+    @Cacheable(value = "modeloFindAll")
     public ResponseEntity<Page<Modelo>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.modeloService.findAll(pageable));
     }
 
     @PostMapping
+    @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> insert(@RequestBody Modelo modelo) {
         try {
             this.modeloService.insert(modelo);
@@ -41,6 +45,7 @@ public class ModeloController {
     }
 
     @PutMapping("/disable/{idModelo}")
+    @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idModelo") Long idModelo)
     {
         try{

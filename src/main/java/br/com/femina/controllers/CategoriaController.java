@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.validation.Valid;
 
@@ -28,11 +30,13 @@ public class CategoriaController {
     }
 
     @GetMapping
+    @Cacheable(value = "categoriasFindAll")
     public ResponseEntity<Page<Categorias>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.categoriaService.findAll(pageable));
     }
 
     @PostMapping
+    @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> insert(@RequestBody @Valid Categorias categorias) {
         try {
             this.categoriaService.insert(categorias);
@@ -43,6 +47,7 @@ public class CategoriaController {
     }
 
     @PutMapping("/disable/{idCategoria}")
+    @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
         if(this.categoriaService.updateStatus(idCategoria)){
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
