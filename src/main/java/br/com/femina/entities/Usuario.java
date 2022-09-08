@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
@@ -17,34 +18,35 @@ import java.util.List;
 public class Usuario extends AbstractEntity implements UserDetails{
 
     @Getter @Setter
-    @Column(name = "name", nullable = false, length = 30, unique = true)
+    @Column(name = "name", length = 30, nullable = false, unique = true)
     @NotNull(message = "Nome de usuário é obrigatório")
     private String nome;
 
     @Getter @Setter
-    @Column(name = "login", nullable = false, length = 30, unique = true)
+    @Column(name = "login", length = 30, nullable = false, unique = true)
     @NotNull(message = "Login de usuário é obrigatório")
     private String login;
 
     @Getter @Setter
-    @Column(name = "password", nullable = false, length = 255, unique = true)
+    @Column(name = "password", nullable = false, unique = true)
     @NotNull(message = "Senha de usuário é obrigatório")
     private String senha;
 
     @Getter @Setter
-    @Column(name = "sexo", nullable = false, length = 15, unique = true)
+    @Column(name = "sexo", length = 11, nullable = false, unique = true)
     @NotNull(message = "Sexo do usuário é obrigatório")
     private Sexo sexo;
 
     @Getter @Setter
-    @Column(name = "email", nullable = false, length = 30, unique = true)
+    @Column(name = "email", length = 50, nullable = false, unique = true)
+    @Email(message = "Email Inválido")
     @NotNull(message = "Email de usuário é obrigatório")
     private String email;
 
     @Getter @Setter
-    @Column(name = "telefone", nullable = false, length = 30, unique = true)
+    @Column(name = "telefone", length = 12, nullable = false, unique = true)
     @NotNull(message = "Telefone do usuário é obrigatório")
-    @Pattern(regexp = "([0-9]{20})")
+    @Pattern(regexp = "([0-9]{11})")
     private String telefone;
 
     @Getter @Setter

@@ -18,12 +18,12 @@ import java.util.Set;
 public class Produto extends AbstractEntity {
 
     @Getter @Setter
-    @Column(name = "codigo", nullable = false, length = 20, unique = true)
+    @Column(name = "codigo", length = 20, nullable = false, unique = true)
     @NotNull(message = "Código é obrigatório")
     private String codigo;
 
     @Getter @Setter
-    @Column(name = "nome", nullable = false, length = 50)
+    @Column(name = "nome", length = 30, nullable = false)
     @NotNull(message = "Nome é obrigatório")
     private String nome;
 
@@ -56,12 +56,12 @@ public class Produto extends AbstractEntity {
     private Marca marca;
 
     @Getter @Setter
-    @JoinColumn(name = "cor")
+    @Column(name = "cor", length = 8, nullable = false, unique = true)
     private String cor;
 
     @Getter @Setter
     @Enumerated(EnumType.STRING)
-    @Column(name = "tamanho", nullable = false, length = 10)
+    @Column(name = "tamanho",length = 4, nullable = false)
     private Tamanho tamanho;
 
     @Getter @Setter

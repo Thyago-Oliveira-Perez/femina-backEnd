@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class Marca extends AbstractEntity{
 
     @Getter @Setter
-    @Column(name = "nome",length = 50, unique = true, nullable = false)
+    @Column(name = "nome",length = 30, unique = true, nullable = false)
     @NotNull(message = "Nome é obrigatório")
     private String nome;
 

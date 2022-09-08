@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Categorias  extends AbstractEntity {
 
     @Getter @Setter
-    @Column(name = "nome", length = 50, unique = true, nullable = false)
+    @Column(name = "nome", length = 20, unique = true, nullable = false)
     @NotNull(message = "Nome é obrigatório")
     private String nome;
 
