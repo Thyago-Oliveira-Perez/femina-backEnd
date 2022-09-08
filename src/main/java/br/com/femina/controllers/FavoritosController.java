@@ -1,6 +1,7 @@
 package br.com.femina.controllers;
 
 import br.com.femina.entities.Favoritos;
+import br.com.femina.entities.Usuario;
 import br.com.femina.services.FavoritosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,9 +26,14 @@ public class FavoritosController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Page<Favoritos>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(favoritosService.findAll(pageable));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Favoritos>> findFavoritosUser(Long user, Pageable pageable) {
+        return ResponseEntity.ok().body(favoritosService.findFavoritosUser(user, pageable));
     }
 
     @PostMapping
@@ -46,11 +52,11 @@ public class FavoritosController {
     public ResponseEntity<?> updateStatus(@PathVariable("idFavorito") Long idFavorito)
     {
         try{
-            this.favoritosService.updateStatus(idFavorito);
+            this.favoritosService.delete(idFavorito);
             return ResponseEntity.ok().body("Desfavoritado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Favorito não existe no banco.");
-        }    
+        }
     }
 
 }

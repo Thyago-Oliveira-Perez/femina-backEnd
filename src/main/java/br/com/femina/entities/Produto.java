@@ -9,15 +9,13 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @Table(name = "produtos", schema = "public")
 public class Produto extends AbstractEntity {
-
-    @OneToMany(mappedBy = "produto")
-    private Set<Favoritos> favoritos;
 
     @Getter @Setter
     @Column(name = "codigo", nullable = false, length = 20, unique = true)
@@ -41,9 +39,11 @@ public class Produto extends AbstractEntity {
     private Categorias categoria;
 
     @Getter @Setter
-    @JoinColumn(name = "id_modelo")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Modelo modelo;
+    @ManyToMany
+    @JoinTable(name = "produtos_modelos",
+                joinColumns = @JoinColumn(name = "id_produto", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "id_modelo", referencedColumnName = "id"))
+    private Collection<Modelo> modelo;
 
     @Getter @Setter
     @JoinColumn(name = "id_fornecedor")

@@ -1,6 +1,7 @@
 package br.com.femina.repositories;
 
 import br.com.femina.entities.Favoritos;
+import br.com.femina.entities.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,13 +12,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
-
-    public Page<Favoritos> findAllByIsActive(Pageable pageable, Boolean active);
-
-    @Modifying
-    @Query("UPDATE Favoritos favoritos " +
-            "SET favoritos.isActive = false " +
-            "WHERE favoritos.id = :id")
-    public void updateStatus(@Param("id") Long id);
-
+    public Page<Favoritos> findFavoritosByUsuarioEquals(Usuario usuario, Pageable pageable);
 }
