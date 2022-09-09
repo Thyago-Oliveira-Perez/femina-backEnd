@@ -22,8 +22,10 @@ public class CategoriaService {
     private ProdutoRepository produtoRepository;
 
     @Transactional
-    public void insert(Categorias categorias) {
-        this.categoriaRepository.save(categorias);
+    public void insert(Categorias categoria) {
+        if(!this.categoriaRepository.existsById(categoria.getId())) {
+            this.categoriaRepository.save(categoria);
+        }
     }
 
     public Optional<Categorias> findById(Long id){
@@ -36,10 +38,8 @@ public class CategoriaService {
 
     @Transactional
     public boolean updateStatus(Long id){
-        List<Long> listaDeIds = this.categoriaRepository.findAllIds();
-
-        if(listaDeIds.contains(id)){
-            this.produtoRepository.updateByIdCategoria(id);
+        if(this.categoriaRepository.existsById(id)){
+            this.produtoRepository.updateCategoriaByIdCategoria(id);
             this.categoriaRepository.updateStatus(id);
             return true;
         }else{

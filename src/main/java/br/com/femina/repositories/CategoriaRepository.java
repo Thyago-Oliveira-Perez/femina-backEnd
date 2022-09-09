@@ -15,11 +15,6 @@ import java.util.List;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categorias, Long> {
 
-    @Query("select id from Categorias")
-    public List<Long> findAllIds();
-
-    public Page<Categorias> findAllByIsActive(Pageable pageable, Boolean active);
-
     @Modifying
     @Query("UPDATE Categorias categorias " +
             "SET categorias.isActive = false " +

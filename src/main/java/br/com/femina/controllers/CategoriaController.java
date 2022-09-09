@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -22,11 +23,11 @@ public class CategoriaController {
 
     @GetMapping("/{idCategoria}")
     public ResponseEntity<Categorias> findById(@PathVariable("idCategoria") Long idCategoria) {
-        if(this.categoriaService.findById(idCategoria).isPresent()){
-            return ResponseEntity.ok().body(this.categoriaService.findById(idCategoria).get());
-        }else{
-            return ResponseEntity.badRequest().body(new Categorias());
-        }
+
+        Optional<Categorias> categoria = this.categoriaService.findById(idCategoria);
+
+        return categoria.isPresent() ? ResponseEntity.ok().body(categoria.get())
+                :  ResponseEntity.badRequest().body(new Categorias());
     }
 
     @GetMapping
@@ -49,10 +50,7 @@ public class CategoriaController {
     @PutMapping("/disable/{idCategoria}")
     @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
-        if(this.categoriaService.updateStatus(idCategoria)){
-            return ResponseEntity.ok().body("Categoria deletada com sucesso!");
-        }else {
-            return ResponseEntity.badRequest().body("Categoria não existe no banco!");
-        }
+        return this.categoriaService.updateStatus(idCategoria) ? ResponseEntity.ok().body("Categoria desativada com sucesso!")
+                : ResponseEntity.badRequest().body("Categoria não existe no banco!");
     }
 }
