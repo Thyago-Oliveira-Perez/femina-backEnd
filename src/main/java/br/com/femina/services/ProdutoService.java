@@ -16,34 +16,44 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Transactional
+    public boolean insert(Produto produto){
+        if(!this.produtoRepository.existsById(produto.getId())){
+            this.produtoRepository.save(produto);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public Optional<Produto> findById(Long id){
-        return this.produtoRepository.findById(id).isPresent() ? this.produtoRepository.findById(id) : null;
+
+        Optional<Produto> produto = this.produtoRepository.findById(id);
+
+        return produto.isPresent() ? produto : null;
     }
 
     public Page<Produto> findAll(Pageable pageable){
-        return this.produtoRepository.findAll(pageable);
+        return this.produtoRepository.findAllByIsActive(pageable, true);
     }
 
     @Transactional
-    public void insert(Produto produto){
-        this.produtoRepository.save(produto);
-    }
-
-    @Transactional
-    public void update(Long id, Produto produto) {
-        if(id == produto.getId()){
+    public boolean update(Long id, Produto produto) {
+        if(this.produtoRepository.existsById(id) && id.equals(produto.getId())){
             this.produtoRepository.save(produto);
-        } else {
-            throw new RuntimeException();
+            return true;
+        }else{
+            return false;
         }
     }
 
     @Transactional
-    public void updateStatus(Long id) {
-        if(this.produtoRepository.findById(id).isPresent()){
+    public boolean updateStatus(Long id) {
+        if(this.produtoRepository.existsById(id)){
             this.produtoRepository.updateStatus(id);
-        } else {
-            throw new RuntimeException();
+            return true;
+        }else{
+            return false;
         }
     }
 

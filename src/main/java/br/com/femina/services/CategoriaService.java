@@ -22,14 +22,20 @@ public class CategoriaService {
     private ProdutoRepository produtoRepository;
 
     @Transactional
-    public void insert(Categorias categoria) {
+    public boolean insert(Categorias categoria) {
         if(!this.categoriaRepository.existsById(categoria.getId())) {
             this.categoriaRepository.save(categoria);
+            return true;
+        }else{
+            return false;
         }
     }
 
     public Optional<Categorias> findById(Long id){
-        return this.categoriaRepository.findById(id).isPresent() ? this.categoriaRepository.findById(id) : null;
+
+        Optional<Categorias> categoria = this.categoriaRepository.findById(id);
+
+        return categoria.isPresent() ? categoria : null;
     }
 
     public Page<Categorias> findAll(Pageable pageable){

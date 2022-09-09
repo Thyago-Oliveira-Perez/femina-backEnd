@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/produtos")
@@ -18,11 +20,10 @@ public class ProdutoController {
 
     @GetMapping("/{idProduto}")
     public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto) {
-        if(this.produtoService.findById(idProduto).isPresent()){
-            return ResponseEntity.ok().body(this.produtoService.findById(idProduto).get());
-        }else{
-            return ResponseEntity.badRequest().body(new Produto());
-        }
+
+        Optional<Produto> produto = this.produtoService.findById(idProduto);
+
+        return produto.isPresent() ? ResponseEntity.ok().body(produto.get()) : ResponseEntity.notFound().build();
     }
 
     @GetMapping
@@ -32,35 +33,23 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody Produto produto) {
-        try{
-            this.produtoService.insert(produto);
-            return ResponseEntity.ok().body("Produto cadastrado com sucesso");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return this.produtoService.insert(produto) ? ResponseEntity.ok().body("Produto cadastrado com sucesso")
+                : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{idProduto}")
     public ResponseEntity<?> update(@RequestBody Produto produto,
                                     @PathVariable Long idProduto)
     {
-        try{
-            this.produtoService.update(idProduto,produto);
-            return ResponseEntity.ok().body("Produto atualizada com sucesso");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return this.produtoService.update(idProduto,produto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
+                : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto)
     {
-        try{
-            this.produtoService.updateStatus(idProduto);
-            return ResponseEntity.ok().body("Produto atualizada com sucesso");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Produto não existe no banco.");
-        }
+        return this.produtoService.updateStatus(idProduto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
+                : ResponseEntity.notFound().build();
     }
 
 }
