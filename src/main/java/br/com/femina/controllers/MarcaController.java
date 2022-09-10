@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/marcas")
@@ -20,11 +22,12 @@ public class MarcaController {
 
     @GetMapping("/{idMarca}")
     public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca) {
-        if(this.marcaService.findById(idMarca).isPresent()){
-            return ResponseEntity.ok().body(this.marcaService.findById(idMarca).get());
-        }else{
-            return ResponseEntity.badRequest().body(new Marca());
-        }
+
+        Optional<Marca> marca = this.marcaService.findById(idMarca);
+
+        return marca.isPresent() ? ResponseEntity.ok().body(marca.get())
+                : ResponseEntity.notFound().build();
+
     }
 
     @GetMapping
@@ -36,23 +39,14 @@ public class MarcaController {
     @PostMapping
     @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> insert(@RequestBody Marca marca) {
-        try{
-            this.marcaService.insert(marca);
-            return ResponseEntity.ok().body("Marca cadastrada com sucesso!");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return this.marcaService.insert(marca) ? ResponseEntity.ok().body("Marca cadastrada com sucesso!")
+                : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/disable/{idMarca}")
     @CacheEvict(value = "marcaFindAll")
-    public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca)
-    {
-        try {
-            this.marcaService.updateStatus(idMarca);
-            return ResponseEntity.ok().body("Marca deletada com sucesso!");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body("Marca não existe no banco.");
-        }
+    public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca) {
+        return this.marcaService.updateStatus(idMarca) ? ResponseEntity.ok().body("Marca deletada com sucesso!")
+                : ResponseEntity.notFound().build();
     }
 }

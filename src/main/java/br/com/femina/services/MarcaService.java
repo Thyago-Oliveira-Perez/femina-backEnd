@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -18,24 +17,33 @@ public class MarcaService {
     private MarcaRepository marcaRepository;
 
     @Transactional
-    public void insert(Marca marca) {
-        this.marcaRepository.save(marca);
+    public boolean insert(Marca marca) {
+        if(!this.marcaRepository.existsById(marca.getId())){
+            this.marcaRepository.save(marca);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public Optional<Marca> findById(Long id) {
-        return this.marcaRepository.findById(id).isPresent() ? this.marcaRepository.findById(id) : null;
+
+        Optional<Marca> marca = this.marcaRepository.findById(id);
+
+        return marca.isPresent() ? marca : null;
     }
 
     public Page<Marca> findAll(Pageable pageable) {
-        return this.marcaRepository.findAll(pageable);
+        return this.marcaRepository.findAllByIsActive(pageable, true);
     }
 
     @Transactional
-    public void updateStatus(Long id) {
-        if(this.marcaRepository.findById(id).isPresent()) {
+    public boolean updateStatus(Long id) {
+        if(this.marcaRepository.existsById(id)) {
             this.marcaRepository.updateStatus(id);
+            return true;
         } else {
-            throw new RuntimeException();
+            return false;
         }
     }
 
