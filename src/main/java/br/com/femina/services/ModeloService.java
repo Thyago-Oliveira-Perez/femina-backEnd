@@ -17,8 +17,13 @@ public class ModeloService {
     private ModeloRepository modeloRepository;
 
     @Transactional
-    public void insert(Modelo modelo){
-        this.modeloRepository.save(modelo);
+    public boolean insert(Modelo modelo){
+        if(!this.modeloRepository.existsById(modelo.getId())){
+            this.modeloRepository.save(modelo);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public Optional<Modelo> findById(long id){
@@ -26,15 +31,16 @@ public class ModeloService {
     }
 
     public Page<Modelo> findAll(Pageable pageable){
-        return this.modeloRepository.findAll(pageable);
+        return this.modeloRepository.findAllByIsActive(pageable, true);
     }
 
     @Transactional
-    public void updateStatus(Long id) {
-        if(this.modeloRepository.findById(id).isPresent()){
+    public boolean updateStatus(Long id) {
+        if(this.modeloRepository.existsById(id)){
             this.modeloRepository.updateStatus(id);
+            return true;
         } else {
-            throw new RuntimeException();
+            return false;
         }
     }
 

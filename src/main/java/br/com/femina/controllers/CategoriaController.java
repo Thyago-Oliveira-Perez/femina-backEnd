@@ -27,7 +27,7 @@ public class CategoriaController {
         Optional<Categorias> categoria = this.categoriaService.findById(idCategoria);
 
         return categoria.isPresent() ? ResponseEntity.ok().body(categoria.get())
-                :  ResponseEntity.badRequest().body(new Categorias());
+                :  ResponseEntity.notFound().build();
     }
 
     @GetMapping
@@ -39,18 +39,14 @@ public class CategoriaController {
     @PostMapping
     @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> insert(@RequestBody @Valid Categorias categorias) {
-        try {
-            this.categoriaService.insert(categorias);
-            return ResponseEntity.ok().body("Categoria cadastrada com sucesso!");
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return this.categoriaService.insert(categorias) ? ResponseEntity.ok().body("Categoria cadastrada com sucesso!")
+            : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/disable/{idCategoria}")
     @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
         return this.categoriaService.updateStatus(idCategoria) ? ResponseEntity.ok().body("Categoria desativada com sucesso!")
-                : ResponseEntity.badRequest().body("Categoria não existe no banco!");
+                : ResponseEntity.notFound().build();
     }
 }
