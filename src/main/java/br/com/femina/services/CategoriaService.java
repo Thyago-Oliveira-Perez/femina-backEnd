@@ -46,7 +46,8 @@ public class CategoriaService {
     public boolean updateStatus(Long id){
         if(this.categoriaRepository.existsById(id)){
             this.produtoRepository.updateCategoriaByIdCategoria(id);
-            this.categoriaRepository.updateStatus(id);
+            Boolean status = this.categoriaRepository.getById(id).getIsActive();
+            this.categoriaRepository.updateStatus(id, !status);
             return true;
         }else{
             return false;

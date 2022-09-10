@@ -16,8 +16,8 @@ public interface ModeloRepository extends JpaRepository<Modelo, Long> {
 
     @Modifying
     @Query("UPDATE Modelo modelo " +
-            "SET modelo.isActive = false " +
+            "SET modelo.isActive = :status " +
             "WHERE modelo.id = :id")
-    public void updateStatus(@Param("id") Long id);
+    public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
 }

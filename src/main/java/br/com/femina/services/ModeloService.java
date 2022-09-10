@@ -37,7 +37,8 @@ public class ModeloService {
     @Transactional
     public boolean updateStatus(Long id) {
         if(this.modeloRepository.existsById(id)){
-            this.modeloRepository.updateStatus(id);
+            Boolean status = this.modeloRepository.getById(id).getIsActive();
+            this.modeloRepository.updateStatus(id, !status);
             return true;
         } else {
             return false;

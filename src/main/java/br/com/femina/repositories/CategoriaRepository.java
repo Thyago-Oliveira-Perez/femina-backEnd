@@ -17,8 +17,8 @@ public interface CategoriaRepository extends JpaRepository<Categorias, Long> {
 
     @Modifying
     @Query("UPDATE Categorias categorias " +
-            "SET categorias.isActive = false " +
+            "SET categorias.isActive = :status " +
             "WHERE categorias.id = :id")
-    public void updateStatus(@Param("id") Long id);
+    public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
 }

@@ -50,7 +50,8 @@ public class ProdutoService {
     @Transactional
     public boolean updateStatus(Long id) {
         if(this.produtoRepository.existsById(id)){
-            this.produtoRepository.updateStatus(id);
+            Boolean status = this.produtoRepository.getById(id).getIsActive();
+            this.produtoRepository.updateStatus(id, !status);
             return true;
         }else{
             return false;
