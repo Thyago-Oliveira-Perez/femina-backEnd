@@ -14,8 +14,8 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
 
     @Modifying
     @Query("UPDATE Fornecedor fornecedor " +
-            "SET fornecedor.isActive = false " +
+            "SET fornecedor.isActive = :status " +
             "WHERE fornecedor.id = :id")
-    public void updateStatus(@Param("id") Long id);
+    public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
 }

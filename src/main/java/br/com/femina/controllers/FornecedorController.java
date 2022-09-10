@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/fornecedores")
@@ -20,11 +22,11 @@ public class FornecedorController {
 
     @GetMapping("/{idFornecedor}")
     public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor) {
-        if(this.fornecedorService.findById(idFornecedor).isPresent()){
-            return ResponseEntity.ok().body(this.fornecedorService.findById(idFornecedor).get());
-        }else{
-            return ResponseEntity.badRequest().body(new Fornecedor());
-        }
+
+        Optional<Fornecedor> fornecedor = this.fornecedorService.findById(idFornecedor);
+
+        return fornecedor.isPresent() ? ResponseEntity.ok().body(fornecedor.get())
+        : ResponseEntity.notFound().build();
     }
 
     @GetMapping
@@ -36,36 +38,22 @@ public class FornecedorController {
     @PostMapping
     @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor) {
-        try{
-            this.fornecedorService.insert(fornecedor);
-            return ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!");
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return this.fornecedorService.insert(fornecedor) ?
+                ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!") : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> update(@PathVariable("idFornecedor") Long idFornecedor,
-                                    @RequestBody Fornecedor fornecedor)
-    {
-        try {
-            this.fornecedorService.update(idFornecedor, fornecedor);
-            return ResponseEntity.ok().body("Fornecedor editado com sucesso!");
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+                                    @RequestBody Fornecedor fornecedor) {
+            return this.fornecedorService.update(idFornecedor, fornecedor) ?
+                    ResponseEntity.ok().body("Fornecedor editado com sucesso!") : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/disable/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
-    public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor)
-    {
-        try {
-            this.fornecedorService.updateStatus(idFornecedor);
-            return ResponseEntity.ok().body("Fornecedor deletado com sucesso!");
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body("Fornecedor não existe no banco.");
-        }
+    public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor) {
+        return this.fornecedorService.updateStatus(idFornecedor) ?
+                ResponseEntity.ok().body("Fornecedor deletado com sucesso!") : ResponseEntity.notFound().build();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.From;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -17,34 +18,42 @@ public class FornecedorService {
     public FornecedorRepository fornecedorRepository;
 
     @Transactional
-    public void insert(Fornecedor fornecedor) {
-        this.fornecedorRepository.save(fornecedor);
+    public boolean insert(Fornecedor fornecedor) {
+        if(!this.fornecedorRepository.existsById(fornecedor.getId())){
+            this.fornecedorRepository.save(fornecedor);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public Optional<Fornecedor> findById(Long id) {
-        return this.fornecedorRepository.findById(id).isPresent() ? this.fornecedorRepository.findById(id) : null;
+        Optional<Fornecedor> fornecedor = this.fornecedorRepository.findById(id);
+        return fornecedor.isPresent() ? fornecedor : Optional.empty();
     }
 
     public Page<Fornecedor> findAll(Pageable pageable) {
-        return this.fornecedorRepository.findAll(pageable);
+        return this.fornecedorRepository.findAllByIsActive(pageable, true);
     }
 
     @Transactional
-    public void update(Long id, Fornecedor fornecedor) {
-        if (id == fornecedor.getId()){
+    public boolean update(Long id, Fornecedor fornecedor) {
+        if (this.fornecedorRepository.existsById(id) && fornecedor.getId().equals(id)){
             this.fornecedorRepository.save(fornecedor);
+            return true;
         } else {
-            throw new RuntimeException();
+            return false;
         }
     }
 
     @Transactional
-    public void updateStatus(Long id) {
-        if (this.fornecedorRepository.findById(id).isPresent()) {
-            this.fornecedorRepository.updateStatus(id);
+    public boolean updateStatus(Long id) {
+        if (this.fornecedorRepository.existsById(id)) {
+            Boolean status = this.fornecedorRepository.getById(id).getIsActive();
+            this.fornecedorRepository.updateStatus(id, !status);
+            return true;
         } else {
-            throw new RuntimeException();
+            return false;
         }
     }
-
 }
