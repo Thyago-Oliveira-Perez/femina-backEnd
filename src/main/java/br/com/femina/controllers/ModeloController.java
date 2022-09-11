@@ -24,7 +24,6 @@ public class ModeloController {
     public ResponseEntity<Modelo> findById(@PathVariable("idModelo") Long idModelo) {
 
         Optional<Modelo> modelo = this.modeloService.findById(idModelo);
-
         return modelo.isPresent() ? ResponseEntity.ok().body(modelo.get())
                 : ResponseEntity.notFound().build();
     }

@@ -29,7 +29,6 @@ public class MarcaService {
     public Optional<Marca> findById(Long id) {
 
         Optional<Marca> marca = this.marcaRepository.findById(id);
-
         return marca.isPresent() ? marca : null;
     }
 

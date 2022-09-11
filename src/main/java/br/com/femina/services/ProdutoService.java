@@ -29,7 +29,6 @@ public class ProdutoService {
     public Optional<Produto> findById(Long id){
 
         Optional<Produto> produto = this.produtoRepository.findById(id);
-
         return produto.isPresent() ? produto : null;
     }
 

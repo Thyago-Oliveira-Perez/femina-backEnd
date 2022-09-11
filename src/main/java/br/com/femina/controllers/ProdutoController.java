@@ -38,16 +38,13 @@ public class ProdutoController {
     }
 
     @PutMapping("/{idProduto}")
-    public ResponseEntity<?> update(@RequestBody Produto produto,
-                                    @PathVariable Long idProduto)
-    {
+    public ResponseEntity<?> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
         return this.produtoService.update(idProduto,produto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
                 : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/disable/{idProduto}")
-    public ResponseEntity<?> updateStatus(@PathVariable Long idProduto)
-    {
+    public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
         return this.produtoService.updateStatus(idProduto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
                 : ResponseEntity.notFound().build();
     }

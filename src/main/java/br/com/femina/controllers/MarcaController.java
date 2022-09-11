@@ -24,7 +24,6 @@ public class MarcaController {
     public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca) {
 
         Optional<Marca> marca = this.marcaService.findById(idMarca);
-
         return marca.isPresent() ? ResponseEntity.ok().body(marca.get())
                 : ResponseEntity.notFound().build();
 
