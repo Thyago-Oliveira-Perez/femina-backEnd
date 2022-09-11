@@ -16,41 +16,24 @@ public class FavoritosController {
     @Autowired
     private FavoritosService favoritosService;
 
-    @GetMapping("/{idFavorito}")
-    public ResponseEntity<Favoritos> findById(@PathVariable("idFavorito") Long idFavorito) {
-        if(favoritosService.findById(idFavorito).isPresent()){
-            return ResponseEntity.ok().body(this.favoritosService.findById(idFavorito).get());
-        }else{
-            return ResponseEntity.badRequest().body(new Favoritos());
-        }
-    }
-
     @GetMapping
-    public ResponseEntity<Page<Favoritos>> findAll(Pageable pageable) {
-        return ResponseEntity.ok().body(favoritosService.findAll(pageable));
+    public ResponseEntity<Page<Favoritos>> findUserFavoritos(Long idUser, Pageable pageable) {
+        return ResponseEntity.ok().body(favoritosService.findUserFavoritos(idUser, pageable));
     }
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestParam(name = "idProduto") Long idProduto,
-                                    @RequestParam(name = "idCliente") Long idCliente)
-    {
-        try {
-            this.favoritosService.insert(idProduto, idCliente);
-            return ResponseEntity.ok().body("Favoritado com sucesso!");
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+                                    @RequestParam(name = "idCliente") Long idCliente){
+
+        return this.favoritosService.insert(idProduto, idCliente)
+                ? ResponseEntity.ok().body("Favoritado adicionado com sucesso!") : ResponseEntity.badRequest().build();
+
     }
 
     @DeleteMapping("/{idFavorito}")
-    public ResponseEntity<?> updateStatus(@PathVariable("idFavorito") Long idFavorito)
-    {
-        try{
-            this.favoritosService.updateStatus(idFavorito);
-            return ResponseEntity.ok().body("Desfavoritado com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Favorito não existe no banco.");
-        }    
+    public ResponseEntity<?> delete(@PathVariable("idFavorito") Long idFavorito){
+            return this.favoritosService.delete(idFavorito)
+                    ? ResponseEntity.ok().body("Produtod desfavoritado!") : ResponseEntity.notFound().build();
     }
 
 }

@@ -25,25 +25,33 @@ public class FavoritosService {
     private ProdutoRepository produtoRepository;
 
     @Transactional
-    public void insert(Long idProduto, Long idCliente) {
-        Favoritos favoritos = new Favoritos();
-        favoritos.setUsuario(usuarioRepository.getById(idCliente));
-        favoritos.setProduto(produtoRepository.getById(idProduto));
-        this.favoritosRepository.save(favoritos);
+    public boolean insert(Long idProduto, Long idUser) {
+        if(!this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(idProduto, idUser)){
+            Favoritos favoritos = new Favoritos();
+            favoritos.setUsuario(usuarioRepository.getById(idUser));
+            favoritos.setProduto(produtoRepository.getById(idProduto));
+            this.favoritosRepository.save(favoritos);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public Optional<Favoritos> findById(Long id) {
         return this.favoritosRepository.findById(id).isPresent() ? this.favoritosRepository.findById(id) : null;
     }
 
-    public Page<Favoritos> findAll(Pageable pageable) { return this.favoritosRepository.findAll(pageable); }
+    public Page<Favoritos> findUserFavoritos(Long idUser, Pageable pageable) {
+        return this.favoritosRepository.findFavoritosByUsuarioId(idUser, pageable);
+    }
 
     @Transactional
-    public void updateStatus(Long id) {
-        if (this.favoritosRepository.findById(id).isPresent()){
-            this.favoritosRepository.updateStatus(id);
+    public boolean delete(Long id) {
+        if (this.favoritosRepository.existsById(id)){
+            this.favoritosRepository.deleteById(id);
+            return true;
         } else {
-            throw new RuntimeException();
+            return false;
         }
     }
 
