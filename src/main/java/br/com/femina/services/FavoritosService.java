@@ -38,7 +38,8 @@ public class FavoritosService {
     }
 
     public Optional<Favoritos> findById(Long id) {
-        return this.favoritosRepository.findById(id).isPresent() ? this.favoritosRepository.findById(id) : null;
+        Optional<Favoritos> favorito = this.favoritosRepository.findById(id);
+        return favorito.isPresent() ? favorito : Optional.empty();
     }
 
     public Page<Favoritos> findUserFavoritos(Long idUser, Pageable pageable) {
