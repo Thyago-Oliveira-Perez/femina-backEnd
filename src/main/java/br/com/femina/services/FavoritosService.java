@@ -4,13 +4,13 @@ import br.com.femina.entities.Favoritos;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import br.com.femina.repositories.UsuarioRepository;
+import br.com.femina.security.Service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class FavoritosService {
@@ -23,6 +23,9 @@ public class FavoritosService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Transactional
     public boolean insert(Long idProduto, Long idUser) {
@@ -37,12 +40,9 @@ public class FavoritosService {
         }
     }
 
-    public Optional<Favoritos> findById(Long id) {
-        Optional<Favoritos> favorito = this.favoritosRepository.findById(id);
-        return favorito.isPresent() ? favorito : Optional.empty();
-    }
-
-    public Page<Favoritos> findUserFavoritos(Long idUser, Pageable pageable) {
+    public Page<Favoritos> findUserFavoritos(HttpHeaders headers, Pageable pageable) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
         return this.favoritosRepository.findFavoritosByUsuarioId(idUser, pageable);
     }
 

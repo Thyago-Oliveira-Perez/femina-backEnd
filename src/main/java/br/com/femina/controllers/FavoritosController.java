@@ -5,6 +5,7 @@ import br.com.femina.services.FavoritosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,8 @@ public class FavoritosController {
     private FavoritosService favoritosService;
 
     @GetMapping
-    public ResponseEntity<Page<Favoritos>> findUserFavoritos(Long idUser, Pageable pageable) {
-        return ResponseEntity.ok().body(favoritosService.findUserFavoritos(idUser, pageable));
+    public ResponseEntity<Page<Favoritos>> findUserFavoritos(@RequestHeader HttpHeaders headers, Pageable pageable) {
+        return ResponseEntity.ok().body(favoritosService.findUserFavoritos(headers, pageable));
     }
 
     @PostMapping
