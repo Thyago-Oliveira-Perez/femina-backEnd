@@ -1,4 +1,4 @@
-package br.com.femina.security.Dto;
+package br.com.femina.entities.enums.Dto;
 
 import javax.validation.constraints.NotNull;
 
