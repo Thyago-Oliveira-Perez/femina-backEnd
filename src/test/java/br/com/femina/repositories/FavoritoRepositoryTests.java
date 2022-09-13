@@ -94,27 +94,14 @@ public class FavoritoRepositoryTests {
 
     @Test
     @Order(2)
-    @DisplayName("Inserir Favorito com os mesmos valores(unique)")
-    public void insertExistingModelo() {
-        Favoritos favoritos = new Favoritos(1L, usuario, produto);
+    @DisplayName("Listar Favoritos")
+    public void listFavoritos() {
+        Pageable pageable = PageRequest.of(0,10);
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        Favoritos favoritos = new Favoritos(1L, usuarios.get(0), produto);
         favoritosRepository.save(favoritos);
-        favoritosRepository.save(favoritos);
-        int countFavoritos = favoritosRepository.findAll().size();
-        assertThat(countFavoritos).isEqualTo(1);
+        Page<Favoritos> favoritosList = favoritosRepository.findFavoritosByUsuarioId(usuarios.get(0).getId(), pageable);
+        assertThat(favoritosList.getContent().size()).isGreaterThanOrEqualTo(1);
     }
-
-
-//    @Test
-//    @Order(3)
-//    @DisplayName("Listar Favoritos")
-//    public void listFavoritos() {
-//        Pageable pageable = PageRequest.of(0,10);
-//        Favoritos favoritos = new Favoritos(1L, usuario, produto);
-//        favoritosRepository.save(favoritos);
-//        List<Usuario> usuarios = usuarioRepository.findAll();
-//        Page<Favoritos> favoritosList = favoritosRepository.findFavoritosByUsuarioId(usuarios.get(0).getId(), pageable);
-//        System.out.println(favoritosList);
-//        assertThat(favoritosList.getContent().size()).isGreaterThanOrEqualTo(1);
-//    }
 
 }
