@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Table(name= "favoritos", schema = "public")
 public class Favoritos {
 

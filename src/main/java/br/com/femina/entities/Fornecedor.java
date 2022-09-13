@@ -6,11 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@Entity
 @Table(name = "fornecedores", schema = "public")
 public class Fornecedor extends AbstractEntity {
 
@@ -22,6 +22,7 @@ public class Fornecedor extends AbstractEntity {
 
     @Getter
     @Setter
+    @Pattern(regexp = "([0-9]{2}.[0-9]{3}.[0-9]{3}/[0-9]{4}-[0-9]{2}$)")
     @Column(name = "cnpj", nullable = false, unique = true)
     @NotNull(message = "Cnpj é obrigatório")
     private String cnpj;
