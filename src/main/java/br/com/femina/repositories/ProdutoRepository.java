@@ -15,6 +15,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     @Modifying
     @Query("update Produto produto set produto.categoria.id = null where produto.categoria.id = :idCategoria")
     public void updateCategoriaByIdCategoria(@Param("idCategoria") Long id);
+    @Query("FROM Produto produto WHERE produto.categoria.id = :idCategoria")
+    public Page<Produto> findALlByCategoriaId(@Param("idCategoria")Long idCategoria);
 
     public Page<Produto> findAllByIsActive(Pageable pageable, Boolean active);
 

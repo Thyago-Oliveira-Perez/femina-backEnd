@@ -25,6 +25,17 @@ public class ProdutoController {
         return produto.isPresent() ? ResponseEntity.ok().body(produto.get()) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/{idCategoria}")
+    public ResponseEntity<Page<Produto>> findAllByCategoriaId(@PathVariable("idCategoria") Long idCategoria){
+
+        Page<Produto> listOfProducts = this.produtoService.findALlByCategoriaId(idCategoria);
+
+        return listOfProducts.getSize() > 0 ?
+                ResponseEntity.ok().body(listOfProducts) : ResponseEntity.notFound().build();
+
+    }
+
+
     @GetMapping
     public ResponseEntity<Page<Produto>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAll(pageable));

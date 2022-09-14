@@ -32,6 +32,10 @@ public class ProdutoService {
         return produto.isPresent() ? produto : null;
     }
 
+    public Page<Produto> findALlByCategoriaId(Long idCategoria){
+        return this.produtoRepository.findALlByCategoriaId(idCategoria);
+    }
+
     public Page<Produto> findAll(Pageable pageable){
         return this.produtoRepository.findAllByIsActive(pageable, true);
     }
