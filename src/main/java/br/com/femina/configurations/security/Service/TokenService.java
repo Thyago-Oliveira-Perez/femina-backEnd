@@ -1,4 +1,4 @@
-package br.com.femina.security.Service;
+package br.com.femina.configurations.security.Service;
 
 import br.com.femina.entities.Usuario;
 import io.jsonwebtoken.Claims;

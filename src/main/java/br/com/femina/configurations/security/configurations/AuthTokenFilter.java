@@ -1,9 +1,8 @@
-package br.com.femina.security.configurations;
+package br.com.femina.configurations.security.configurations;
 
 import br.com.femina.entities.Usuario;
 import br.com.femina.repositories.UsuarioRepository;
-import br.com.femina.security.Service.TokenService;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.femina.configurations.security.Service.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

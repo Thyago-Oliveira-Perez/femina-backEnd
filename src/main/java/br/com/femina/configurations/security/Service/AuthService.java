@@ -1,15 +1,13 @@
-package br.com.femina.security.Service;
+package br.com.femina.configurations.security.Service;
 
-import br.com.femina.security.Repository.AuthRepository;
+import br.com.femina.configurations.security.Repository.AuthRepository;
 import br.com.femina.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.Optional;
 

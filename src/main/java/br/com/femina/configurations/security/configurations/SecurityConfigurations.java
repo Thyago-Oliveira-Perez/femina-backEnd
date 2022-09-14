@@ -1,8 +1,8 @@
-package br.com.femina.security.configurations;
+package br.com.femina.configurations.security.configurations;
 
 import br.com.femina.repositories.UsuarioRepository;
-import br.com.femina.security.Service.AuthService;
-import br.com.femina.security.Service.TokenService;
+import br.com.femina.configurations.security.Service.AuthService;
+import br.com.femina.configurations.security.Service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,17 +54,23 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new AuthTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
     }
-
     //Configurações de recursos estaticos(js, css, html, imagens, etc...)
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/index.html");
+        web.ignoring()
+                .antMatchers("/**.html",
+                        "/v3/api-docs/**",
+                        "/webjars/**",
+                        "/configuration/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui/**");
     }
 
 }

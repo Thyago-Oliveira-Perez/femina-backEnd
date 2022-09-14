@@ -1,4 +1,4 @@
-package br.com.femina.entities.enums.Dto;
+package br.com.femina.dto;
 
 public class Token {
 

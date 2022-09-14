@@ -1,8 +1,7 @@
-package br.com.femina.security.Repository;
+package br.com.femina.configurations.security.Repository;
 
 import br.com.femina.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

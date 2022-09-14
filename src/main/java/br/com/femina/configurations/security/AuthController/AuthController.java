@@ -1,8 +1,8 @@
-package br.com.femina.security.AuthController;
+package br.com.femina.configurations.security.AuthController;
 
-import br.com.femina.entities.enums.Dto.AuthCredentialRequest;
-import br.com.femina.entities.enums.Dto.Token;
-import br.com.femina.security.Service.TokenService;
+import br.com.femina.dto.AuthCredentialRequest;
+import br.com.femina.dto.Token;
+import br.com.femina.configurations.security.Service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
