@@ -7,10 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@ToString
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "modelos", schema = "public" )
 public class Modelo extends AbstractEntity {
 

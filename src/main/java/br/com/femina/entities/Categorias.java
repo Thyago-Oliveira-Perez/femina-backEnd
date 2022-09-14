@@ -8,10 +8,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-@ToString
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "categorias", schema = "public")
 public class Categorias  extends AbstractEntity {
 
@@ -32,4 +31,5 @@ public class Categorias  extends AbstractEntity {
     public int hashCode() {
         return Objects.hash(nome);
     }
+
 }

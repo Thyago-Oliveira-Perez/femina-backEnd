@@ -1,7 +1,9 @@
 package br.com.femina.entities;
 
 import br.com.femina.entities.enums.Sexo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +16,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "usuarios", schema = "public")
 public class Usuario extends AbstractEntity implements UserDetails{
 
     @Getter @Setter
@@ -44,7 +49,6 @@ public class Usuario extends AbstractEntity implements UserDetails{
     @Getter @Setter
     @Column(name = "telefone", nullable = false, length = 30, unique = true)
     @NotNull(message = "Telefone do usuário é obrigatório")
-    @Pattern(regexp = "([0-9]{20})")
     private String telefone;
 
     @Getter @Setter
@@ -85,4 +89,5 @@ public class Usuario extends AbstractEntity implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
 }

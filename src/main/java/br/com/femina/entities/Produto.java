@@ -1,6 +1,7 @@
 package br.com.femina.entities;
 
 import br.com.femina.entities.enums.Tamanho;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.Collection;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "produtos", schema = "public")
 public class Produto extends AbstractEntity {
 
@@ -47,7 +49,7 @@ public class Produto extends AbstractEntity {
     @Getter @Setter
     @JoinColumn(name = "id_fornecedor")
     @ManyToOne(fetch = FetchType.EAGER)
-    private  Fornecedor fornecedor;
+    private Fornecedor fornecedor;
 
     @Getter @Setter
     @JoinColumn(name = "id_marca")
