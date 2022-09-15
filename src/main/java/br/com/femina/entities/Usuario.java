@@ -52,8 +52,11 @@ public class Usuario extends AbstractEntity implements UserDetails{
     private String telefone;
 
     @Getter @Setter
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Perfil> perfis = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "usuarios_perfis",
+            joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_perfil", referencedColumnName = "id"))
+    private Collection<Perfil> perfis = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

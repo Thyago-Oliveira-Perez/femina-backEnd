@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.Filters;
 import br.com.femina.entities.Produto;
 import br.com.femina.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +26,9 @@ public class ProdutoController {
         return produto.isPresent() ? ResponseEntity.ok().body(produto.get()) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{idCategoria}")
-    public ResponseEntity<Page<Produto>> findAllByCategoriaId(@PathVariable("idCategoria") Long idCategoria){
-
-        Page<Produto> listOfProducts = this.produtoService.findALlByCategoriaId(idCategoria);
-
-        return listOfProducts.getSize() > 0 ?
-                ResponseEntity.ok().body(listOfProducts) : ResponseEntity.notFound().build();
-
-    }
-
-
-    @GetMapping
-    public ResponseEntity<Page<Produto>> findAll(Pageable pageable) {
-        return ResponseEntity.ok().body(this.produtoService.findAll(pageable));
+    @PostMapping("/list")
+    public ResponseEntity<Page<Produto>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
+        return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }
 
     @PostMapping

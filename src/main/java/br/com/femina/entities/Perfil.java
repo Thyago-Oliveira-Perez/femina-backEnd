@@ -8,11 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "perfil", schema = "public")
-public class Perfil implements GrantedAuthority {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Perfil extends AbstractEntity implements GrantedAuthority{
 
     @Getter @Setter
     @Column(name = "perfilName", nullable = false, length = 30, unique = true)

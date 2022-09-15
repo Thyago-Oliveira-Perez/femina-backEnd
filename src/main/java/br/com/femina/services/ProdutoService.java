@@ -1,5 +1,6 @@
 package br.com.femina.services;
 
+import br.com.femina.dto.Filters;
 import br.com.femina.entities.Produto;
 import br.com.femina.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,6 @@ public class ProdutoService {
         return produto.isPresent() ? produto : null;
     }
 
-    public Page<Produto> findALlByCategoriaId(Long idCategoria){
-        return this.produtoRepository.findALlByCategoriaId(idCategoria);
-    }
-
-    public Page<Produto> findAll(Pageable pageable){
-        return this.produtoRepository.findAllByIsActive(pageable, true);
-    }
-
     @Transactional
     public boolean update(Long id, Produto produto) {
         if(this.produtoRepository.existsById(id) && id.equals(produto.getId())){
@@ -48,6 +41,20 @@ public class ProdutoService {
         }else{
             return false;
         }
+    }
+
+    public Page<Produto> findAllByFilters(Filters filters, Pageable pageable){
+
+        Page<Produto> teste = this.produtoRepository.findAllByFilters(
+                filters.getCategoriaIds(),
+                filters.getMarcaIds(),
+                filters.getCor(),
+                "GG",
+                pageable,
+                true
+        );
+
+        return teste;
     }
 
     @Transactional
