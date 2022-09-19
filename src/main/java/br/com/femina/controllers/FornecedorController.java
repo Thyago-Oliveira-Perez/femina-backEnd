@@ -52,7 +52,7 @@ public class FornecedorController {
     @PutMapping("/disable/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor) {
-        return this.fornecedorService.updateStatus(idFornecedor) ?
+        return this.fornecedorService.updateStatusById(idFornecedor) ?
                 ResponseEntity.ok().body("Fornecedor deletado com sucesso!") : ResponseEntity.notFound().build();
     }
 }

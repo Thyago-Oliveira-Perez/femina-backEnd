@@ -9,10 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.TransactionScoped;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class UsuarioService {
@@ -20,17 +23,15 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Transactional
     public boolean registerUser(Usuario usuario){
         if(!this.usuarioRepository.existsById(usuario.getId())){
-            this.usuarioRepository.save(usuario);
+            saveUser(usuario);
             return true;
         }else{
             return false;
         }
     }
 
-    @Transactional
     public boolean registerBySelf(Usuario usuario){
         if(!this.usuarioRepository.existsById(usuario.getId())){
             Perfil perfil = new Perfil();
@@ -38,7 +39,7 @@ public class UsuarioService {
             List<Perfil> perfis = new ArrayList<Perfil>();
             perfis.add(perfil);
             usuario.setPerfis(perfis);
-            this.usuarioRepository.save(usuario);
+            saveUser(usuario);
             return true;
         }else{
             return false;
@@ -56,7 +57,7 @@ public class UsuarioService {
 
     public boolean updateUser(Usuario usuario, Long id){
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
-            this.usuarioRepository.save(usuario);
+            saveUser(usuario);
             return true;
         }else{
             return false;
@@ -65,7 +66,17 @@ public class UsuarioService {
 
     public boolean updateByOwn(Usuario usuario, Long id){
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
-            this.usuarioRepository.save(usuario);
+            saveUser(usuario);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean changeStatusById(Long id){
+        if(this.usuarioRepository.existsById(id)){
+            Boolean status = this.usuarioRepository.getById(id).getIsActive();
+            changeStatus(id, !status);
             return true;
         }else{
             return false;
@@ -73,14 +84,12 @@ public class UsuarioService {
     }
 
     @Transactional
-    public boolean changeStatusById(Long id){
-        if(this.usuarioRepository.existsById(id)){
-            Boolean status = this.usuarioRepository.getById(id).getIsActive();
-            this.usuarioRepository.changeStatus(id, !status);
-            return true;
-        }else{
-            return false;
-        }
+    protected void changeStatus(Long id, Boolean status){
+        this.usuarioRepository.updateStatus(id, status);
     }
 
+    @Transactional
+    protected void saveUser(Usuario usuario){
+        this.usuarioRepository.save(usuario);
+    }
 }

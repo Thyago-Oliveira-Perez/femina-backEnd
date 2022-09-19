@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,8 +17,8 @@ public interface MarcaRepository extends JpaRepository<Marca, Long> {
 
     @Modifying
     @Query("UPDATE Marca marca " +
-            "SET marca.isActive = false " +
+            "SET marca.isActive = :status " +
             "WHERE marca.id = :id")
-    public void updateStatus(@Param("id") Long id);
+    public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
 }

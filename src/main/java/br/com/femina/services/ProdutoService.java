@@ -17,10 +17,9 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @Transactional
     public boolean insert(Produto produto){
         if(!this.produtoRepository.existsById(produto.getId())){
-            this.produtoRepository.save(produto);
+            saveProduto(produto);
             return true;
         }else{
             return false;
@@ -33,10 +32,9 @@ public class ProdutoService {
         return produto.isPresent() ? produto : null;
     }
 
-    @Transactional
     public boolean update(Long id, Produto produto) {
         if(this.produtoRepository.existsById(id) && id.equals(produto.getId())){
-            this.produtoRepository.save(produto);
+            saveProduto(produto);
             return true;
         }else{
             return false;
@@ -45,7 +43,7 @@ public class ProdutoService {
 
     public Page<Produto> findAllByFilters(Filters filters, Pageable pageable){
 
-        Page<Produto> teste = this.produtoRepository.findAllByFilters(
+        return this.produtoRepository.findAllByFilters(
                 filters.getCategoriaIds(),
                 filters.getMarcaIds(),
                 filters.getCor(),
@@ -53,19 +51,26 @@ public class ProdutoService {
                 pageable,
                 true
         );
-
-        return teste;
     }
 
-    @Transactional
-    public boolean updateStatus(Long id) {
+    public boolean updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){
             Boolean status = this.produtoRepository.getById(id).getIsActive();
-            this.produtoRepository.updateStatus(id, !status);
+            changeStatus(id, !status);
             return true;
         }else{
             return false;
         }
+    }
+
+    @Transactional
+    protected void changeStatus(Long id, Boolean status){
+        this.produtoRepository.updateStatus(id, status);
+    }
+
+    @Transactional
+    protected void saveProduto(Produto produto){
+        this.produtoRepository.save(produto);
     }
 
 }

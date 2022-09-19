@@ -17,10 +17,9 @@ public class FornecedorService {
     @Autowired
     public FornecedorRepository fornecedorRepository;
 
-    @Transactional
     public boolean insert(Fornecedor fornecedor) {
         if(!this.fornecedorRepository.existsById(fornecedor.getId())){
-            this.fornecedorRepository.save(fornecedor);
+            saveFornecedor(fornecedor);
             return true;
         }else{
             return false;
@@ -36,10 +35,19 @@ public class FornecedorService {
         return this.fornecedorRepository.findAllByIsActive(pageable, true);
     }
 
-    @Transactional
     public boolean update(Long id, Fornecedor fornecedor) {
         if (this.fornecedorRepository.existsById(id) && fornecedor.getId().equals(id)){
-            this.fornecedorRepository.save(fornecedor);
+            saveFornecedor(fornecedor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean updateStatusById(Long id) {
+        if (this.fornecedorRepository.existsById(id)) {
+            Boolean status = this.fornecedorRepository.getById(id).getIsActive();
+            updateStatus(id, !status);
             return true;
         } else {
             return false;
@@ -47,13 +55,12 @@ public class FornecedorService {
     }
 
     @Transactional
-    public boolean updateStatus(Long id) {
-        if (this.fornecedorRepository.existsById(id)) {
-            Boolean status = this.fornecedorRepository.getById(id).getIsActive();
-            this.fornecedorRepository.updateStatus(id, !status);
-            return true;
-        } else {
-            return false;
-        }
+    protected void saveFornecedor(Fornecedor fornecedor){
+        this.fornecedorRepository.save(fornecedor);
+    }
+
+    @Transactional
+    protected void updateStatus(Long id, Boolean status){
+        this.fornecedorRepository.updateStatus(id, status);
     }
 }

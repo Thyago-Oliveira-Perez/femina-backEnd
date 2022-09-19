@@ -45,7 +45,7 @@ public class CategoriaController {
     @PutMapping("/disable/{idCategoria}")
     @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
-        return this.categoriaService.updateStatus(idCategoria) ? ResponseEntity.ok().body("Categoria desativada com sucesso!")
+        return this.categoriaService.updateStatusById(idCategoria) ? ResponseEntity.ok().body("Categoria desativada com sucesso!")
                 : ResponseEntity.notFound().build();
     }
 }

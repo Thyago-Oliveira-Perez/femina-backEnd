@@ -17,23 +17,19 @@ public class FavoritosService {
 
     @Autowired
     private FavoritosRepository favoritosRepository;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private ProdutoRepository produtoRepository;
-
     @Autowired
     private TokenService tokenService;
 
-    @Transactional
     public boolean insert(Long idProduto, Long idUser) {
         if(!this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(idProduto, idUser)){
             Favoritos favoritos = new Favoritos();
             favoritos.setUsuario(usuarioRepository.getById(idUser));
             favoritos.setProduto(produtoRepository.getById(idProduto));
-            this.favoritosRepository.save(favoritos);
+            saveFavorito(favoritos);
             return true;
         }else{
             return false;
@@ -46,14 +42,23 @@ public class FavoritosService {
         return this.favoritosRepository.findFavoritosByUsuarioId(idUser, pageable);
     }
 
-    @Transactional
-    public boolean delete(Long id) {
+    public boolean deleteById(Long id) {
         if (this.favoritosRepository.existsById(id)){
-            this.favoritosRepository.deleteById(id);
+            delete(id);
             return true;
         } else {
             return false;
         }
+    }
+
+    @Transactional
+    protected void saveFavorito(Favoritos favorito){
+        this.favoritosRepository.save(favorito);
+    }
+
+    @Transactional
+    protected void delete(Long id){
+        this.favoritosRepository.deleteById(id);
     }
 
 }

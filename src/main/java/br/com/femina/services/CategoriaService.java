@@ -17,14 +17,12 @@ public class CategoriaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
-
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @Transactional
     public boolean insert(Categorias categoria) {
         if(!this.categoriaRepository.existsById(categoria.getId())) {
-            this.categoriaRepository.save(categoria);
+            saveCategoria(categoria);
             return true;
         }else{
             return false;
@@ -42,15 +40,24 @@ public class CategoriaService {
         return this.categoriaRepository.findAll(pageable);
     }
 
-    @Transactional
-    public boolean updateStatus(Long id){
+    public boolean updateStatusById(Long id){
         if(this.categoriaRepository.existsById(id)){
             this.produtoRepository.updateCategoriaByIdCategoria(id);
             Boolean status = this.categoriaRepository.getById(id).getIsActive();
-            this.categoriaRepository.updateStatus(id, !status);
+            updateStatus(id, !status);
             return true;
         }else{
             return false;
         }
+    }
+
+    @Transactional
+    protected void saveCategoria(Categorias categoria){
+        this.categoriaRepository.save(categoria);
+    }
+
+    @Transactional
+    protected void updateStatus(Long id, Boolean status){
+        this.categoriaRepository.updateStatus(id, status);
     }
 }

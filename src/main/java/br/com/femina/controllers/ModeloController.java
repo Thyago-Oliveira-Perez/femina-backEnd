@@ -43,7 +43,7 @@ public class ModeloController {
     @PutMapping("/disable/{idModelo}")
     @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idModelo") Long idModelo){
-        return this.modeloService.updateStatus(idModelo) ? ResponseEntity.ok().body("Modelo atualizado com sucesso!")
+        return this.modeloService.updateStatusById(idModelo) ? ResponseEntity.ok().body("Modelo atualizado com sucesso!")
                 : ResponseEntity.notFound().build();
     }
 }

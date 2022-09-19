@@ -45,7 +45,7 @@ public class ProdutoController {
 
     @PutMapping("/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
-        return this.produtoService.updateStatus(idProduto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
+        return this.produtoService.updateStatusById(idProduto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
                 : ResponseEntity.notFound().build();
     }
 

@@ -32,7 +32,7 @@ public class FavoritosController {
 
     @DeleteMapping("/{idFavorito}")
     public ResponseEntity<?> delete(@PathVariable("idFavorito") Long idFavorito){
-            return this.favoritosService.delete(idFavorito)
+            return this.favoritosService.deleteById(idFavorito)
                     ? ResponseEntity.ok().body("Produtod desfavoritado!") : ResponseEntity.notFound().build();
     }
 

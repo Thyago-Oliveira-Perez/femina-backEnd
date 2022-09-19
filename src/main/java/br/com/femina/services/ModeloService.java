@@ -16,10 +16,9 @@ public class ModeloService {
     @Autowired
     private ModeloRepository modeloRepository;
 
-    @Transactional
     public boolean insert(Modelo modelo){
         if(!this.modeloRepository.existsById(modelo.getId())){
-            this.modeloRepository.save(modelo);
+            saveProduto(modelo);
             return true;
         }else{
             return false;
@@ -34,15 +33,24 @@ public class ModeloService {
         return this.modeloRepository.findAllByIsActive(pageable, true);
     }
 
-    @Transactional
-    public boolean updateStatus(Long id) {
+    public boolean updateStatusById(Long id) {
         if(this.modeloRepository.existsById(id)){
             Boolean status = this.modeloRepository.getById(id).getIsActive();
-            this.modeloRepository.updateStatus(id, !status);
+            updateStatus(id, !status);
             return true;
         } else {
             return false;
         }
+    }
+
+    @Transactional
+    protected void saveProduto(Modelo modelo){
+        this.modeloRepository.save(modelo);
+    }
+
+    @Transactional
+    protected void updateStatus(Long id, Boolean status){
+        this.modeloRepository.updateStatus(id, status);
     }
 
 }

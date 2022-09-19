@@ -44,7 +44,7 @@ public class MarcaController {
     @PutMapping("/disable/{idMarca}")
     @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca) {
-        return this.marcaService.updateStatus(idMarca) ? ResponseEntity.ok().body("Marca deletada com sucesso!")
+        return this.marcaService.updateStatusById(idMarca) ? ResponseEntity.ok().body("Marca deletada com sucesso!")
                 : ResponseEntity.notFound().build();
     }
 }

@@ -16,10 +16,9 @@ public class MarcaService {
     @Autowired
     private MarcaRepository marcaRepository;
 
-    @Transactional
     public boolean insert(Marca marca) {
         if(!this.marcaRepository.existsById(marca.getId())){
-            this.marcaRepository.save(marca);
+            saveMarca(marca);
             return true;
         }else{
             return false;
@@ -27,7 +26,6 @@ public class MarcaService {
     }
 
     public Optional<Marca> findById(Long id) {
-
         Optional<Marca> marca = this.marcaRepository.findById(id);
         return marca.isPresent() ? marca : null;
     }
@@ -36,14 +34,24 @@ public class MarcaService {
         return this.marcaRepository.findAllByIsActive(pageable, true);
     }
 
-    @Transactional
-    public boolean updateStatus(Long id) {
+    public boolean updateStatusById(Long id) {
         if(this.marcaRepository.existsById(id)) {
-            this.marcaRepository.updateStatus(id);
+            Boolean status = this.marcaRepository.getById(id).getIsActive();
+            updateStatus(id, !status);
             return true;
         } else {
             return false;
         }
+    }
+
+    @Transactional
+    protected void saveMarca(Marca marca){
+        this.marcaRepository.save(marca);
+    }
+
+    @Transactional
+    protected void updateStatus(Long id, Boolean status){
+        this.marcaRepository.updateStatus(id, status);
     }
 
 }
