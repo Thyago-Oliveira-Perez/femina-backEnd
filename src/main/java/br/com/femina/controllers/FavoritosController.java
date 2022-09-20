@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.FavoritoPost;
 import br.com.femina.entities.Favoritos;
 import br.com.femina.services.FavoritosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,9 @@ public class FavoritosController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestParam(name = "idProduto") Long idProduto,
-                                    @RequestParam(name = "idCliente") Long idCliente){
+    public ResponseEntity<?> insert(@RequestBody FavoritoPost newFavorito){
 
-        return this.favoritosService.insert(idProduto, idCliente)
+        return this.favoritosService.insert(newFavorito.getIdProduto(), newFavorito.getIdUser())
                 ? ResponseEntity.ok().body("Favoritado adicionado com sucesso!") : ResponseEntity.badRequest().build();
 
     }
