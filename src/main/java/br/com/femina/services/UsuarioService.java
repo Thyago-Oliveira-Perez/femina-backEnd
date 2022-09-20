@@ -3,6 +3,7 @@ package br.com.femina.services;
 import br.com.femina.entities.Perfil;
 import br.com.femina.entities.Usuario;
 import br.com.femina.entities.enums.Cargos;
+import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private FavoritosRepository favoritosRepository;
 
     public boolean registerUser(Usuario usuario){
         if(!this.usuarioRepository.existsById(usuario.getId())){
@@ -77,6 +81,7 @@ public class UsuarioService {
         if(this.usuarioRepository.existsById(id)){
             Boolean status = this.usuarioRepository.getById(id).getIsActive();
             changeStatus(id, !status);
+            deleteFavoritosRelatedToUser(id);
             return true;
         }else{
             return false;
@@ -92,4 +97,7 @@ public class UsuarioService {
     protected void saveUser(Usuario usuario){
         this.usuarioRepository.save(usuario);
     }
+
+    @Transactional
+    protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
 }

@@ -2,6 +2,7 @@ package br.com.femina.services;
 
 import br.com.femina.dto.Filters;
 import br.com.femina.entities.Produto;
+import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,9 @@ public class ProdutoService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private FavoritosRepository favoritosRepository;
 
     public boolean insert(Produto produto){
         if(!this.produtoRepository.existsById(produto.getId())){
@@ -71,6 +75,11 @@ public class ProdutoService {
     @Transactional
     protected void saveProduto(Produto produto){
         this.produtoRepository.save(produto);
+    }
+
+    @Transactional
+    protected void deleteFavoritosRelatedToProduct(Long id){
+        this.favoritosRepository.deleteFavoritosByProductId(id);
     }
 
 }
