@@ -17,7 +17,7 @@ import java.util.List;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Modifying
-    @Query("update Produto produto set produto.categoria.id = null where produto.categoria.id = :idCategoria")
+    @Query("UPDATE Produto produto SET produto.categoria.id = null WHERE produto.categoria.id = :idCategoria")
     public void updateCategoriaByIdCategoria(@Param("idCategoria") Long id);
 
     @Query("FROM Produto produto " +
@@ -25,7 +25,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             "produto.categoria.id IN :categoriaIds AND " +
             "produto.marca.id IN :marcaIds AND " +
             "produto.cor LIKE :cor AND " +
-            "cast(produto.tamanho as string)  LIKE :tamanho AND " +
+            "CAST(produto.tamanho as string)  LIKE :tamanho AND " +
             "produto.isActive = :active ")
     public Page<Produto> findAllByFilters(
             @Param("categoriaIds") List<Long> categoriaIds,

@@ -20,36 +20,30 @@ public class UsuarioController {
     @PostMapping("/new-user")
     public ResponseEntity<?> registerUser(@RequestBody Usuario usuario){
 
-        return this.usuarioService.registerUser(usuario) ?
-                ResponseEntity.ok().body("Usuario cadastrado com sucesso!") : ResponseEntity.badRequest().build();
+        return this.usuarioService.registerUser(usuario);
     }
 
     @PostMapping("/update-user/{id}")
     public ResponseEntity<?> updateUser(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
 
-        return this.usuarioService.updateUser(usuario, idUsuario) ?
-                ResponseEntity.ok().body("Dados do usuario atualizados com sucesso!") : ResponseEntity.badRequest().build();
+        return this.usuarioService.updateUser(usuario, idUsuario);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerBySelf(@RequestBody Usuario usuario){
 
-        return this.usuarioService.registerBySelf(usuario) ?
-                ResponseEntity.ok().body("Cadastrado realizado com sucesso!") : ResponseEntity.badRequest().build();
+        return this.usuarioService.registerBySelf(usuario);
     }
 
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
 
-        return this.usuarioService.updateByOwn(usuario, idUsuario) ?
-                ResponseEntity.ok().body("Dados atualizados com sucesso!") : ResponseEntity.badRequest().build();
+        return this.usuarioService.updateByOwn(usuario, idUsuario);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable("id")Long id){
-
-        Optional<Usuario> usuario = this.usuarioService.findById(id);
-        return usuario.isPresent() ? ResponseEntity.ok().body(usuario.get()) : ResponseEntity.notFound().build();
+        return this.usuarioService.findById(id);
     }
 
     @GetMapping("/list-all")
@@ -61,7 +55,6 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<?> disableUserById(@PathVariable("id") Long id){
 
-        return this.usuarioService.changeStatusById(id) ?
-                ResponseEntity.ok().body("Usuario desabilitado com sucesso.") : ResponseEntity.notFound().build();
+        return this.usuarioService.changeStatusById(id);
     }
 }

@@ -8,6 +8,7 @@ import br.com.femina.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.TransactionScoped;
@@ -27,64 +28,71 @@ public class UsuarioService {
     @Autowired
     private FavoritosRepository favoritosRepository;
 
-    public boolean registerUser(Usuario usuario){
-        if(!this.usuarioRepository.existsById(usuario.getId())){
+    public ResponseEntity<?> registerUser(Usuario usuario){
+        try{
             saveUser(usuario);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Usuario registrado com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Usuario já cadastrado.");
         }
     }
 
-    public boolean registerBySelf(Usuario usuario){
-        if(!this.usuarioRepository.existsById(usuario.getId())){
+    public ResponseEntity<?> registerBySelf(Usuario usuario){
+        try{
             Perfil perfil = new Perfil();
             perfil.setPerfilName(Cargos.USUARIO.toString());
             List<Perfil> perfis = new ArrayList<Perfil>();
             perfis.add(perfil);
             usuario.setPerfis(perfis);
             saveUser(usuario);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Registrado com sucesso!");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Dados inválidos!");
         }
     }
 
-    public Optional<Usuario> findById(Long id){
+    public ResponseEntity<Usuario> findById(Long id){
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
-        return usuario.isPresent() ? usuario : Optional.empty();
+        return usuario.isPresent() ? ResponseEntity.ok().body(usuario.get()) : ResponseEntity.notFound().build();
     }
 
     public Page<Usuario> findAll(Pageable pageable){
         return this.usuarioRepository.findAllByIsActive(pageable, true);
     }
 
-    public boolean updateUser(Usuario usuario, Long id){
+    public ResponseEntity<?> updateUser(Usuario usuario, Long id){
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
             saveUser(usuario);
-            return true;
+            return ResponseEntity.ok().body("Dados atualizados com sucesso!");
         }else{
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 
-    public boolean updateByOwn(Usuario usuario, Long id){
+    public ResponseEntity<?> updateByOwn(Usuario usuario, Long id){
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
             saveUser(usuario);
-            return true;
+            return ResponseEntity.ok().body("Dados atualizados com sucesso!");
         }else{
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 
-    public boolean changeStatusById(Long id){
+    public ResponseEntity<?> changeStatusById(Long id){
         if(this.usuarioRepository.existsById(id)){
+            String mensagem = "";
             Boolean status = this.usuarioRepository.getById(id).getIsActive();
             changeStatus(id, !status);
             deleteFavoritosRelatedToUser(id);
-            return true;
+            if(!status.equals(false)){
+                mensagem = "desativado";
+            }
+            mensagem = "ativado";
+            return ResponseEntity.ok().body("Usuario " + mensagem + " com sucesso!");
         }else{
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

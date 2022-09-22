@@ -6,6 +6,7 @@ import br.com.femina.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,34 +21,38 @@ public class CategoriaService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public boolean insert(Categorias categoria) {
-        if(!this.categoriaRepository.existsById(categoria.getId())) {
+    public ResponseEntity<?> insert(Categorias categoria) {
+        try{
             saveCategoria(categoria);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Categoria cadastrada com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Categoria já cadastrada.");
         }
     }
 
-    public Optional<Categorias> findById(Long id){
-
+    public ResponseEntity<Categorias> findById(Long id){
         Optional<Categorias> categoria = this.categoriaRepository.findById(id);
-
-        return categoria.isPresent() ? categoria : null;
+        return categoria.isPresent() ? ResponseEntity.ok().body(categoria.get()) : ResponseEntity.notFound().build();
     }
 
     public Page<Categorias> findAll(Pageable pageable){
         return this.categoriaRepository.findAll(pageable);
     }
 
-    public boolean updateStatusById(Long id){
+    public ResponseEntity<?> updateStatusById(Long id){
+        String mensagem = "";
         if(this.categoriaRepository.existsById(id)){
             this.produtoRepository.updateCategoriaByIdCategoria(id);
             Boolean status = this.categoriaRepository.getById(id).getIsActive();
             updateStatus(id, !status);
-            return true;
+            if(!status.equals(true)){
+                mensagem = "ativada";
+            }
+            mensagem = "desativada";
+            return ResponseEntity.ok().body("Categoria " + mensagem + " com sucesso!");
         }else{
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

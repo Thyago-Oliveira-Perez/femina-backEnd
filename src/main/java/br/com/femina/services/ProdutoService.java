@@ -7,6 +7,7 @@ import br.com.femina.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,32 +22,30 @@ public class ProdutoService {
     @Autowired
     private FavoritosRepository favoritosRepository;
 
-    public boolean insert(Produto produto){
-        if(!this.produtoRepository.existsById(produto.getId())){
+    public ResponseEntity<?> insert(Produto produto){
+        try{
             saveProduto(produto);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body("Produto já cadastrado.");
         }
     }
 
-    public Optional<Produto> findById(Long id){
-
+    public ResponseEntity<Produto> findById(Long id){
         Optional<Produto> produto = this.produtoRepository.findById(id);
-        return produto.isPresent() ? produto : null;
+        return produto.isPresent() ? ResponseEntity.ok().body(produto.get()) : ResponseEntity.notFound().build();
     }
 
-    public boolean update(Long id, Produto produto) {
+    public ResponseEntity<?> update(Long id, Produto produto) {
         if(this.produtoRepository.existsById(id) && id.equals(produto.getId())){
             saveProduto(produto);
-            return true;
+            return ResponseEntity.ok().body("Produto atualizado com sucesso!");
         }else{
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 
     public Page<Produto> findAllByFilters(Filters filters, Pageable pageable){
-
         return this.produtoRepository.findAllByFilters(
                 filters.getCategoriaIds(),
                 filters.getMarcaIds(),
@@ -57,13 +56,18 @@ public class ProdutoService {
         );
     }
 
-    public boolean updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){
+            String mensagem = "";
             Boolean status = this.produtoRepository.getById(id).getIsActive();
             changeStatus(id, !status);
-            return true;
+            if(!status.equals(true)){
+                mensagem = "ativado";
+            }
+            mensagem = "desativado";
+            return ResponseEntity.ok().body("Produto " + mensagem + " com sucesso!");
         }else{
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

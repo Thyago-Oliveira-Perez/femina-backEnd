@@ -21,11 +21,7 @@ public class FornecedorController {
 
     @GetMapping("/{idFornecedor}")
     public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor) {
-
-        Optional<Fornecedor> fornecedor = this.fornecedorService.findById(idFornecedor);
-
-        return fornecedor.isPresent() ? ResponseEntity.ok().body(fornecedor.get())
-        : ResponseEntity.notFound().build();
+        return this.fornecedorService.findById(idFornecedor);
     }
 
     @GetMapping
@@ -37,22 +33,19 @@ public class FornecedorController {
     @PostMapping
     @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor) {
-        return this.fornecedorService.insert(fornecedor) ?
-                ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!") : ResponseEntity.badRequest().build();
+        return this.fornecedorService.insert(fornecedor);
     }
 
     @PutMapping("/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> update(@PathVariable("idFornecedor") Long idFornecedor,
                                     @RequestBody Fornecedor fornecedor) {
-            return this.fornecedorService.update(idFornecedor, fornecedor) ?
-                    ResponseEntity.ok().body("Fornecedor editado com sucesso!") : ResponseEntity.badRequest().build();
+        return this.fornecedorService.update(idFornecedor, fornecedor);
     }
 
     @PutMapping("/disable/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor) {
-        return this.fornecedorService.updateStatusById(idFornecedor) ?
-                ResponseEntity.ok().body("Fornecedor deletado com sucesso!") : ResponseEntity.notFound().build();
+        return this.fornecedorService.updateStatusById(idFornecedor);
     }
 }

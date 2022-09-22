@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,15 +25,15 @@ public class FavoritosService {
     @Autowired
     private TokenService tokenService;
 
-    public boolean insert(Long idProduto, Long idUser) {
+    public ResponseEntity<?> insert(Long idProduto, Long idUser) {
         if(!this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(idProduto, idUser)){
             Favoritos favoritos = new Favoritos();
             favoritos.setUsuario(usuarioRepository.getById(idUser));
             favoritos.setProduto(produtoRepository.getById(idProduto));
             saveFavorito(favoritos);
-            return true;
+            return ResponseEntity.ok().body("Favorito cadastrado com sucesoo!");
         }else{
-            return false;
+            return ResponseEntity.badRequest().body("Favorito já cadastrado.");
         }
     }
 
@@ -42,12 +43,12 @@ public class FavoritosService {
         return this.favoritosRepository.findFavoritosByUsuarioId(idUser, pageable);
     }
 
-    public boolean deleteById(Long id) {
+    public ResponseEntity<?> deleteById(Long id) {
         if (this.favoritosRepository.existsById(id)){
             delete(id);
-            return true;
+            return ResponseEntity.ok().body("Favorito excluido com sucesso!");
         } else {
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

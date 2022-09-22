@@ -20,10 +20,7 @@ public class ProdutoController {
 
     @GetMapping("/{idProduto}")
     public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto) {
-
-        Optional<Produto> produto = this.produtoService.findById(idProduto);
-
-        return produto.isPresent() ? ResponseEntity.ok().body(produto.get()) : ResponseEntity.notFound().build();
+        return this.produtoService.findById(idProduto);
     }
 
     @PostMapping("/list")
@@ -33,20 +30,17 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody Produto produto) {
-        return this.produtoService.insert(produto) ? ResponseEntity.ok().body("Produto cadastrado com sucesso")
-                : ResponseEntity.badRequest().build();
+        return this.produtoService.insert(produto);
     }
 
     @PutMapping("/{idProduto}")
     public ResponseEntity<?> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
-        return this.produtoService.update(idProduto,produto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
-                : ResponseEntity.notFound().build();
+        return this.produtoService.update(idProduto,produto);
     }
 
     @PutMapping("/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
-        return this.produtoService.updateStatusById(idProduto) ? ResponseEntity.ok().body("Produto atualizada com sucesso")
-                : ResponseEntity.notFound().build();
+        return this.produtoService.updateStatusById(idProduto);
     }
 
 }

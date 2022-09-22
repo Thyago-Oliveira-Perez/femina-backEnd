@@ -5,6 +5,7 @@ import br.com.femina.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,11 +23,7 @@ public class CategoriaController {
 
     @GetMapping("/{idCategoria}")
     public ResponseEntity<Categorias> findById(@PathVariable("idCategoria") Long idCategoria) {
-
-        Optional<Categorias> categoria = this.categoriaService.findById(idCategoria);
-
-        return categoria.isPresent() ? ResponseEntity.ok().body(categoria.get())
-                :  ResponseEntity.notFound().build();
+        return this.categoriaService.findById(idCategoria);
     }
 
     @GetMapping
@@ -38,14 +35,12 @@ public class CategoriaController {
     @PostMapping
     @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> insert(@RequestBody @Valid Categorias categorias) {
-        return this.categoriaService.insert(categorias) ? ResponseEntity.ok().body("Categoria cadastrada com sucesso!")
-            : ResponseEntity.badRequest().build();
+        return this.categoriaService.insert(categorias);
     }
 
     @PutMapping("/disable/{idCategoria}")
     @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
-        return this.categoriaService.updateStatusById(idCategoria) ? ResponseEntity.ok().body("Categoria desativada com sucesso!")
-                : ResponseEntity.notFound().build();
+        return this.categoriaService.updateStatusById(idCategoria);
     }
 }

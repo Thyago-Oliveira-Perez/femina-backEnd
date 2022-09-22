@@ -5,6 +5,7 @@ import br.com.femina.repositories.MarcaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,31 +17,37 @@ public class MarcaService {
     @Autowired
     private MarcaRepository marcaRepository;
 
-    public boolean insert(Marca marca) {
-        if(!this.marcaRepository.existsById(marca.getId())){
+    public ResponseEntity<?> insert(Marca marca) {
+        try{
             saveMarca(marca);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Marca cadastrada com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Marca já cadastrada.");
         }
     }
 
-    public Optional<Marca> findById(Long id) {
+    public ResponseEntity<Marca> findById(Long id) {
         Optional<Marca> marca = this.marcaRepository.findById(id);
-        return marca.isPresent() ? marca : null;
+        return marca.isPresent() ? ResponseEntity.ok().body(marca.get()) : ResponseEntity.notFound().build();
     }
 
     public Page<Marca> findAll(Pageable pageable) {
         return this.marcaRepository.findAllByIsActive(pageable, true);
     }
 
-    public boolean updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(Long id) {
+        String mensagem = "";
         if(this.marcaRepository.existsById(id)) {
             Boolean status = this.marcaRepository.getById(id).getIsActive();
             updateStatus(id, !status);
-            return true;
+            if(!status.equals(true)){
+                mensagem = "ativado";
+            }
+            mensagem = "desativado";
+            return ResponseEntity.ok().body("" + mensagem +" com sucesso!");
         } else {
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

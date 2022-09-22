@@ -5,6 +5,7 @@ import br.com.femina.repositories.FornecedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.From;
@@ -17,40 +18,46 @@ public class FornecedorService {
     @Autowired
     public FornecedorRepository fornecedorRepository;
 
-    public boolean insert(Fornecedor fornecedor) {
-        if(!this.fornecedorRepository.existsById(fornecedor.getId())){
+    public ResponseEntity<?> insert(Fornecedor fornecedor) {
+        try{
             saveFornecedor(fornecedor);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Fornecedor já cadastrado!");
         }
     }
 
-    public Optional<Fornecedor> findById(Long id) {
+    public ResponseEntity<Fornecedor> findById(Long id) {
         Optional<Fornecedor> fornecedor = this.fornecedorRepository.findById(id);
-        return fornecedor.isPresent() ? fornecedor : Optional.empty();
+        return fornecedor.isPresent() ? ResponseEntity.ok().body(fornecedor.get()) : ResponseEntity.notFound().build();
     }
 
     public Page<Fornecedor> findAll(Pageable pageable) {
         return this.fornecedorRepository.findAllByIsActive(pageable, true);
     }
 
-    public boolean update(Long id, Fornecedor fornecedor) {
+    public ResponseEntity<?> update(Long id, Fornecedor fornecedor) {
         if (this.fornecedorRepository.existsById(id) && fornecedor.getId().equals(id)){
             saveFornecedor(fornecedor);
-            return true;
+            return ResponseEntity.ok().body("Fornecedor atualizado com sucesso!");
         } else {
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 
-    public boolean updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(Long id) {
+        String mensagem = "";
         if (this.fornecedorRepository.existsById(id)) {
             Boolean status = this.fornecedorRepository.getById(id).getIsActive();
             updateStatus(id, !status);
-            return true;
+            if(!status.equals(true)){
+                mensagem = "ativada";
+            }
+            mensagem = "desativada";
+            return ResponseEntity.ok().body("Fornecedor " + mensagem + " com sucesso!");
         } else {
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -5,6 +5,7 @@ import br.com.femina.repositories.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,30 +17,37 @@ public class ModeloService {
     @Autowired
     private ModeloRepository modeloRepository;
 
-    public boolean insert(Modelo modelo){
-        if(!this.modeloRepository.existsById(modelo.getId())){
+    public ResponseEntity<?> insert(Modelo modelo){
+        try{
             saveProduto(modelo);
-            return true;
-        }else{
-            return false;
+            return ResponseEntity.ok().body("Modelo cadastrado com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Modelo já cadastrado");
         }
     }
 
-    public Optional<Modelo> findById(long id){
-        return this.modeloRepository.findById(id).isPresent() ? this.modeloRepository.findById(id) : null;
+    public ResponseEntity<Modelo> findById(long id){
+        Optional<Modelo> modelo = this.modeloRepository.findById(id);
+        return  modelo.isPresent() ? ResponseEntity.ok().body(modelo.get()) : ResponseEntity.notFound().build();
     }
 
     public Page<Modelo> findAll(Pageable pageable){
         return this.modeloRepository.findAllByIsActive(pageable, true);
     }
 
-    public boolean updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(Long id) {
         if(this.modeloRepository.existsById(id)){
+            String mensagem = "";
             Boolean status = this.modeloRepository.getById(id).getIsActive();
             updateStatus(id, !status);
-            return true;
+            if(!status.equals(true)){
+                mensagem = "ativado";
+            }
+            mensagem = "desativado";
+            return ResponseEntity.ok().body("Modelo " + mensagem + " com sucesso!");
         } else {
-            return false;
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -21,10 +21,7 @@ public class ModeloController {
 
     @GetMapping("/{idModelo}")
     public ResponseEntity<Modelo> findById(@PathVariable("idModelo") Long idModelo) {
-
-        Optional<Modelo> modelo = this.modeloService.findById(idModelo);
-        return modelo.isPresent() ? ResponseEntity.ok().body(modelo.get())
-                : ResponseEntity.notFound().build();
+        return this.modeloService.findById(idModelo);
     }
 
     @GetMapping
@@ -36,14 +33,12 @@ public class ModeloController {
     @PostMapping
     @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> insert(@RequestBody Modelo modelo) {
-        return this.modeloService.insert(modelo) ? ResponseEntity.ok().body("Modelo cadastrado com sucesso!")
-                : ResponseEntity.badRequest().build();
+        return this.modeloService.insert(modelo);
     }
 
     @PutMapping("/disable/{idModelo}")
     @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idModelo") Long idModelo){
-        return this.modeloService.updateStatusById(idModelo) ? ResponseEntity.ok().body("Modelo atualizado com sucesso!")
-                : ResponseEntity.notFound().build();
+        return this.modeloService.updateStatusById(idModelo);
     }
 }

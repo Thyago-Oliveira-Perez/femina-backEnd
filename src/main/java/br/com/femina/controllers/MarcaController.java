@@ -21,11 +21,7 @@ public class MarcaController {
 
     @GetMapping("/{idMarca}")
     public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca) {
-
-        Optional<Marca> marca = this.marcaService.findById(idMarca);
-        return marca.isPresent() ? ResponseEntity.ok().body(marca.get())
-                : ResponseEntity.notFound().build();
-
+        return this.marcaService.findById(idMarca);
     }
 
     @GetMapping
@@ -37,14 +33,12 @@ public class MarcaController {
     @PostMapping
     @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> insert(@RequestBody Marca marca) {
-        return this.marcaService.insert(marca) ? ResponseEntity.ok().body("Marca cadastrada com sucesso!")
-                : ResponseEntity.badRequest().build();
+        return this.marcaService.insert(marca);
     }
 
     @PutMapping("/disable/{idMarca}")
     @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca) {
-        return this.marcaService.updateStatusById(idMarca) ? ResponseEntity.ok().body("Marca deletada com sucesso!")
-                : ResponseEntity.notFound().build();
+        return this.marcaService.updateStatusById(idMarca);
     }
 }

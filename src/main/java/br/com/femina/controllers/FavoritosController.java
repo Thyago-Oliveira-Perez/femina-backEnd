@@ -24,16 +24,12 @@ public class FavoritosController {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody FavoritoPost newFavorito){
-
-        return this.favoritosService.insert(newFavorito.getIdProduto(), newFavorito.getIdUser())
-                ? ResponseEntity.ok().body("Favoritado adicionado com sucesso!") : ResponseEntity.badRequest().build();
-
+        return this.favoritosService.insert(newFavorito.getIdProduto(), newFavorito.getIdUser());
     }
 
     @DeleteMapping("/{idFavorito}")
     public ResponseEntity<?> delete(@PathVariable("idFavorito") Long idFavorito){
-            return this.favoritosService.deleteById(idFavorito)
-                    ? ResponseEntity.ok().body("Produtod desfavoritado!") : ResponseEntity.notFound().build();
+        return this.favoritosService.deleteById(idFavorito);
     }
 
 }
