@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
@@ -17,4 +19,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Modifying
     @Query("UPDATE Usuario usuario SET usuario.isActive = :status WHERE usuario.id = :id")
     void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
+
+    Optional<Usuario> findUsuarioById(Long id);
 }

@@ -1,13 +1,17 @@
 package br.com.femina.services;
 
+import br.com.femina.configurations.security.Service.TokenService;
 import br.com.femina.entities.Perfil;
 import br.com.femina.entities.Usuario;
 import br.com.femina.entities.enums.Cargos;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.UsuarioRepository;
+import com.sun.net.httpserver.Headers;
+import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +31,9 @@ public class UsuarioService {
 
     @Autowired
     private FavoritosRepository favoritosRepository;
+
+    @Autowired
+    private TokenService tokenService;
 
     public ResponseEntity<?> registerUser(Usuario usuario){
         try{
@@ -78,6 +85,13 @@ public class UsuarioService {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+
+    public ResponseEntity<?> findByMyId(HttpHeaders headers){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
+        Optional<Usuario> usuario = this.usuarioRepository.findUsuarioById(idUser);
+        return usuario.isPresent() ? ResponseEntity.ok().body(usuario.get()) : ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<?> changeStatusById(Long id){
