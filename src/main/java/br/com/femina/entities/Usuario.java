@@ -1,10 +1,7 @@
 package br.com.femina.entities;
 
 import br.com.femina.entities.enums.Sexo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "usuarios", schema = "public")
 public class Usuario extends AbstractEntity implements UserDetails{
 

@@ -1,10 +1,7 @@
 package br.com.femina.entities;
 
 import br.com.femina.entities.enums.Tamanho;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
@@ -15,6 +12,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "produtos", schema = "public")
 public class Produto extends AbstractEntity {
 

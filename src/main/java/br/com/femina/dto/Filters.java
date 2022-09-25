@@ -12,6 +12,9 @@ public class Filters {
     private String cor;
     private Tamanho tamanho;
 
+    public Filters() {
+    }
+
     public List<Long> getCategoriaIds() {
         return categoriaIds;
     }
