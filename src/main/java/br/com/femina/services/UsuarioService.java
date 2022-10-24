@@ -3,11 +3,9 @@ package br.com.femina.services;
 import br.com.femina.configurations.security.Service.TokenService;
 import br.com.femina.entities.Perfil;
 import br.com.femina.entities.Usuario;
-import br.com.femina.entities.enums.Cargos;
+import br.com.femina.enums.Cargos;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.UsuarioRepository;
-import com.sun.net.httpserver.Headers;
-import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +13,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.TransactionScoped;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class UsuarioService {
