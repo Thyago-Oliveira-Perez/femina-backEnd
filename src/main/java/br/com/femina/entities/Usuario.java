@@ -1,6 +1,7 @@
 package br.com.femina.entities;
 
-import br.com.femina.entities.enums.Sexo;
+import br.com.femina.enums.Provider;
+import br.com.femina.enums.Sexo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -57,6 +56,10 @@ public class Usuario extends AbstractEntity implements UserDetails{
             joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_perfil", referencedColumnName = "id"))
     private Collection<Perfil> perfis = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Getter @Setter
+    private Provider provider;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

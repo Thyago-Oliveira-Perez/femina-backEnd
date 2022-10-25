@@ -1,6 +1,6 @@
 package br.com.femina.entities;
 
-import br.com.femina.entities.enums.Tamanho;
+import br.com.femina.enums.Tamanho;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

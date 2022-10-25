@@ -1,4 +1,4 @@
-package br.com.femina.entities.enums;
+package br.com.femina.enums;
 
 public enum Sexo {
 
