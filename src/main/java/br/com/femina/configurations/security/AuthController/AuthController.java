@@ -1,4 +1,4 @@
-package br.com.femina.configurations.security.AuthController;
+package br.com.femina.configurations.security.authController;
 
 import br.com.femina.dto.AuthCredentialRequest;
 import br.com.femina.dto.Token;
