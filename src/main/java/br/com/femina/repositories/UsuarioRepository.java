@@ -20,5 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("UPDATE Usuario usuario SET usuario.isActive = :status WHERE usuario.id = :id")
     void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
+    boolean existsUsuarioByEmail(String userEmail);
+
     Optional<Usuario> findUsuarioById(Long id);
 }

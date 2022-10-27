@@ -22,32 +22,26 @@ public class Usuario extends AbstractEntity implements UserDetails{
 
     @Getter @Setter
     @Column(name = "name", nullable = false, length = 30, unique = true)
-    @NotNull(message = "Nome de usuário é obrigatório")
     private String nome;
 
     @Getter @Setter
     @Column(name = "login", nullable = false, length = 30, unique = true)
-    @NotNull(message = "Login de usuário é obrigatório")
     private String login;
 
     @Getter @Setter
     @Column(name = "password", nullable = false, length = 255, unique = true)
-    @NotNull(message = "Senha de usuário é obrigatório")
     private String senha;
 
     @Getter @Setter
     @Column(name = "sexo", nullable = false, length = 15, unique = true)
-    @NotNull(message = "Sexo do usuário é obrigatório")
     private Sexo sexo;
 
     @Getter @Setter
     @Column(name = "email", nullable = false, length = 30, unique = true)
-    @NotNull(message = "Email de usuário é obrigatório")
     private String email;
 
     @Getter @Setter
     @Column(name = "telefone", nullable = false, length = 30, unique = true)
-    @NotNull(message = "Telefone do usuário é obrigatório")
     private String telefone;
 
     @Getter @Setter

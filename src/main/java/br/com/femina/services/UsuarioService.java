@@ -4,6 +4,7 @@ import br.com.femina.configurations.security.Service.TokenService;
 import br.com.femina.entities.Perfil;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Cargos;
+import br.com.femina.enums.Provider;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class UsuarioService {
 
     public ResponseEntity<?> registerUser(Usuario usuario){
         try{
+            usuario.setProvider(Provider.LOCAL);
             saveUser(usuario);
             return ResponseEntity.ok().body("Usuario registrado com sucesso!");
         }catch(Exception e){
@@ -47,6 +49,7 @@ public class UsuarioService {
             List<Perfil> perfis = new ArrayList<Perfil>();
             perfis.add(perfil);
             usuario.setPerfis(perfis);
+            usuario.setProvider(Provider.LOCAL);
             saveUser(usuario);
             return ResponseEntity.ok().body("Registrado com sucesso!");
         }catch (Exception e){
@@ -117,4 +120,17 @@ public class UsuarioService {
 
     @Transactional
     protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
+
+    public void processOAuth2Login(String userEmail){
+        boolean existsUser = this.usuarioRepository.existsUsuarioByEmail(userEmail);
+
+        if(!existsUser){
+            Usuario newUser = new Usuario();
+            newUser.setLogin(userEmail);
+            newUser.setEmail(userEmail);
+            newUser.setProvider(Provider.FACEBOOK);
+
+            saveUser(newUser);
+        }
+    }
 }

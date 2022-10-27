@@ -1,4 +1,4 @@
-package br.com.femina.configurations.security.service;
+package br.com.femina.configurations.security.Service;
 
 import br.com.femina.configurations.security.CustomOAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
