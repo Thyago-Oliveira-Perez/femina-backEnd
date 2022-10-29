@@ -11,6 +11,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "fornecedores", schema = "public")
 public class Fornecedor extends AbstractEntity {
 
