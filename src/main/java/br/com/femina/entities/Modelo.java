@@ -18,6 +18,6 @@ public class Modelo extends AbstractEntity {
     @Setter
     @Column(name = "nome", length = 50, unique = true, nullable = false )
     @NotNull(message = "Nome é obrigatório")
-    private String Nome;
+    private String nome;
 
 }

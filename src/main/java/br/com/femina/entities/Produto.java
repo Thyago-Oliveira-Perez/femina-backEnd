@@ -26,7 +26,7 @@ public class Produto extends AbstractEntity {
     private String codigo;
 
     @Getter @Setter
-    @Column(name = "nome", nullable = false, length = 50)
+    @Column(name = "nome", nullable = false)
     @NotNull(message = "Nome é obrigatório")
     private String nome;
 
