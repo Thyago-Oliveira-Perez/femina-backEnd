@@ -3,9 +3,8 @@ package br.com.femina.controllers;
 import br.com.femina.config.TestSecurityConfig;
 import br.com.femina.dto.Filters;
 import br.com.femina.entities.*;
-import br.com.femina.entities.enums.Tamanho;
+import br.com.femina.enums.Tamanhos;
 import br.com.femina.services.ProdutoService;
-import br.com.femina.services.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ public class ProdutoControllerTests {
                 this.valor, categorias,
                 modelos, fornecedor,
                 marca, "verde",
-                Tamanho.M, "",
+                Tamanhos.M, "",
                 "teste", false);
         this.mockMvc.perform(post("/api/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +85,7 @@ public class ProdutoControllerTests {
                                             this.valor, categorias,
                                             modelos, fornecedor,
                                             marca, "verde",
-                                            Tamanho.M, "",
+                                            Tamanhos.M, "",
                                     "teste", false);
         List<Produto> produtosList = List.of(produto);
         Page<Produto> produtosPage = new PageImpl<Produto>(produtosList);
@@ -106,7 +105,7 @@ public class ProdutoControllerTests {
                                         this.valor, categorias,
                                         modelos, fornecedor,
                                         marca, "verde",
-                                        Tamanho.M, "",
+                                        Tamanhos.M, "",
                                 "teste", false);
         produto.setId(1L);
         when(produtoService.findById(1L)).thenReturn(ResponseEntity.ok(produto));

@@ -2,10 +2,10 @@ package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
 import br.com.femina.entities.*;
-import br.com.femina.entities.enums.Sexo;
-import br.com.femina.entities.enums.Tamanho;
+import br.com.femina.enums.Provider;
+import br.com.femina.enums.Sexos;
+import br.com.femina.enums.Tamanhos;
 import br.com.femina.services.FavoritosService;
-import br.com.femina.services.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +51,11 @@ public class FavoritosControllerTests {
         usuario = new Usuario("teste",
                 "teste",
                 "123",
-                Sexo.MASCULINO,
+                Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
-                perfils);
+                perfils,
+                Provider.LOCAL);
         Categorias categorias = new Categorias("teste");
         Marca marca = new Marca("teste");
         Modelo modelo = new Modelo("teste");
@@ -66,7 +67,7 @@ public class FavoritosControllerTests {
                 valor, categorias,
                 modelos, fornecedor,
                 marca, "verde",
-                Tamanho.M, "",
+                Tamanhos.M, "",
                 "teste", false);
     }
 
