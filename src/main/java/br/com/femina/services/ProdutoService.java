@@ -10,7 +10,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,7 +32,43 @@ public class ProdutoService {
     @Autowired
     private FavoritosRepository favoritosRepository;
 
-    public ResponseEntity<?> insert(Produto produto){
+    private String path = "./images/produto/";
+
+    private void createDirIfNotExist(Produto produto) {
+        Path directory = Paths.get(path+produto.getCodigo());
+        if (!Files.exists(directory)) {
+            try {
+                Files.createDirectories(directory);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public String saveFile(Produto produto, MultipartFile[] files){
+        createDirIfNotExist(produto);
+        for(int i = 0;i < files.length;i++) {
+            try {
+                byte[] bytes = files[i].getBytes();
+                ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
+                BufferedImage newImage = ImageIO.read(inStreambj);
+                String extension = files[i].getOriginalFilename().split("\\.")[1];
+                System.out.println(extension);
+                if (Objects.equals(extension, "png")) {
+                    ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
+                } else {
+                    ImageIO.write(newImage, "jpg", new File(path + produto.getCodigo() + "/" + i + ".jpg"));
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return path+produto.getCodigo();
+    }
+
+    public ResponseEntity<?> insert(Produto produto, MultipartFile[] files){
+        String imagePath = saveFile(produto, files);
+        produto.setImagem(imagePath);
         try{
             saveProduto(produto);
             return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
