@@ -9,6 +9,7 @@ import br.com.femina.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -101,12 +102,14 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                     add(new Perfil(Cargos.USUARIO.toString()));
                                 }};
                                 this.perfilRepository.saveAll(perfis);
-                                
+
                                 if(this.usuarioRepository.count() <= 0){
+                                    BCryptPasswordEncoder senha = new BCryptPasswordEncoder();
+
                                     Usuario usuario = new Usuario(
                                             "Dayanne",
                                             "day123",
-                                            "",
+                                            senha.encode("123456"),
                                             Sexos.FEMININO,
                                             "dayday@gmail.com",
                                             "45 0 0000-0000",
