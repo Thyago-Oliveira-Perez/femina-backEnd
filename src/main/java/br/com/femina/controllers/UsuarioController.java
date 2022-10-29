@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.UserResponse;
 import br.com.femina.entities.Usuario;
 import br.com.femina.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,28 +23,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/update-user/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
+    public ResponseEntity<UserResponse> updateUser(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
         return this.usuarioService.updateUser(usuario, idUsuario);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable("id")Long id){
         return this.usuarioService.findById(id);
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> registerBySelf(@RequestBody Usuario usuario){
-        return this.usuarioService.registerBySelf(usuario);
-    }
-
-    @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
-        return this.usuarioService.updateByOwn(usuario, idUsuario);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<?> findByMyId(@RequestHeader HttpHeaders headers){
-        return this.usuarioService.findByMyId(headers);
     }
 
     @GetMapping("/list-all")
@@ -54,5 +40,21 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<?> disableUserById(@PathVariable("id") Long id){
         return this.usuarioService.changeStatusById(id);
+    }
+
+    //endpoints que o usuario controla
+    @PostMapping("/register")
+    public ResponseEntity<?> registerBySelf(@RequestBody Usuario usuario){
+        return this.usuarioService.registerBySelf(usuario);
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<UserResponse> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
+        return this.usuarioService.updateUser(usuario, idUsuario);
+    }
+
+    @GetMapping("/my-infos")
+    public ResponseEntity<?> findByMyId(@RequestHeader HttpHeaders headers){
+        return this.usuarioService.findByMyId(headers);
     }
 }

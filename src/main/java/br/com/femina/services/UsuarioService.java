@@ -1,6 +1,7 @@
 package br.com.femina.services;
 
 import br.com.femina.configurations.security.services.TokenService;
+import br.com.femina.dto.UserResponse;
 import br.com.femina.entities.Perfil;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Cargos;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,6 +32,8 @@ public class UsuarioService {
 
     @Autowired
     private TokenService tokenService;
+
+    BCryptPasswordEncoder senha = new BCryptPasswordEncoder();
 
     public ResponseEntity<?> registerUser(Usuario usuario){
         try{
@@ -50,6 +54,7 @@ public class UsuarioService {
             perfis.add(perfil);
             usuario.setPerfis(perfis);
             usuario.setProvider(Provider.LOCAL);
+            usuario.setSenha(senha.encode(usuario.getSenha()));
             saveUser(usuario);
             return ResponseEntity.ok().body("Registrado com sucesso!");
         }catch (Exception e){
@@ -67,19 +72,19 @@ public class UsuarioService {
         return this.usuarioRepository.findAllByIsActive(pageable, true);
     }
 
-    public ResponseEntity<?> updateUser(Usuario usuario, Long id){
+    public ResponseEntity<UserResponse> updateUser(Usuario usuario, Long id){
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
+            usuario.setSenha(senha.encode(usuario.getSenha()));
             saveUser(usuario);
-            return ResponseEntity.ok().body("Dados atualizados com sucesso!");
-        }else{
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    public ResponseEntity<?> updateByOwn(Usuario usuario, Long id){
-        if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
-            saveUser(usuario);
-            return ResponseEntity.ok().body("Dados atualizados com sucesso!");
+            UserResponse updatedUser = new UserResponse(
+                    usuario.getNome(),
+                    usuario.getLogin(),
+                    usuario.getSexo(),
+                    usuario.getEmail(),
+                    usuario.getTelefone(),
+                    usuario.getIsActive()
+            );
+            return ResponseEntity.ok().body(updatedUser);
         }else{
             return ResponseEntity.notFound().build();
         }
@@ -108,19 +113,6 @@ public class UsuarioService {
         }
     }
 
-    @Transactional
-    protected void changeStatus(Long id, Boolean status){
-        this.usuarioRepository.updateStatus(id, status);
-    }
-
-    @Transactional
-    protected void saveUser(Usuario usuario){
-        this.usuarioRepository.save(usuario);
-    }
-
-    @Transactional
-    protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
-
     public void processOAuth2Login(String userEmail){
         boolean existsUser = this.usuarioRepository.existsUsuarioByEmail(userEmail);
 
@@ -133,4 +125,17 @@ public class UsuarioService {
             saveUser(newUser);
         }
     }
+
+    @Transactional
+    protected void changeStatus(Long id, Boolean status){
+        this.usuarioRepository.updateStatus(id, status);
+    }
+
+    @Transactional
+    protected void saveUser(Usuario usuario){
+        this.usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
 }
