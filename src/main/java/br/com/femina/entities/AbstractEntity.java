@@ -27,7 +27,7 @@ public abstract class AbstractEntity {
     private LocalDateTime atualizado;
 
     @Getter @Setter
-    @Column(name="ativo")
+    @Column(name="ativo", columnDefinition = "boolean default true")
     private Boolean isActive;
 
     @PrePersist
