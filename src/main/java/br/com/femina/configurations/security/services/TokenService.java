@@ -49,4 +49,9 @@ public class TokenService {
         Claims claim =  Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return Long.parseLong(claim.getSubject());
     }
+
+    public String getUserName(Authentication authentication) {
+        Usuario usuario = (Usuario)authentication.getPrincipal();
+        return usuario.getNome();
+    }
 }
