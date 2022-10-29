@@ -1,7 +1,6 @@
 package br.com.femina.dto;
 
-import br.com.femina.entities.enums.Tamanho;
-import org.springframework.data.domain.Pageable;
+import br.com.femina.enums.Tamanho;
 
 import java.util.List;
 

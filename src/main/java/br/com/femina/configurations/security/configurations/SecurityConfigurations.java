@@ -1,8 +1,11 @@
 package br.com.femina.configurations.security.configurations;
 
+import br.com.femina.configurations.security.CustomOAuth2User;
+import br.com.femina.configurations.security.Service.CustomOAuth2UserService;
 import br.com.femina.repositories.UsuarioRepository;
 import br.com.femina.configurations.security.Service.AuthService;
 import br.com.femina.configurations.security.Service.TokenService;
+import br.com.femina.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +17,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @EnableWebSecurity
 @Configuration
@@ -29,6 +39,12 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private CustomOAuth2UserService oauth2UserService;
 
     @Override
     @Bean
@@ -46,21 +62,41 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     //Configurações de autorização(urls publicas e as que precisam de controller)
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/produtos").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/produtos/*").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
-                .anyRequest().authenticated()
-                .and().csrf().disable()
+        http.cors()
+            .and()
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.GET, "/api/produtos").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/produtos/*").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
+            .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            .antMatchers( "/oauth2/login").permitAll()
+            .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
+            .anyRequest()
+            .authenticated()
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new AuthTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oauth2UserService)
+                .and()
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+
+                        usuarioService.processOAuth2Login(oauthUser.getEmail());
+
+                        response.sendRedirect("http://127.0.0.1:3000/home");
+                    }
+                })
+//                .defaultSuccessUrl("")
+                .failureUrl("http://127.0.0.1:3000/login");
     }
+
     //Configurações de recursos estaticos(js, css, html, imagens, etc...)
     @Override
     public void configure(WebSecurity web) throws Exception {

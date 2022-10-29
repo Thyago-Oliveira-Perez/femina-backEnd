@@ -1,8 +1,8 @@
 package br.com.femina.repositories;
 
 import br.com.femina.entities.*;
-import br.com.femina.entities.enums.Sexo;
-import br.com.femina.entities.enums.Tamanho;
+import br.com.femina.enums.Sexo;
+import br.com.femina.enums.Tamanho;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

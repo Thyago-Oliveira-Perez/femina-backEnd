@@ -1,8 +1,6 @@
 package br.com.femina.repositories;
 
-import br.com.femina.dto.Filters;
 import br.com.femina.entities.Produto;
-import br.com.femina.entities.enums.Tamanho;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
