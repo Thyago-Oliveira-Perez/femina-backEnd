@@ -1,26 +1,28 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
-import br.com.femina.entities.Categorias;
-import br.com.femina.services.CategoriaService;
+import br.com.femina.entities.Modelo;
+import br.com.femina.services.ModeloService;
 import com.fasterxml.jackson.databind.ObjectMapper;
- import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,53 +30,54 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(classes = TestSecurityConfig.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-public class CategoriaControllerTests {
+public class ModeloControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private CategoriaService categoriaService;
+    private ModeloService modeloService;
 
     private static ObjectMapper mapper = new ObjectMapper();
 
     @Test
     @Order(1)
-    public void postCategoria() throws Exception {
-        this.mockMvc.perform(post("/api/categorias")
+    public void postModelo() throws Exception {
+        Modelo modelo = new Modelo("teste");
+        this.mockMvc.perform(post("/api/modelos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"cadastrado\":\"2022-09-22T21:23:32.176151\",\"atualizado\":null,\"isActive\":true,\"nome\":\"teste\"}")
+                        .content(mapper.writeValueAsString(modelo))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(2)
-    public void getCategoria() throws Exception {
+    public void getModelo() throws Exception {
         Pageable pageable = PageRequest.of(1,4);
-        Categorias categorias = new Categorias("teste");
-        List<Categorias> categoriasList = List.of(categorias);
-        Page<Categorias> categoriasPage = new PageImpl<Categorias>(categoriasList);
-        when(categoriaService.findAll(pageable)).thenReturn(categoriasPage);
-        this.mockMvc.perform(get("/api/categorias"))
+        Modelo modelo = new Modelo("teste");
+        List<Modelo> modelosList = List.of(modelo);
+        Page<Modelo> modelosPage = new PageImpl<Modelo>(modelosList);
+        when(modeloService.findAll(pageable)).thenReturn(modelosPage);
+        this.mockMvc.perform(get("/api/modelos"))
                 .andExpect(status().isOk());
-        assertThat(categoriasPage.getContent().size()).isGreaterThanOrEqualTo(1);
+        assertThat(modelosPage.getContent().size()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
     @Order(3)
-    public void getCategoriaById() throws Exception {
-        Categorias categorias = new Categorias("teste");
-        categorias.setId(1L);
-        when(categoriaService.findById(1L)).thenReturn(ResponseEntity.ok(categorias));
-        this.mockMvc.perform(get("/api/categorias/"+1L))
+    public void getModeloById() throws Exception {
+        Modelo modelo = new Modelo("teste");
+        modelo.setId(1L);
+        when(modeloService.findById(1L)).thenReturn(ResponseEntity.ok(modelo));
+        this.mockMvc.perform(get("/api/modelos/"+1L))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(4)
-    public void disableCategoria() throws Exception {
-        this.mockMvc.perform(put("/api/categorias/disable/"+1L))
+    public void disableModelo() throws Exception {
+        this.mockMvc.perform(put("/api/modelos/disable/"+1L))
                 .andExpect(status().isOk());
     }
 

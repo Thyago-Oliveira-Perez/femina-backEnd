@@ -11,6 +11,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "categorias", schema = "public")
 public class Categorias  extends AbstractEntity {
 

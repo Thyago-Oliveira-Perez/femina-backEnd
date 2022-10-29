@@ -22,6 +22,7 @@ public class SwaggerConfiguration {
                 "/api/marcas/**",
                 "/api/modelos/**",
                 "/api/produtos/**",
+                "/auth/login/**",
         };
 
         return GroupedOpenApi.builder()

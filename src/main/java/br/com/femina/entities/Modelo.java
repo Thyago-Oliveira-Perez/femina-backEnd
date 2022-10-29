@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "modelos", schema = "public" )
 public class Modelo extends AbstractEntity {
 
