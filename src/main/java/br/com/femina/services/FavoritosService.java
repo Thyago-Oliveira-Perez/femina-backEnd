@@ -4,7 +4,7 @@ import br.com.femina.entities.Favoritos;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import br.com.femina.repositories.UsuarioRepository;
-import br.com.femina.configurations.security.Service.TokenService;
+import br.com.femina.configurations.security.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,8 @@
 package br.com.femina.repositories;
 
 import br.com.femina.entities.*;
-import br.com.femina.enums.Tamanho;
+import br.com.femina.enums.Tamanhos;
+import br.com.femina.services.entities.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class ProdutoRepositoryTests {
     @Order(1)
     @DisplayName("Inserir Produto")
     public void insertProduto() {
-        Produto produto = new Produto("codigo", "teste", this.valor, categorias, modelos, fornecedor, marca, "verde", Tamanho.M, "", "teste", false);
+        Produto produto = new Produto("codigo", "teste", this.valor, categorias, modelos, fornecedor, marca, "verde", Tamanhos.M, "", "teste", false);
         produtoRepository.save(produto);
         int countProdutos = produtoRepository.findAll().size();
         assertThat(countProdutos).isEqualTo(1);
@@ -93,7 +94,7 @@ public class ProdutoRepositoryTests {
     @Order(3)
     @DisplayName("Inserir Produto com os mesmos valores(unique)")
     public void insertExistingProdutoUnsupportedOperation() {
-        Produto produto = new Produto("codigo", "teste", valor, categorias, modelos, fornecedor, marca, "verde", Tamanho.M, "", "teste", false);
+        Produto produto = new Produto("codigo", "teste", valor, categorias, modelos, fornecedor, marca, "verde", Tamanhos.M, "", "teste", false);
         AtomicInteger countProdutos = new AtomicInteger();
         UnsupportedOperationException exception = Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             produtoRepository.save(produto);
@@ -107,7 +108,7 @@ public class ProdutoRepositoryTests {
     @Order(4)
     @DisplayName("Listar Produtos")
     public void listProdutos() {
-        Produto produto = new Produto("codigo", "teste", valor, categorias, modelos, fornecedor, marca, "verde", Tamanho.M, "", "teste", false);
+        Produto produto = new Produto("codigo", "teste", valor, categorias, modelos, fornecedor, marca, "verde", Tamanhos.M, "", "teste", false);
         produtoRepository.save(produto);
         List<Produto> produtosList = produtoRepository.findAll();
         assertThat(produtosList.size()).isGreaterThanOrEqualTo(1);

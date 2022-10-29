@@ -1,8 +1,7 @@
-package br.com.femina.configurations.security.configurations;
+package br.com.femina.configurations.security.services;
 
 import br.com.femina.entities.Usuario;
 import br.com.femina.repositories.UsuarioRepository;
-import br.com.femina.configurations.security.Service.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthTokenFilter extends OncePerRequestFilter {
+public class AuthFilter extends OncePerRequestFilter {
 
     private String requestHeader = "Authorization";
     /*
@@ -26,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private UsuarioRepository usuarioRepository;
 
-    public AuthTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
+    public AuthFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
         this.usuarioRepository = usuarioRepository;
     }

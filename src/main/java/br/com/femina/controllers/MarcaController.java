@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/marcas")
 public class MarcaController {

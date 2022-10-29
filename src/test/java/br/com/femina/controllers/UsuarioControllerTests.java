@@ -1,9 +1,10 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
-import br.com.femina.entities.*;
 import br.com.femina.entities.enums.Sexo;
 import br.com.femina.services.UsuarioService;
+import br.com.femina.entities.Perfil;
+import br.com.femina.entities.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

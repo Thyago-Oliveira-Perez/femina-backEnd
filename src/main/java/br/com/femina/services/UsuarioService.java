@@ -1,6 +1,6 @@
 package br.com.femina.services;
 
-import br.com.femina.configurations.security.Service.TokenService;
+import br.com.femina.configurations.security.services.TokenService;
 import br.com.femina.entities.Perfil;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Cargos;

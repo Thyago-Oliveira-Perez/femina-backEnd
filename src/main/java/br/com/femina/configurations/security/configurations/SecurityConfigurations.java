@@ -1,10 +1,11 @@
 package br.com.femina.configurations.security.configurations;
 
-import br.com.femina.configurations.security.CustomOAuth2User;
-import br.com.femina.configurations.security.Service.CustomOAuth2UserService;
+import br.com.femina.configurations.security.services.AuthFilter;
+import br.com.femina.configurations.security.models.CustomOAuth2User;
+import br.com.femina.configurations.security.services.OAuth2Service;
 import br.com.femina.repositories.UsuarioRepository;
-import br.com.femina.configurations.security.Service.AuthService;
-import br.com.femina.configurations.security.Service.TokenService;
+import br.com.femina.configurations.security.services.AuthService;
+import br.com.femina.configurations.security.services.TokenService;
 import br.com.femina.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +45,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     private UsuarioService usuarioService;
 
     @Autowired
-    private CustomOAuth2UserService oauth2UserService;
+    private OAuth2Service oauth2UserService;
 
     @Override
     @Bean
@@ -78,7 +79,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new AuthTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(oauth2UserService)

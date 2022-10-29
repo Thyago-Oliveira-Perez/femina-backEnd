@@ -1,9 +1,8 @@
-package br.com.femina.configurations.security.Service;
+package br.com.femina.configurations.security.services;
 
-import br.com.femina.configurations.security.Repository.AuthRepository;
+import br.com.femina.repositories.UsuarioRepository;
 import br.com.femina.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,14 +14,12 @@ import java.util.Optional;
 public class AuthService implements UserDetailsService {
 
     @Autowired
-    private AuthRepository authRepository;
-
-    private AuthenticationManager authenticationManager;
+    private UsuarioRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<Usuario> usuario = this.authRepository.findByLoginOrEmail(username);
+        Optional<Usuario> usuario = this.repository.findByLoginOrEmail(username);
 
         if(usuario.isPresent() && usuario.get().isAccountNonExpired()){
             return usuario.get();

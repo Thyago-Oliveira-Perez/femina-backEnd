@@ -5,6 +5,7 @@ import br.com.femina.entities.*;
 import br.com.femina.entities.enums.Sexo;
 import br.com.femina.entities.enums.Tamanho;
 import br.com.femina.services.FavoritosService;
+import br.com.femina.services.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

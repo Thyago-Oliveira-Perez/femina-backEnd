@@ -1,6 +1,6 @@
 package br.com.femina.enums;
 
-public enum Sexo {
+public enum Sexos {
 
     MASCULINO,
     FEMININO,

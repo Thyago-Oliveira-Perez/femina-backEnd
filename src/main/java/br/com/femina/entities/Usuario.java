@@ -1,7 +1,7 @@
 package br.com.femina.entities;
 
 import br.com.femina.enums.Provider;
-import br.com.femina.enums.Sexo;
+import br.com.femina.enums.Sexos;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -36,7 +35,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
 
     @Getter @Setter
     @Column(name = "sexo", nullable = false, length = 15, unique = true)
-    private Sexo sexo;
+    private Sexos sexo;
 
     @Getter @Setter
     @Column(name = "email", nullable = false, length = 30, unique = true)

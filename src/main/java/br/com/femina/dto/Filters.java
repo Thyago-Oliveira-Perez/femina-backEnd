@@ -1,6 +1,6 @@
 package br.com.femina.dto;
 
-import br.com.femina.enums.Tamanho;
+import br.com.femina.enums.Tamanhos;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public class Filters {
     private List<Long> categoriaIds;
     private List<Long> marcaIds;
     private String cor;
-    private Tamanho tamanho;
+    private Tamanhos tamanho;
 
     public Filters() {
     }
@@ -38,11 +38,11 @@ public class Filters {
         this.marcaIds = marcaIds;
     }
 
-    public Tamanho getTamanho() {
+    public Tamanhos getTamanho() {
         return tamanho;
     }
 
-    public void setTamanho(Tamanho tamanho) {
+    public void setTamanho(Tamanhos tamanho) {
         this.tamanho = tamanho;
     }
 }

@@ -1,16 +1,10 @@
-import br.com.femina.FeminaApplication;
 import br.com.femina.entities.*;
-import br.com.femina.entities.enums.Tamanho;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import br.com.femina.enums.Tamanhos;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.SpringApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +24,7 @@ public class Main {
                 valor, categorias,
                 modelos, fornecedor,
                 marca, "verde",
-                Tamanho.M, "",
+                Tamanhos.M, "",
                 "teste", false);
 
         String json = mapper.writeValueAsString(produto);

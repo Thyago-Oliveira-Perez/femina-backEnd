@@ -1,8 +1,9 @@
 package br.com.femina.repositories;
 
 import br.com.femina.entities.*;
-import br.com.femina.enums.Sexo;
-import br.com.femina.enums.Tamanho;
+import br.com.femina.enums.Sexos;
+import br.com.femina.enums.Tamanhos;
+import br.com.femina.services.entities.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,10 +76,10 @@ public class FavoritoRepositoryTests {
 
         valor = new BigDecimal(99);
 
-        produto = new Produto("codigo", "teste", this.valor, categorias, modelos, fornecedor, marca, "verde", Tamanho.M, "", "teste", false);
+        produto = new Produto("codigo", "teste", this.valor, categorias, modelos, fornecedor, marca, "verde", Tamanhos.M, "", "teste", false);
         produtoRepository.save(produto);
 
-        Usuario usuario = new Usuario("teste","teste","123", Sexo.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>());
+        Usuario usuario = new Usuario("teste","teste","123", Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>());
         usuarioRepository.save(usuario);
     }
 
