@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
@@ -30,19 +32,23 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
-        Produto produtoJson = new ObjectMapper().readValue(produto, Produto.class);
-        return this.produtoService.insert(produtoJson, files);
+    public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) {
+        return this.produtoService.insert(produto, files);
     }
 
     @PutMapping("/{idProduto}")
-    public ResponseEntity<?> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
-        return this.produtoService.update(idProduto,produto);
+    public ResponseEntity<?> update(
+            @PathVariable("idProduto") Long idProduto,
+            String produto,
+            @RequestParam("image") Optional<MultipartFile[]> files
+    ) {
+        return this.produtoService.update(idProduto,produto,files);
     }
 
     @PutMapping("/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
         return this.produtoService.updateStatusById(idProduto);
     }
+
 
 }
