@@ -38,38 +38,6 @@ public class ProdutoService {
 
     private String path = "./images/produto/";
 
-    private void createDirIfNotExist(Produto produto) {
-        Path directory = Paths.get(path+produto.getCodigo());
-        if (!Files.exists(directory)) {
-            try {
-                Files.createDirectories(directory);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public String saveFile(Produto produto, MultipartFile[] files){
-        createDirIfNotExist(produto);
-        for(int i = 0;i < files.length;i++) {
-            try {
-                byte[] bytes = files[i].getBytes();
-                ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
-                BufferedImage newImage = ImageIO.read(inStreambj);
-                String extension = files[i].getOriginalFilename().split("\\.")[1];
-                System.out.println(extension);
-                if (Objects.equals(extension, "png")) {
-                    ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
-                } else {
-                    ImageIO.write(newImage, "jpg", new File(path + produto.getCodigo() + "/" + i + ".jpg"));
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return path+produto.getCodigo();
-    }
-
     public ResponseEntity<?> insert(Produto produto, MultipartFile[] files){
         String imagePath = saveFile(produto, files);
         produto.setImagem(imagePath);
@@ -112,12 +80,16 @@ public class ProdutoService {
     public ResponseEntity<?> updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){
             String mensagem = "";
-            Boolean status = this.produtoRepository.getById(id).getIsActive();
+            Produto dbProduto = this.produtoRepository.getById(id);
+            Boolean status = dbProduto.getIsActive();
             changeStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativado";
             }
-            mensagem = "desativado";
+            if(status.equals(true)){
+                this.deleteFavoritosRelatedToProduct(dbProduto.getId());
+                mensagem = "desativado";
+            }
             return ResponseEntity.ok().body("Produto " + mensagem + " com sucesso!");
         }else{
             return ResponseEntity.notFound().build();
@@ -161,7 +133,7 @@ public class ProdutoService {
         return pageProdutoResponse;
     }
 
-    public ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto){
+    private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto){
         return new ProdutoResponse(
                 dbProduto.getNome(),
                 dbProduto.getCodigo(),
@@ -176,6 +148,38 @@ public class ProdutoService {
                 dbProduto.getImagem(),
                 dbProduto.getDestaque()
         );
+    }
+
+    private String saveFile(Produto produto, MultipartFile[] files){
+        createDirIfNotExist(produto);
+        for(int i = 0;i < files.length;i++) {
+            try {
+                byte[] bytes = files[i].getBytes();
+                ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
+                BufferedImage newImage = ImageIO.read(inStreambj);
+                String extension = files[i].getOriginalFilename().split("\\.")[1];
+                System.out.println(extension);
+                if (Objects.equals(extension, "png")) {
+                    ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
+                } else {
+                    ImageIO.write(newImage, "jpg", new File(path + produto.getCodigo() + "/" + i + ".jpg"));
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return path+produto.getCodigo();
+    }
+
+    private void createDirIfNotExist(Produto produto) {
+        Path directory = Paths.get(path+produto.getCodigo());
+        if (!Files.exists(directory)) {
+            try {
+                Files.createDirectories(directory);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
     //</editor-fold>
 }
