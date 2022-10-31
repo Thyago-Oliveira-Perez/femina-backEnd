@@ -50,7 +50,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
     @JoinTable(name = "usuarios_perfis",
             joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_perfil", referencedColumnName = "id"))
-    private Collection<Perfil> perfis = new ArrayList<>();
+    private Collection<Cargos> cargos = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Getter @Setter

@@ -1,10 +1,11 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
+import br.com.femina.dto.Usuario.UsuarioResponse;
 import br.com.femina.enums.Provider;
 import br.com.femina.enums.Sexos;
 import br.com.femina.services.UsuarioService;
-import br.com.femina.entities.Perfil;
+import br.com.femina.entities.Cargos;
 import br.com.femina.entities.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -41,11 +42,11 @@ public class UsuarioControllerTests {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-    Collection<Perfil> perfils;
+    Collection<Cargos> cargos;
 
     @BeforeEach
     void initUseCase() {
-        perfils = List.of();
+        cargos = List.of();
     }
 
     @Test
@@ -57,7 +58,7 @@ public class UsuarioControllerTests {
                                     Sexos.MASCULINO,
                                     "teste@teste.com",
                                     "999999999",
-                                    perfils,
+                cargos,
                                     Provider.LOCAL);
         this.mockMvc.perform(post("/api/usuarios/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,14 +70,14 @@ public class UsuarioControllerTests {
     @Test
     @Order(2)
     public void newUsuario() throws Exception {
-        Collection<Perfil> perfils = List.of();
+        Collection<Cargos> cargos = List.of();
         Usuario usuario = new Usuario("teste",
                 "teste",
                 "123",
                 Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
-                perfils,
+                cargos,
                 Provider.LOCAL);
         this.mockMvc.perform(post("/api/usuarios/new-user")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -95,7 +96,7 @@ public class UsuarioControllerTests {
                 Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
-                perfils,
+                cargos,
                 Provider.LOCAL);
         List<Usuario> usuariosList = List.of(usuario);
         Page<Usuario> usuariosPage = new PageImpl<Usuario>(usuariosList);
@@ -108,14 +109,14 @@ public class UsuarioControllerTests {
     @Test
     @Order(4)
     public void getUsuarioById() throws Exception {
-        Usuario usuario = new Usuario("teste",
+        UsuarioResponse usuario = new UsuarioResponse(
                 "teste",
-                "123",
+                "teste",
                 Sexos.MASCULINO,
-                "teste@teste.com",
                 "999999999",
-                perfils,
-                Provider.LOCAL);
+                "teste@teste.com",
+                true
+        );
         when(usuarioService.findById(1L)).thenReturn(ResponseEntity.ok(usuario));
         this.mockMvc.perform(get("/api/usuarios/"+1L))
                 .andExpect(status().isOk());

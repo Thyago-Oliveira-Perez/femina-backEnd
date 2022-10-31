@@ -11,16 +11,16 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "perfil", schema = "public")
-public class Perfil extends AbstractEntity implements GrantedAuthority{
+@Table(name = "cargos", schema = "public")
+public class Cargos extends AbstractEntity implements GrantedAuthority{
 
     @Getter @Setter
     @Column(name = "perfilName", nullable = false, length = 30, unique = true)
-    private String perfilName;
+    private String cargoName;
 
     @Override
     public String getAuthority() {
-        return this.perfilName;
+        return this.cargoName;
     }
 
 }

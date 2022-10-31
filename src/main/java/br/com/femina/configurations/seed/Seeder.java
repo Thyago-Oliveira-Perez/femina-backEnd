@@ -1,7 +1,6 @@
 package br.com.femina.configurations.seed;
 
 import br.com.femina.entities.*;
-import br.com.femina.enums.Cargos;
 import br.com.femina.enums.Provider;
 import br.com.femina.enums.Sexos;
 import br.com.femina.enums.Tamanhos;
@@ -98,8 +97,8 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                             this.produtoRepository.save(produto);
 
                             if(this.perfilRepository.count() <= 0){
-                                List<Perfil> perfis = new ArrayList<Perfil>(){{
-                                    add(new Perfil(Cargos.USUARIO.toString()));
+                                List<Cargos> perfis = new ArrayList<Cargos>(){{
+                                    add(new Cargos(br.com.femina.enums.Cargos.USUARIO.toString()));
                                 }};
                                 this.perfilRepository.saveAll(perfis);
 

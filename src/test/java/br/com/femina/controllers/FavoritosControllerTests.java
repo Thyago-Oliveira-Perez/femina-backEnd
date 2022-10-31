@@ -47,14 +47,14 @@ public class FavoritosControllerTests {
 
     @BeforeEach
     void initUseCase() {
-        Collection<Perfil> perfils = List.of();
+        Collection<Cargos> cargos = List.of();
         usuario = new Usuario("teste",
                 "teste",
                 "123",
                 Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
-                perfils,
+                cargos,
                 Provider.LOCAL);
         Categorias categorias = new Categorias("teste");
         Marca marca = new Marca("teste");
