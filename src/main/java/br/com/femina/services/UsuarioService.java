@@ -35,7 +35,7 @@ public class UsuarioService {
 
     public ResponseEntity<?> registerUser(UsuarioRequest newUsuario){
         try{
-            saveUser(this.UsuarioRequestToUsuarioEntity(newUsuario));
+            saveUser(this.usuarioRequestToDbUsuario(newUsuario));
             return ResponseEntity.ok().body("Usuario registrado com sucesso!");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -45,7 +45,7 @@ public class UsuarioService {
 
     public ResponseEntity<UsuarioResponse> findById(Long id){
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
-        return usuario.isPresent() ? ResponseEntity.ok().body(this.UsuarioEntityToUsuarioResponse(usuario.get())) : ResponseEntity.notFound().build();
+        return usuario.isPresent() ? ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario.get())) : ResponseEntity.notFound().build();
     }
 
     public Page<Usuario> findAll(Pageable pageable){
@@ -72,7 +72,7 @@ public class UsuarioService {
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
             usuario.setSenha(senha.encode(usuario.getSenha()));
             saveUser(usuario);
-            return ResponseEntity.ok().body(this.UsuarioEntityToUsuarioResponse(usuario));
+            return ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario));
         }else{
             return ResponseEntity.notFound().build();
         }
@@ -80,7 +80,7 @@ public class UsuarioService {
 
     public ResponseEntity<?> registerBySelf(UsuarioRequest newUsuario){
         try{
-            saveUser(this.UsuarioRequestToUsuarioEntity(newUsuario));
+            saveUser(this.usuarioRequestToDbUsuario(newUsuario));
             return ResponseEntity.ok().body("Registrado com sucesso!");
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -94,7 +94,7 @@ public class UsuarioService {
         Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
         Optional<Usuario> usuario = this.usuarioRepository.findUsuarioById(idUser);
         return usuario.isPresent() ?
-                ResponseEntity.ok().body(this.UsuarioEntityToUsuarioResponse(usuario.get())) :
+                ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario.get())) :
                 ResponseEntity.notFound().build();
     }
 
@@ -124,7 +124,7 @@ public class UsuarioService {
     protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
 
     //<editor-fold desc="Helpers">
-    private UsuarioResponse UsuarioEntityToUsuarioResponse(Usuario usuario){
+    private UsuarioResponse dbUsuarioToUsuarioResponse(Usuario usuario){
         return new UsuarioResponse(
                 usuario.getNome(),
                 usuario.getLogin(),
@@ -135,7 +135,7 @@ public class UsuarioService {
         );
     }
 
-    private Usuario UsuarioRequestToUsuarioEntity(UsuarioRequest newUsuario){
+    private Usuario usuarioRequestToDbUsuario(UsuarioRequest newUsuario){
         List<Cargos> cargos = new ArrayList<Cargos>(){{
             add(new Cargos(br.com.femina.enums.Cargos.USUARIO.toString()));
         }};

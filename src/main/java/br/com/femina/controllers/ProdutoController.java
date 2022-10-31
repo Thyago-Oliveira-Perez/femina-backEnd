@@ -1,6 +1,7 @@
 package br.com.femina.controllers;
 
 import br.com.femina.dto.Filters;
+import br.com.femina.dto.Produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
 import br.com.femina.services.ProdutoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,25 +21,25 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    @GetMapping("/{idProduto}")
-    public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto) {
-        return this.produtoService.findById(idProduto);
-    }
-
-    @PostMapping("/list")
-    public ResponseEntity<Page<Produto>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
-        return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
-    }
-
     @PostMapping
     public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
         Produto produtoJson = new ObjectMapper().readValue(produto, Produto.class);
         return this.produtoService.insert(produtoJson, files);
     }
 
+    @GetMapping("/{idProduto}")
+    public ResponseEntity<ProdutoResponse> findById(@PathVariable("idProduto") Long idProduto) {
+        return this.produtoService.findById(idProduto);
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
+        return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
+    }
+
     @PutMapping("/{idProduto}")
-    public ResponseEntity<?> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
-        return this.produtoService.update(idProduto,produto);
+    public ResponseEntity<ProdutoResponse> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
+        return this.produtoService.update(idProduto, produto);
     }
 
     @PutMapping("/disable/{idProduto}")

@@ -46,6 +46,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                 add(new Categorias("Calça"));
                 add(new Categorias("Moletom"));
             }};
+            categoriasDefault.forEach(categoria -> categoria.setIsActive(true));
             this.categoriaRepository.saveAll(categoriasDefault);
 
             if(this.modeloRepository.count() <= 0){
@@ -57,6 +58,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                     add(new Modelo("Raglan"));
                     add(new Modelo("Polo"));
                 }};
+                modelosDefault.forEach(modelo -> modelo.setIsActive(true));
                 this.modeloRepository.saveAll(modelosDefault);
 
                 if(this.fornecedorRepository.count() <= 0){
@@ -66,10 +68,12 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                             "(11) 3643-4900",
                             "controladoria@controladoria.com"
                     );
+                    fornecedor.setIsActive(true);
                     this.fornecedorRepository.save(fornecedor);
 
                     if(this.marcaRepository.count() <= 0){
                         Marca marca = new Marca("Polo Wear");
+                        marca.setIsActive(true);
                         this.marcaRepository.save(marca);
 
                         if(this.produtoRepository.count() <= 0){
@@ -94,12 +98,14 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                     "./images/produto/" + codigoProduto,
                                     true
                             );
+                            produto.setIsActive(true);
                             this.produtoRepository.save(produto);
 
                             if(this.perfilRepository.count() <= 0){
                                 List<Cargos> perfis = new ArrayList<Cargos>(){{
                                     add(new Cargos(br.com.femina.enums.Cargos.USUARIO.toString()));
                                 }};
+                                perfis.forEach(perfil -> perfil.setIsActive(true));
                                 this.perfilRepository.saveAll(perfis);
 
                                 if(this.usuarioRepository.count() <= 0){
@@ -115,6 +121,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                             perfis,
                                             Provider.LOCAL
                                     );
+                                    usuario.setIsActive(true);
                                     this.usuarioRepository.save(usuario);
 
                                     if(this.favoritosRepository.count() <= 0){
