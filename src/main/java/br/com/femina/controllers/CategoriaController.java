@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RequestMapping("/api/categorias")
 public class CategoriaController {
 
