@@ -1,7 +1,7 @@
 package br.com.femina.services;
 
-import br.com.femina.dto.Filters;
-import br.com.femina.dto.Produto.ProdutoResponse;
+import br.com.femina.dto.produto.Filters;
+import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;

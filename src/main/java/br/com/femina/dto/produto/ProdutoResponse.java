@@ -1,4 +1,4 @@
-package br.com.femina.dto.Produto;
+package br.com.femina.dto.produto;
 
 import br.com.femina.entities.Categorias;
 import br.com.femina.entities.Fornecedor;

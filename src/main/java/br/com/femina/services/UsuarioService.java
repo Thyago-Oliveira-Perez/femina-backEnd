@@ -1,8 +1,8 @@
 package br.com.femina.services;
 
 import br.com.femina.configurations.security.services.TokenService;
-import br.com.femina.dto.Usuario.UsuarioRequest;
-import br.com.femina.dto.Usuario.UsuarioResponse;
+import br.com.femina.dto.usuario.UsuarioRequest;
+import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.entities.Cargos;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Provider;

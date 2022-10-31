@@ -1,20 +1,15 @@
-package br.com.femina.dto.Usuario;
+package br.com.femina.dto.categoria;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
-
-    @NotNull
+public class CategoriaResponse {
     @Getter @Setter
-    private String login;
-    @NotNull
+    private Long id;
     @Getter @Setter
-    private String password;
+    private String nome;
 }

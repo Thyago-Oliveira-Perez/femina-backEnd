@@ -1,7 +1,7 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
-import br.com.femina.dto.Usuario.UsuarioResponse;
+import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.enums.Provider;
 import br.com.femina.enums.Sexos;
 import br.com.femina.services.UsuarioService;

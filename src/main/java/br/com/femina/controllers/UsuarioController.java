@@ -1,7 +1,7 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.Usuario.UsuarioRequest;
-import br.com.femina.dto.Usuario.UsuarioResponse;
+import br.com.femina.dto.usuario.UsuarioRequest;
+import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.entities.Usuario;
 import br.com.femina.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

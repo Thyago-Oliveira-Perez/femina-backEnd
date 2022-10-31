@@ -1,6 +1,6 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.FavoritoPost;
+import br.com.femina.dto.usuario.FavoritoPost;
 import br.com.femina.entities.Favoritos;
 import br.com.femina.services.FavoritosService;
 import org.springframework.beans.factory.annotation.Autowired;

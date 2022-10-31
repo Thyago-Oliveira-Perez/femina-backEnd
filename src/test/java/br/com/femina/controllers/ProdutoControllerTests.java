@@ -1,7 +1,7 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
-import br.com.femina.dto.Filters;
+import br.com.femina.dto.produto.Filters;
 import br.com.femina.entities.*;
 import br.com.femina.enums.Tamanhos;
 import br.com.femina.services.ProdutoService;

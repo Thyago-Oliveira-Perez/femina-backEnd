@@ -1,4 +1,4 @@
-package br.com.femina.dto.Usuario;
+package br.com.femina.dto.usuario;
 
 import br.com.femina.enums.Sexos;
 import lombok.AllArgsConstructor;

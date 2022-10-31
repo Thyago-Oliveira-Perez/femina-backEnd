@@ -1,6 +1,6 @@
 package br.com.femina.configurations.security.controller;
 
-import br.com.femina.dto.Usuario.LoginRequest;
+import br.com.femina.dto.usuario.LoginRequest;
 import br.com.femina.dto.Token;
 import br.com.femina.configurations.security.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
