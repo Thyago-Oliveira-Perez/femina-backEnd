@@ -21,7 +21,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    @PostMapping
+    @PostMapping("/estoque/insert")
     public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
         Produto produtoJson = new ObjectMapper().readValue(produto, Produto.class);
         return this.produtoService.insert(produtoJson, files);
@@ -37,12 +37,12 @@ public class ProdutoController {
         return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }
 
-    @PutMapping("/{idProduto}")
+    @PutMapping("/estoque/{idProduto}")
     public ResponseEntity<ProdutoResponse> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
         return this.produtoService.update(idProduto, produto);
     }
 
-    @PutMapping("/disable/{idProduto}")
+    @PutMapping("/estoque/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
         return this.produtoService.updateStatusById(idProduto);
     }

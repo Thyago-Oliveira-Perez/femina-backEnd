@@ -129,8 +129,8 @@ public class UsuarioService {
                 usuario.getNome(),
                 usuario.getLogin(),
                 usuario.getSexo(),
-                usuario.getEmail(),
                 usuario.getTelefone(),
+                usuario.getEmail(),
                 usuario.getIsActive()
         );
     }
