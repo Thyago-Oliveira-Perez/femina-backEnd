@@ -16,7 +16,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Modifying
     @Query("UPDATE Produto produto SET produto.categoria.id = null WHERE produto.categoria.id = :idCategoria")
-    public void updateCategoriaByIdCategoria(@Param("idCategoria") Long id);
+    void updateCategoriaByIdCategoria(@Param("idCategoria") Long id);
 
     @Query("FROM Produto produto " +
             "WHERE " +
@@ -25,7 +25,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             "produto.cor LIKE :cor AND " +
             "CAST(produto.tamanho as string)  LIKE :tamanho AND " +
             "produto.isActive = :active ")
-    public Page<Produto> findAllByFilters(
+    Page<Produto> findAllByFilters(
             @Param("categoriaIds") List<Long> categoriaIds,
             @Param("marcaIds") List<Long> marcaIds,
             @Param("cor") String cor,
@@ -38,6 +38,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     @Query("UPDATE Produto produto " +
             "SET produto.isActive = :status " +
             "WHERE produto.id = :id")
-    public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
+    void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
 }

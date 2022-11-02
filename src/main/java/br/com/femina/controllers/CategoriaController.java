@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.categoria.CategoriaResponse;
 import br.com.femina.entities.Categorias;
 import br.com.femina.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RequestMapping("/api/categorias")
 public class CategoriaController {
 
@@ -20,13 +22,13 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping("/{idCategoria}")
-    public ResponseEntity<Categorias> findById(@PathVariable("idCategoria") Long idCategoria) {
+    public ResponseEntity<CategoriaResponse> findById(@PathVariable("idCategoria") Long idCategoria) {
         return this.categoriaService.findById(idCategoria);
     }
 
     @GetMapping
     @Cacheable(value = "categoriasFindAll")
-    public ResponseEntity<Page<Categorias>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<CategoriaResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.categoriaService.findAll(pageable));
     }
 

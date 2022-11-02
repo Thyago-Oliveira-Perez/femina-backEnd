@@ -1,10 +1,10 @@
 package br.com.femina.services;
 
 import br.com.femina.configurations.security.services.TokenService;
-import br.com.femina.dto.UserResponse;
-import br.com.femina.entities.Perfil;
+import br.com.femina.dto.usuario.UsuarioRequest;
+import br.com.femina.dto.usuario.UsuarioResponse;
+import br.com.femina.entities.Cargos;
 import br.com.femina.entities.Usuario;
-import br.com.femina.enums.Cargos;
 import br.com.femina.enums.Provider;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.UsuarioRepository;
@@ -26,19 +26,16 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private FavoritosRepository favoritosRepository;
-
     @Autowired
     private TokenService tokenService;
 
     BCryptPasswordEncoder senha = new BCryptPasswordEncoder();
 
-    public ResponseEntity<?> registerUser(Usuario usuario){
+    public ResponseEntity<?> registerUser(UsuarioRequest newUsuario){
         try{
-            usuario.setProvider(Provider.LOCAL);
-            saveUser(usuario);
+            saveUser(this.usuarioRequestToDbUsuario(newUsuario));
             return ResponseEntity.ok().body("Usuario registrado com sucesso!");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -46,55 +43,13 @@ public class UsuarioService {
         }
     }
 
-    public ResponseEntity<?> registerBySelf(Usuario usuario){
-        try{
-            Perfil perfil = new Perfil();
-            perfil.setPerfilName(Cargos.USUARIO.toString());
-            List<Perfil> perfis = new ArrayList<Perfil>();
-            perfis.add(perfil);
-            usuario.setPerfis(perfis);
-            usuario.setProvider(Provider.LOCAL);
-            usuario.setSenha(senha.encode(usuario.getSenha()));
-            saveUser(usuario);
-            return ResponseEntity.ok().body("Registrado com sucesso!");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("Dados inválidos!");
-        }
-    }
-
-    public ResponseEntity<Usuario> findById(Long id){
+    public ResponseEntity<UsuarioResponse> findById(Long id){
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
-        return usuario.isPresent() ? ResponseEntity.ok().body(usuario.get()) : ResponseEntity.notFound().build();
+        return usuario.isPresent() ? ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario.get())) : ResponseEntity.notFound().build();
     }
 
     public Page<Usuario> findAll(Pageable pageable){
         return this.usuarioRepository.findAllByIsActive(pageable, true);
-    }
-
-    public ResponseEntity<UserResponse> updateUser(Usuario usuario, Long id){
-        if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
-            usuario.setSenha(senha.encode(usuario.getSenha()));
-            saveUser(usuario);
-            UserResponse updatedUser = new UserResponse(
-                    usuario.getNome(),
-                    usuario.getLogin(),
-                    usuario.getSexo(),
-                    usuario.getEmail(),
-                    usuario.getTelefone(),
-                    usuario.getIsActive()
-            );
-            return ResponseEntity.ok().body(updatedUser);
-        }else{
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    public ResponseEntity<?> findByMyId(HttpHeaders headers){
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
-        Optional<Usuario> usuario = this.usuarioRepository.findUsuarioById(idUser);
-        return usuario.isPresent() ? ResponseEntity.ok().body(usuario.get()) : ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<?> changeStatusById(Long id){
@@ -113,15 +68,44 @@ public class UsuarioService {
         }
     }
 
+    public ResponseEntity<UsuarioResponse> updateUser(Usuario usuario, Long id){
+        if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
+            usuario.setSenha(senha.encode(usuario.getSenha()));
+            saveUser(usuario);
+            return ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario));
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public ResponseEntity<?> registerBySelf(UsuarioRequest newUsuario){
+        try{
+            saveUser(this.usuarioRequestToDbUsuario(newUsuario));
+            return ResponseEntity.ok().body("Registrado com sucesso!");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body("Dados inválidos!");
+        }
+    }
+
+    public ResponseEntity<UsuarioResponse> findByMyId(HttpHeaders headers){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        assert token != null;
+        Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
+        Optional<Usuario> usuario = this.usuarioRepository.findUsuarioById(idUser);
+        return usuario.isPresent() ?
+                ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario.get())) :
+                ResponseEntity.notFound().build();
+    }
+
+    //É chamado quando o usuario loga pelo facebook
     public void processOAuth2Login(String userEmail){
         boolean existsUser = this.usuarioRepository.existsUsuarioByEmail(userEmail);
-
         if(!existsUser){
             Usuario newUser = new Usuario();
             newUser.setLogin(userEmail);
             newUser.setEmail(userEmail);
             newUser.setProvider(Provider.FACEBOOK);
-
             saveUser(newUser);
         }
     }
@@ -138,4 +122,33 @@ public class UsuarioService {
 
     @Transactional
     protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
+
+    //<editor-fold desc="Helpers">
+    private UsuarioResponse dbUsuarioToUsuarioResponse(Usuario usuario){
+        return new UsuarioResponse(
+                usuario.getNome(),
+                usuario.getLogin(),
+                usuario.getSexo(),
+                usuario.getTelefone(),
+                usuario.getEmail(),
+                usuario.getIsActive()
+        );
+    }
+
+    private Usuario usuarioRequestToDbUsuario(UsuarioRequest newUsuario){
+        List<Cargos> cargos = new ArrayList<Cargos>(){{
+            add(new Cargos(br.com.femina.enums.Cargos.USUARIO.toString()));
+        }};
+        return new Usuario(
+            newUsuario.getNome(),
+            newUsuario.getLogin(),
+            senha.encode(newUsuario.getPassword()),
+            newUsuario.getSexo(),
+            newUsuario.getEmail(),
+            newUsuario.getTelefone(),
+            cargos,
+            Provider.LOCAL
+        );
+    }
+    //</editor-fold>
 }

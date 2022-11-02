@@ -1,6 +1,7 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.Filters;
+import br.com.femina.dto.produto.Filters;
+import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
 import br.com.femina.services.ProdutoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,37 +16,34 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
     @Autowired
     private ProdutoService produtoService;
 
+    @PostMapping("/estoque/insert")
+    public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
+        return this.produtoService.insert(produto, files);
+    }
+
     @GetMapping("/{idProduto}")
-    public ResponseEntity<Produto> findById(@PathVariable("idProduto") Long idProduto) {
+    public ResponseEntity<ProdutoResponse> findById(@PathVariable("idProduto") Long idProduto) {
         return this.produtoService.findById(idProduto);
     }
 
     @PostMapping("/list")
-    public ResponseEntity<Page<Produto>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
+    public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }
 
-    @PostMapping
-    public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) {
-        return this.produtoService.insert(produto, files);
+    @PutMapping("/estoque/{idProduto}")
+    public ResponseEntity<ProdutoResponse> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
+        return this.produtoService.update(idProduto, produto);
     }
 
-    @PutMapping("/{idProduto}")
-    public ResponseEntity<?> update(
-            @PathVariable("idProduto") Long idProduto,
-            String produto,
-            @RequestParam("image") Optional<MultipartFile[]> files
-    ) {
-        return this.produtoService.update(idProduto,produto,files);
-    }
-
-    @PutMapping("/disable/{idProduto}")
+    @PutMapping("/estoque/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
         return this.produtoService.updateStatusById(idProduto);
     }

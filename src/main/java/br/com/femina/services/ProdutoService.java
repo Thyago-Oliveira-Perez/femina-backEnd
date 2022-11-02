@@ -1,12 +1,14 @@
 package br.com.femina.services;
 
-import br.com.femina.dto.Filters;
+import br.com.femina.dto.produto.Filters;
+import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -72,12 +77,14 @@ public class ProdutoService {
         }
     }
 
-    public ResponseEntity<Produto> findById(Long id){
+    public ResponseEntity<ProdutoResponse> findById(Long id){
         Optional<Produto> produto = this.produtoRepository.findById(id);
-        return produto.isPresent() ? ResponseEntity.ok().body(produto.get()) : ResponseEntity.notFound().build();
+        return produto.isPresent() ?
+                ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto.get())) :
+                ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<?> update(Long id, String produtoString, Optional<MultipartFile[]> files) {
+    public ResponseEntity<ProdutoResponse> update(Long id, String produtoString, Optional<MultipartFile[]> files) {
         try {
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
             if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
@@ -86,7 +93,7 @@ public class ProdutoService {
                     produto.setImagem(imagePath);
                 }
                 saveProduto(produto);
-                return ResponseEntity.ok().body("Produto atualizado com sucesso!");
+                return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto));
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -95,26 +102,31 @@ public class ProdutoService {
         }
     }
 
-    public Page<Produto> findAllByFilters(Filters filters, Pageable pageable) {
-        return this.produtoRepository.findAllByFilters(
+    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
+        Page<Produto> dbProdutosList = this.produtoRepository.findAllByFilters(
                 filters.getCategoriaIds(),
                 filters.getMarcaIds(),
                 filters.getCor(),
-                "GG",
+                filters.getTamanho().toString(),
                 pageable,
                 true
         );
+        return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
     }
 
     public ResponseEntity<?> updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){
             String mensagem = "";
-            Boolean status = this.produtoRepository.getById(id).getIsActive();
+            Produto dbProduto = this.produtoRepository.getById(id);
+            Boolean status = dbProduto.getIsActive();
             changeStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativado";
             }
-            mensagem = "desativado";
+            if(status.equals(true)){
+                this.deleteFavoritosRelatedToProduct(dbProduto.getId());
+                mensagem = "desativado";
+            }
             return ResponseEntity.ok().body("Produto " + mensagem + " com sucesso!");
         }else{
             return ResponseEntity.notFound().build();
@@ -136,4 +148,44 @@ public class ProdutoService {
         this.favoritosRepository.deleteFavoritosByProductId(id);
     }
 
+    //<editor-fold desc="Helpers">
+    private Page<ProdutoResponse> pageDbProdutosToPageProdutoResponse(Page<Produto> dbProdutos){
+        List<ProdutoResponse> produtoResponseList = new ArrayList<>();
+        dbProdutos.map(dbProduto -> produtoResponseList.add(new ProdutoResponse(
+                dbProduto.getNome(),
+                dbProduto.getCodigo(),
+                dbProduto.getValor(),
+                dbProduto.getMarca(),
+                dbProduto.getCategoria(),
+                dbProduto.getModelo(),
+                dbProduto.getFornecedor(),
+                dbProduto.getTamanho(),
+                dbProduto.getCor(),
+                dbProduto.getDescricao(),
+                dbProduto.getImagem(),
+                dbProduto.getDestaque()
+        )));
+
+        Page<ProdutoResponse> pageProdutoResponse = new PageImpl<ProdutoResponse>(produtoResponseList);
+        return pageProdutoResponse;
+    }
+
+    private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto){
+        return new ProdutoResponse(
+                dbProduto.getNome(),
+                dbProduto.getCodigo(),
+                dbProduto.getValor(),
+                dbProduto.getMarca(),
+                dbProduto.getCategoria(),
+                dbProduto.getModelo(),
+                dbProduto.getFornecedor(),
+                dbProduto.getTamanho(),
+                dbProduto.getCor(),
+                dbProduto.getDescricao(),
+                dbProduto.getImagem(),
+                dbProduto.getDestaque()
+        );
+    }
+
+    //</editor-fold>
 }

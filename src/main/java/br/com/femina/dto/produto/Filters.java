@@ -1,4 +1,4 @@
-package br.com.femina.dto;
+package br.com.femina.dto.produto;
 
 import br.com.femina.enums.Tamanhos;
 

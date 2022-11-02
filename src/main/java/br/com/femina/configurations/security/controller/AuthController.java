@@ -1,6 +1,6 @@
 package br.com.femina.configurations.security.controller;
 
-import br.com.femina.dto.AuthCredentialRequest;
+import br.com.femina.dto.usuario.LoginRequest;
 import br.com.femina.dto.Token;
 import br.com.femina.configurations.security.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<Token> login(@RequestBody @Valid AuthCredentialRequest credentials){
+    public ResponseEntity<Token> login(@RequestBody @Valid LoginRequest credentials){
 
         UsernamePasswordAuthenticationToken loginCredentials =
                 new UsernamePasswordAuthenticationToken(credentials.getLogin(), credentials.getPassword());

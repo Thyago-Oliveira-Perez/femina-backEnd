@@ -1,6 +1,7 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.UserResponse;
+import br.com.femina.dto.usuario.UsuarioRequest;
+import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.entities.Usuario;
 import br.com.femina.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,24 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
+    //<editor-fold desc="Endpoints para controle de usuarios">
     @PostMapping("/new-user")
-    public ResponseEntity<?> registerUser(@RequestBody Usuario usuario){
-        return this.usuarioService.registerUser(usuario);
+    public ResponseEntity<?> registerUser(@RequestBody UsuarioRequest newUsuario){
+        return this.usuarioService.registerUser(newUsuario);
     }
 
     @PostMapping("/update-user/{id}")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
+    public ResponseEntity<UsuarioResponse> updateUser(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
         return this.usuarioService.updateUser(usuario, idUsuario);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable("id")Long id){
+    public ResponseEntity<UsuarioResponse> findById(@PathVariable("id")Long id){
         return this.usuarioService.findById(id);
     }
 
@@ -41,20 +44,22 @@ public class UsuarioController {
     public ResponseEntity<?> disableUserById(@PathVariable("id") Long id){
         return this.usuarioService.changeStatusById(id);
     }
+    //</editor-fold>
 
-    //endpoints que o usuario controla
+    //<editor-fold desc="Endpoints para que usuario controle seus dados">
     @PostMapping("/register")
-    public ResponseEntity<?> registerBySelf(@RequestBody Usuario usuario){
-        return this.usuarioService.registerBySelf(usuario);
+    public ResponseEntity<?> registerBySelf(@RequestBody UsuarioRequest newUser){
+        return this.usuarioService.registerBySelf(newUser);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<UserResponse> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
+    public ResponseEntity<UsuarioResponse> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
         return this.usuarioService.updateUser(usuario, idUsuario);
     }
 
     @GetMapping("/my-infos")
-    public ResponseEntity<?> findByMyId(@RequestHeader HttpHeaders headers){
+    public ResponseEntity<UsuarioResponse> findByMyId(@RequestHeader HttpHeaders headers){
         return this.usuarioService.findByMyId(headers);
     }
+    //</editor-fold>
 }

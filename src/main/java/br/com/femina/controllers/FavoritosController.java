@@ -1,6 +1,6 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.FavoritoPost;
+import br.com.femina.dto.usuario.FavoritoPost;
 import br.com.femina.entities.Favoritos;
 import br.com.femina.services.FavoritosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RequestMapping("/api/favoritos")
 public class FavoritosController {
 
