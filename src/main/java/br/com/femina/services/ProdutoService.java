@@ -5,6 +5,7 @@ import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,30 +39,66 @@ public class ProdutoService {
 
     private String path = "./images/produto/";
 
-    public ResponseEntity<?> insert(Produto produto, MultipartFile[] files){
-        String imagePath = saveFile(produto, files);
-        produto.setImagem(imagePath);
-        try{
+    private void createDirIfNotExist(Produto produto) {
+        Path directory = Paths.get(path+produto.getCodigo());
+        if (!Files.exists(directory)) {
+            try {
+                Files.createDirectories(directory);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public String saveFile(Produto produto, MultipartFile[] files) {
+        createDirIfNotExist(produto);
+        for(int i = 0;i < files.length;i++) {
+            try {
+                byte[] bytes = files[i].getBytes();
+                ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
+                BufferedImage newImage = ImageIO.read(inStreambj);
+                ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return path+produto.getCodigo();
+    }
+
+    public ResponseEntity<?> insert(String produtoString, MultipartFile[] files) {
+        try {
+            Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
+            String imagePath = saveFile(produto, files);
+            produto.setImagem(imagePath);
             saveProduto(produto);
             return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
-        }catch(Exception e){
+        } catch(Exception e) {
             return ResponseEntity.badRequest().body("Produto já cadastrado.");
         }
     }
 
-    public ResponseEntity<ProdutoResponse>  findById(Long id){
+    public ResponseEntity<ProdutoResponse> findById(Long id){
         Optional<Produto> produto = this.produtoRepository.findById(id);
         return produto.isPresent() ?
                 ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto.get())) :
                 ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<ProdutoResponse> update(Long id, Produto produto) {
-        if(this.produtoRepository.existsById(id) && id.equals(produto.getId())){
-            saveProduto(produto);
-            return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto));
-        }else{
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ProdutoResponse> update(Long id, String produtoString, Optional<MultipartFile[]> files) {
+        try {
+            Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
+            if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
+                if(files.isPresent()) {
+                    String imagePath = saveFile(produto, files.get());
+                    produto.setImagem(imagePath);
+                }
+                saveProduto(produto);
+                return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro de Processamento Da Entidade");
         }
     }
 
@@ -150,36 +187,5 @@ public class ProdutoService {
         );
     }
 
-    private String saveFile(Produto produto, MultipartFile[] files){
-        createDirIfNotExist(produto);
-        for(int i = 0;i < files.length;i++) {
-            try {
-                byte[] bytes = files[i].getBytes();
-                ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
-                BufferedImage newImage = ImageIO.read(inStreambj);
-                String extension = files[i].getOriginalFilename().split("\\.")[1];
-                System.out.println(extension);
-                if (Objects.equals(extension, "png")) {
-                    ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
-                } else {
-                    ImageIO.write(newImage, "jpg", new File(path + produto.getCodigo() + "/" + i + ".jpg"));
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return path+produto.getCodigo();
-    }
-
-    private void createDirIfNotExist(Produto produto) {
-        Path directory = Paths.get(path+produto.getCodigo());
-        if (!Files.exists(directory)) {
-            try {
-                Files.createDirectories(directory);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
     //</editor-fold>
 }

@@ -45,7 +45,7 @@ public class MarcaService {
                 mensagem = "ativado";
             }
             mensagem = "desativado";
-            return ResponseEntity.ok().body("" + mensagem +" com sucesso!");
+            return ResponseEntity.ok().body("Marca" + mensagem +" com sucesso!");
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -26,7 +26,11 @@ public class Banners extends AbstractEntity {
     private Usuario usuario;
 
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo", length = 30, nullable = false)
     private TipoDeBanner tipo;
 
+    @Getter @Setter
+    @Column(name = "countImagens")
+    private Integer countImagens;
 }

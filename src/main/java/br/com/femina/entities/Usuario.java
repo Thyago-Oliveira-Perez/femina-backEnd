@@ -34,6 +34,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
     private String senha;
 
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
     @Column(name = "sexo", nullable = false, length = 15, unique = true)
     private Sexos sexo;
 
