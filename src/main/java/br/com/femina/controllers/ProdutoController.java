@@ -39,8 +39,12 @@ public class ProdutoController {
     }
 
     @PutMapping("/estoque/{idProduto}")
-    public ResponseEntity<ProdutoResponse> update(@RequestBody Produto produto, @PathVariable Long idProduto) {
-        return this.produtoService.update(idProduto, produto);
+    public ResponseEntity<?> update(
+            String produto,
+            @PathVariable Long idProduto,
+            Optional<MultipartFile[]> files
+    ) {
+        return this.produtoService.update(idProduto, produto, files);
     }
 
     @PutMapping("/estoque/disable/{idProduto}")

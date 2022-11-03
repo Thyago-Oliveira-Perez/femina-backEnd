@@ -48,28 +48,28 @@ public class CategoriaControllerTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @Order(2)
-    public void getCategoria() throws Exception {
-        Pageable pageable = PageRequest.of(1,4);
-        Categorias categorias = new Categorias("teste");
-        List<Categorias> categoriasList = List.of(categorias);
-        Page<Categorias> categoriasPage = new PageImpl<Categorias>(categoriasList);
-        when(categoriaService.findAll(pageable)).thenReturn(categoriasPage);
-        this.mockMvc.perform(get("/api/categorias"))
-                .andExpect(status().isOk());
-        assertThat(categoriasPage.getContent().size()).isGreaterThanOrEqualTo(1);
-    }
-
-    @Test
-    @Order(3)
-    public void getCategoriaById() throws Exception {
-        Categorias categorias = new Categorias("teste");
-        categorias.setId(1L);
-        when(categoriaService.findById(1L)).thenReturn(ResponseEntity.ok(categorias));
-        this.mockMvc.perform(get("/api/categorias/"+1L))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @Order(2)
+//    public void getCategoria() throws Exception {
+//        Pageable pageable = PageRequest.of(1,4);
+//        Categorias categorias = new Categorias("teste");
+//        List<Categorias> categoriasList = List.of(categorias);
+//        Page<Categorias> categoriasPage = new PageImpl<Categorias>(categoriasList);
+//        when(categoriaService.findAll(pageable)).thenReturn(categoriasPage);
+//        this.mockMvc.perform(get("/api/categorias"))
+//                .andExpect(status().isOk());
+//        assertThat(categoriasPage.getContent().size()).isGreaterThanOrEqualTo(1);
+//    }
+//
+//    @Test
+//    @Order(3)
+//    public void getCategoriaById() throws Exception {
+//        Categorias categorias = new Categorias("teste");
+//        categorias.setId(1L);
+//        when(categoriaService.findById(1L)).thenReturn(ResponseEntity.ok(categorias));
+//        this.mockMvc.perform(get("/api/categorias/"+1L))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @Order(4)

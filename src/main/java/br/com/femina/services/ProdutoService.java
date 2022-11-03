@@ -25,7 +25,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -50,7 +49,7 @@ public class ProdutoService {
         }
     }
 
-    public String saveFile(Produto produto, MultipartFile[] files) {
+    public void saveFile(Produto produto, MultipartFile[] files) {
         createDirIfNotExist(produto);
         for(int i = 0;i < files.length;i++) {
             try {
@@ -62,15 +61,14 @@ public class ProdutoService {
                 System.out.println(e.getMessage());
             }
         }
-        return path+produto.getCodigo();
     }
 
     public ResponseEntity<?> insert(String produtoString, MultipartFile[] files) {
         try {
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
-            String imagePath = saveFile(produto, files);
-            produto.setImagem(imagePath);
+            produto.setImagem(path+produto.getCodigo());
             saveProduto(produto);
+            saveFile(produto, files);
             return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
         } catch(Exception e) {
             return ResponseEntity.badRequest().body("Produto já cadastrado.");
@@ -84,15 +82,12 @@ public class ProdutoService {
                 ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<ProdutoResponse> update(Long id, String produtoString, Optional<MultipartFile[]> files) {
+    public ResponseEntity<?> update(Long id, String produtoString, Optional<MultipartFile[]> files) {
         try {
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
             if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
-                if(files.isPresent()) {
-                    String imagePath = saveFile(produto, files.get());
-                    produto.setImagem(imagePath);
-                }
                 saveProduto(produto);
+                saveFile(produto, files.get());
                 return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto));
             } else {
                 return ResponseEntity.notFound().build();
