@@ -7,6 +7,7 @@ import br.com.femina.entities.Cargos;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Provider;
 import br.com.femina.repositories.FavoritosRepository;
+import br.com.femina.repositories.PerfilRepository;
 import br.com.femina.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,9 @@ public class UsuarioService {
     private FavoritosRepository favoritosRepository;
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private PerfilRepository perfilRepository;
 
     BCryptPasswordEncoder senha = new BCryptPasswordEncoder();
 
@@ -136,9 +140,7 @@ public class UsuarioService {
     }
 
     private Usuario usuarioRequestToDbUsuario(UsuarioRequest newUsuario){
-        List<Cargos> cargos = new ArrayList<Cargos>(){{
-            add(new Cargos(br.com.femina.enums.Cargos.USUARIO.toString()));
-        }};
+        List<Cargos> cargos = perfilRepository.findCargosByCargoName(br.com.femina.enums.Cargos.USUARIO.toString());
         return new Usuario(
             newUsuario.getNome(),
             newUsuario.getLogin(),
