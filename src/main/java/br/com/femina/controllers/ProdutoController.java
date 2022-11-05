@@ -2,10 +2,8 @@ package br.com.femina.controllers;
 
 import br.com.femina.dto.produto.Filters;
 import br.com.femina.dto.produto.ProdutoResponse;
-import br.com.femina.entities.Produto;
 import br.com.femina.services.ProdutoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,15 +40,27 @@ public class ProdutoController {
     public ResponseEntity<?> update(
             String produto,
             @PathVariable Long idProduto,
-            Optional<MultipartFile[]> files
+            @RequestParam("image") Optional<MultipartFile[]> files
     ) {
         return this.produtoService.update(idProduto, produto, files);
+    }
+
+    @PutMapping("/estoque/remove/{idProduto}")
+    public ResponseEntity<?> removeImage(
+            @PathVariable("idProduto") Long id,
+            @RequestBody String nameImage
+    ) {
+        return produtoService.removeImage(id, nameImage);
+    }
+
+    @PutMapping("/estoque/remove-all/{idProduto}")
+    public ResponseEntity<?> removeAllImages(@PathVariable("idProduto") Long id) {
+        return produtoService.removeAllImages(id);
     }
 
     @PutMapping("/estoque/disable/{idProduto}")
     public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
         return this.produtoService.updateStatusById(idProduto);
     }
-
 
 }

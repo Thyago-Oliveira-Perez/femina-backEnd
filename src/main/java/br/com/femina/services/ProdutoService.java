@@ -38,7 +38,12 @@ public class ProdutoService {
 
     private String path = "./images/produto/";
 
-    private void createDirIfNotExist(Produto produto) {
+    public int countFiles(Produto produto) {
+        File directory = new File(path+produto.getCodigo());
+        return directory.list().length;
+    }
+
+    public void createDirIfNotExist(Produto produto) {
         Path directory = Paths.get(path+produto.getCodigo());
         if (!Files.exists(directory)) {
             try {
@@ -51,9 +56,10 @@ public class ProdutoService {
 
     public void saveFile(Produto produto, MultipartFile[] files) {
         createDirIfNotExist(produto);
-        for(int i = 0;i < files.length;i++) {
+        int count = countFiles(produto);
+        for(int i = count;i < count+files.length;i++) {
             try {
-                byte[] bytes = files[i].getBytes();
+                byte[] bytes = files[i-count].getBytes();
                 ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
                 BufferedImage newImage = ImageIO.read(inStreambj);
                 ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
@@ -87,13 +93,41 @@ public class ProdutoService {
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
             if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
                 saveProduto(produto);
-                saveFile(produto, files.get());
+                files.ifPresent(multipartFiles -> saveFile(produto, multipartFiles));
                 return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto));
             } else {
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro de Processamento Da Entidade");
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> removeImage(Long id, String imageName) {
+        if(produtoRepository.existsById(id)) {
+            Produto produto = produtoRepository.getById(id);
+            File fileToDelete = new File(path + produto.getCodigo() + "/" + imageName);
+            if(fileToDelete.delete()) {
+                return ResponseEntity.ok().body(produto);
+            } else {
+                return ResponseEntity.internalServerError().body("Imagem não encontrada");
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public ResponseEntity<?> removeAllImages(Long id) {
+        if(produtoRepository.existsById(id)) {
+            Produto produto = produtoRepository.getById(id);
+            int count = countFiles(produto);
+            for(int i = 0;i < count;i++) {
+                File fileToDelete = new File(path + produto.getCodigo() + "/" + i + ".png");
+                fileToDelete.delete();
+            }
+            return ResponseEntity.ok().body("Imagens Deletadas com Sucesso.");
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
