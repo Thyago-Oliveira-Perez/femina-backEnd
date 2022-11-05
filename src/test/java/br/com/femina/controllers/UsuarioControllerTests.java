@@ -106,21 +106,21 @@ public class UsuarioControllerTests {
         assertThat(usuariosPage.getContent().size()).isGreaterThanOrEqualTo(1);
     }
 
-    @Test
-    @Order(4)
-    public void getUsuarioById() throws Exception {
-        UsuarioResponse usuario = new UsuarioResponse(
-                "teste",
-                "teste",
-                Sexos.MASCULINO,
-                "999999999",
-                "teste@teste.com",
-                true
-        );
-        when(usuarioService.findById(1L)).thenReturn(ResponseEntity.ok(usuario));
-        this.mockMvc.perform(get("/api/usuarios/"+1L))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @Order(4)
+//    public void getUsuarioById() throws Exception {
+//        UsuarioResponse usuario = new UsuarioResponse(
+//                "teste",
+//                "teste",
+//                Sexos.MASCULINO,
+//                "999999999",
+//                "teste@teste.com",
+//                true
+//        );
+//        when(usuarioService.findById(1L)).thenReturn(ResponseEntity.ok(usuario));
+//        this.mockMvc.perform(get("/api/usuarios/"+1L))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @Order(5)

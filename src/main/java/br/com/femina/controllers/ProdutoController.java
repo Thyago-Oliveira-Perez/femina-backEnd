@@ -45,7 +45,7 @@ public class ProdutoController {
         return this.produtoService.update(idProduto, produto, files);
     }
 
-    @PutMapping("/estoque/remove/{idProduto}")
+    @PutMapping("/estoque/remove-image/{idProduto}")
     public ResponseEntity<?> removeImage(
             @PathVariable("idProduto") Long id,
             @RequestBody String nameImage
@@ -53,7 +53,7 @@ public class ProdutoController {
         return produtoService.removeImage(id, nameImage);
     }
 
-    @PutMapping("/estoque/remove-all/{idProduto}")
+    @PutMapping("/estoque/remove-all-images/{idProduto}")
     public ResponseEntity<?> removeAllImages(@PathVariable("idProduto") Long id) {
         return produtoService.removeAllImages(id);
     }

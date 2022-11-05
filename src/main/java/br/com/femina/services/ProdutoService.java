@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,20 @@ public class ProdutoService {
         return directory.list().length;
     }
 
+    public int getLastFile(Produto produto) {
+        File directory = new File(path+produto.getCodigo());
+        String[] files = directory.list();
+        int[] numberFiles = new int[files.length];
+        for(int i = 0;i < files.length;i++) {
+            files[i] = files[i].substring(0, files[i].lastIndexOf('.'));
+            numberFiles[i] = Integer.parseInt(files[i]);
+        }
+        if(files.length == 0) {
+            return 0;
+        }
+        return Arrays.stream(numberFiles).max().getAsInt();
+    }
+
     public void createDirIfNotExist(Produto produto) {
         Path directory = Paths.get(path+produto.getCodigo());
         if (!Files.exists(directory)) {
@@ -56,8 +71,8 @@ public class ProdutoService {
 
     public void saveFile(Produto produto, MultipartFile[] files) {
         createDirIfNotExist(produto);
-        int count = countFiles(produto);
-        for(int i = count;i < count+files.length;i++) {
+        int count = getLastFile(produto);
+        for(int i = count+1;i < count+files.length;i++) {
             try {
                 byte[] bytes = files[i-count].getBytes();
                 ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
@@ -108,7 +123,7 @@ public class ProdutoService {
             Produto produto = produtoRepository.getById(id);
             File fileToDelete = new File(path + produto.getCodigo() + "/" + imageName);
             if(fileToDelete.delete()) {
-                return ResponseEntity.ok().body(produto);
+                return ResponseEntity.ok().body("Imagem deletada com Sucesso");
             } else {
                 return ResponseEntity.internalServerError().body("Imagem não encontrada");
             }
@@ -120,10 +135,11 @@ public class ProdutoService {
     public ResponseEntity<?> removeAllImages(Long id) {
         if(produtoRepository.existsById(id)) {
             Produto produto = produtoRepository.getById(id);
-            int count = countFiles(produto);
-            for(int i = 0;i < count;i++) {
-                File fileToDelete = new File(path + produto.getCodigo() + "/" + i + ".png");
-                fileToDelete.delete();
+            File dir = new File(path+produto.getCodigo());
+            for(File file: dir.listFiles()) {
+                if(!file.isDirectory()){
+                    file.delete();
+                }
             }
             return ResponseEntity.ok().body("Imagens Deletadas com Sucesso.");
         } else {

@@ -56,34 +56,34 @@ public class FornecedorControllerTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @Order(2)
-    public void getFornecedor() throws Exception {
-        Pageable pageable = PageRequest.of(1,4);
-        Fornecedor fornecedor = new Fornecedor("teste",
-                                                "00.000.000/0000-00",
-                                              "999999999",
-                                                "teste@teste.com");
-        List<Fornecedor> fornecedoresList = List.of(fornecedor);
-        Page<Fornecedor> fornecedorPage = new PageImpl<Fornecedor>(fornecedoresList);
-        when(fornecedorService.findAll(pageable)).thenReturn(fornecedorPage);
-        this.mockMvc.perform(get("/api/fornecedores"))
-                .andExpect(status().isOk());
-        assertThat(fornecedorPage.getContent().size()).isGreaterThanOrEqualTo(1);
-    }
-
-    @Test
-    @Order(3)
-    public void getFornecedorById() throws Exception {
-        Fornecedor fornecedor = new Fornecedor("teste",
-                                                "00.000.000/0000-00",
-                                              "999999999",
-                                                "teste@teste.com");
-        fornecedor.setId(1L);
-        when(fornecedorService.findById(1L)).thenReturn(ResponseEntity.ok(fornecedor));
-        this.mockMvc.perform(get("/api/fornecedores/"+1L))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @Order(2)
+//    public void getFornecedor() throws Exception {
+//        Pageable pageable = PageRequest.of(1,4);
+//        Fornecedor fornecedor = new Fornecedor("teste",
+//                                                "00.000.000/0000-00",
+//                                              "999999999",
+//                                                "teste@teste.com");
+//        List<Fornecedor> fornecedoresList = List.of(fornecedor);
+//        Page<Fornecedor> fornecedorPage = new PageImpl<Fornecedor>(fornecedoresList);
+//        when(fornecedorService.findAll(pageable)).thenReturn(fornecedorPage);
+//        this.mockMvc.perform(get("/api/fornecedores"))
+//                .andExpect(status().isOk());
+//        assertThat(fornecedorPage.getContent().size()).isGreaterThanOrEqualTo(1);
+//    }
+//
+//    @Test
+//    @Order(3)
+//    public void getFornecedorById() throws Exception {
+//        Fornecedor fornecedor = new Fornecedor("teste",
+//                                                "00.000.000/0000-00",
+//                                              "999999999",
+//                                                "teste@teste.com");
+//        fornecedor.setId(1L);
+//        when(fornecedorService.findById(1L)).thenReturn(ResponseEntity.ok(fornecedor));
+//        this.mockMvc.perform(get("/api/fornecedores/"+1L))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @Order(4)
