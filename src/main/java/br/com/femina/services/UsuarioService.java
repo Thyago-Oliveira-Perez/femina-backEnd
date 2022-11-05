@@ -130,6 +130,7 @@ public class UsuarioService {
     //<editor-fold desc="Helpers">
     private UsuarioResponse dbUsuarioToUsuarioResponse(Usuario usuario){
         return new UsuarioResponse(
+                usuario.getId(),
                 usuario.getNome(),
                 usuario.getLogin(),
                 usuario.getSexo(),

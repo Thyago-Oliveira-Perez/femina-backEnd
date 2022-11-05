@@ -1,5 +1,7 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.fornecedor.FornecedorRequest;
+import br.com.femina.dto.fornecedor.FornecedorResponse;
 import br.com.femina.entities.Fornecedor;
 import br.com.femina.services.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +21,25 @@ public class FornecedorController {
     private FornecedorService fornecedorService;
 
     @GetMapping("/{idFornecedor}")
-    public ResponseEntity<Fornecedor> findById(@PathVariable("idFornecedor") Long idFornecedor) {
+    public ResponseEntity<FornecedorResponse> findById(@PathVariable("idFornecedor") Long idFornecedor) {
         return this.fornecedorService.findById(idFornecedor);
     }
 
     @GetMapping
     @Cacheable(value = "fornecedoresFindAll")
-    public ResponseEntity<Page<Fornecedor>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<FornecedorResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.fornecedorService.findAll(pageable));
     }
 
     @PostMapping
     @CacheEvict(value = "fornecedoresFindAll")
-    public ResponseEntity<?> insert(@RequestBody Fornecedor fornecedor) {
+    public ResponseEntity<?> insert(@RequestBody FornecedorRequest fornecedor) {
         return this.fornecedorService.insert(fornecedor);
     }
 
     @PutMapping("/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
-    public ResponseEntity<?> update(@PathVariable("idFornecedor") Long idFornecedor,
+    public ResponseEntity<FornecedorResponse> update(@PathVariable("idFornecedor") Long idFornecedor,
                                     @RequestBody Fornecedor fornecedor) {
         return this.fornecedorService.update(idFornecedor, fornecedor);
     }

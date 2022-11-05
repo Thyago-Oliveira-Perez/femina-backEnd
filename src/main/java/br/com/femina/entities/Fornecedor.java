@@ -15,27 +15,23 @@ import javax.validation.constraints.Pattern;
 @Table(name = "fornecedores", schema = "public")
 public class Fornecedor extends AbstractEntity {
 
-    @Getter
-    @Setter
+    @Getter @Setter
     @Column(name = "nome", nullable = false)
     @NotNull(message = "Nome é obrigatório")
     private String name;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     @Pattern(regexp = "([0-9]{2}.[0-9]{3}.[0-9]{3}/[0-9]{4}-[0-9]{2}$)")
     @Column(name = "cnpj", nullable = false, unique = true)
     @NotNull(message = "Cnpj é obrigatório")
     private String cnpj;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     @Column(name = "telefone", nullable = false)
     @NotNull(message = "Telefone é obrigatório")
     private String telefone;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     @Column(name = "email", nullable = false, unique = true)
     @NotNull(message = "E-mail é obrigatório")
     private String email;

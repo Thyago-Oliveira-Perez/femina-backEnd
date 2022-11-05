@@ -1,14 +1,19 @@
 package br.com.femina.services;
 
+import br.com.femina.dto.fornecedor.FornecedorRequest;
+import br.com.femina.dto.fornecedor.FornecedorResponse;
 import br.com.femina.entities.Fornecedor;
 import br.com.femina.repositories.FornecedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,9 +22,9 @@ public class FornecedorService {
     @Autowired
     public FornecedorRepository fornecedorRepository;
 
-    public ResponseEntity<?> insert(Fornecedor fornecedor) {
+    public ResponseEntity<?> insert(FornecedorRequest fornecedor) {
         try{
-            saveFornecedor(fornecedor);
+            saveFornecedor(this.fornecedorRequestToDbFornecedor(fornecedor));
             return ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -27,19 +32,21 @@ public class FornecedorService {
         }
     }
 
-    public ResponseEntity<Fornecedor> findById(Long id) {
+    public ResponseEntity<FornecedorResponse> findById(Long id) {
         Optional<Fornecedor> fornecedor = this.fornecedorRepository.findById(id);
-        return fornecedor.isPresent() ? ResponseEntity.ok().body(fornecedor.get()) : ResponseEntity.notFound().build();
+        return fornecedor.isPresent() ?
+                ResponseEntity.ok().body(this.dbFornecedorToFornecedorResponse(fornecedor.get())) :
+                ResponseEntity.notFound().build();
     }
 
-    public Page<Fornecedor> findAll(Pageable pageable) {
-        return this.fornecedorRepository.findAllByIsActive(pageable, true);
+    public Page<FornecedorResponse> findAll(Pageable pageable) {
+        return this.pageDbFornecedoresToPageFornecedorResponse(this.fornecedorRepository.findAllByIsActive(pageable, true));
     }
 
-    public ResponseEntity<?> update(Long id, Fornecedor fornecedor) {
+    public ResponseEntity<FornecedorResponse> update(Long id, Fornecedor fornecedor) {
         if (this.fornecedorRepository.existsById(id) && fornecedor.getId().equals(id)){
             saveFornecedor(fornecedor);
-            return ResponseEntity.ok().body("Fornecedor atualizado com sucesso!");
+            return ResponseEntity.ok().body(this.dbFornecedorToFornecedorResponse(fornecedor));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -69,4 +76,40 @@ public class FornecedorService {
     protected void updateStatus(Long id, Boolean status){
         this.fornecedorRepository.updateStatus(id, status);
     }
+
+    //<editor-fold desc="Helpers">
+    private Page<FornecedorResponse> pageDbFornecedoresToPageFornecedorResponse(Page<Fornecedor> dbFornecedores){
+        List<FornecedorResponse> fornecedorResponseList = new ArrayList<>();
+
+        dbFornecedores.map(dbFornecedor -> fornecedorResponseList.add(new FornecedorResponse(
+                dbFornecedor.getId(),
+                dbFornecedor.getName(),
+                dbFornecedor.getCnpj(),
+                dbFornecedor.getTelefone(),
+                dbFornecedor.getEmail()
+        )));
+
+        Page<FornecedorResponse> pageFornecedorResponse = new PageImpl<FornecedorResponse>(fornecedorResponseList);
+        return pageFornecedorResponse;
+    }
+
+    private FornecedorResponse dbFornecedorToFornecedorResponse(Fornecedor dbFornecedor){
+        return new FornecedorResponse(
+            dbFornecedor.getId(),
+            dbFornecedor.getName(),
+            dbFornecedor.getCnpj(),
+            dbFornecedor.getTelefone(),
+            dbFornecedor.getEmail()
+        );
+    }
+
+    private Fornecedor fornecedorRequestToDbFornecedor(FornecedorRequest fornecedorRequest){
+        return new Fornecedor(
+                fornecedorRequest.getName(),
+                fornecedorRequest.getCnpj(),
+                fornecedorRequest.getTelefone(),
+                fornecedorRequest.getEmail()
+        );
+    }
+    //</editor-fold>
 }
