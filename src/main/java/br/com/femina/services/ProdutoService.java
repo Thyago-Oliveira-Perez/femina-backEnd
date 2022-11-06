@@ -3,6 +3,7 @@ package br.com.femina.services;
 import br.com.femina.dto.produto.Filters;
 import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
+import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -149,6 +150,16 @@ public class ProdutoService {
     }
 
     public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
+
+        if(filters.getCategoriaIds().size() == 0 &&
+           filters.getMarcaIds().size() == 0 &&
+           filters.getCor().equals("") &&
+           filters.getTamanho().equals(Enums.Tamanhos.ALL)){
+            Page<Produto> dbProdutosList = this.produtoRepository.findAll(pageable);
+
+            return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
+        }
+
         Page<Produto> dbProdutosList = this.produtoRepository.findAllByFilters(
                 filters.getCategoriaIds(),
                 filters.getMarcaIds(),

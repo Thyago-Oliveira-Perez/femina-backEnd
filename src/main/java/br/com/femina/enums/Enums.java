@@ -23,7 +23,8 @@ public class Enums {
         P,
         M,
         G,
-        GG;
+        GG,
+        ALL;
     }
 
     public enum TipoDeBanner {

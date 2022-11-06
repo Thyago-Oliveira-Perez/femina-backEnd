@@ -1,48 +1,24 @@
 package br.com.femina.dto.produto;
 
 import br.com.femina.enums.Enums;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class Filters {
 
+    @Getter @Setter
     private List<Long> categoriaIds;
+    @Getter @Setter
     private List<Long> marcaIds;
+    @Getter @Setter
     private String cor;
+    @Getter @Setter
     private Enums.Tamanhos tamanho;
-
-    public Filters() {
-    }
-
-    public List<Long> getCategoriaIds() {
-        return categoriaIds;
-    }
-
-    public void setCategoriaIds(List<Long> categoriaIds) {
-        this.categoriaIds = categoriaIds;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
-    public List<Long> getMarcaIds() {
-        return marcaIds;
-    }
-
-    public void setMarcaIds(List<Long> marcaIds) {
-        this.marcaIds = marcaIds;
-    }
-
-    public Enums.Tamanhos getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(Enums.Tamanhos tamanho) {
-        this.tamanho = tamanho;
-    }
 }

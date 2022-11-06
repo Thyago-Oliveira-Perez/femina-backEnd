@@ -23,8 +23,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             "produto.categoria.id IN :categoriaIds AND " +
             "produto.marca.id IN :marcaIds AND " +
             "produto.cor LIKE :cor AND " +
-            "CAST(produto.tamanho as string)  LIKE :tamanho AND " +
-            "produto.isActive = :active ")
+            "CAST(produto.tamanho as string) LIKE :tamanho AND " +
+            "produto.isActive = :active")
     Page<Produto> findAllByFilters(
             @Param("categoriaIds") List<Long> categoriaIds,
             @Param("marcaIds") List<Long> marcaIds,
