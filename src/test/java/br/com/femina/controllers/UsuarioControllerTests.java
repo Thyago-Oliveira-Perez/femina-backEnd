@@ -2,8 +2,7 @@ package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
 import br.com.femina.dto.usuario.UsuarioResponse;
-import br.com.femina.enums.Provider;
-import br.com.femina.enums.Sexos;
+import br.com.femina.enums.Enums;
 import br.com.femina.services.UsuarioService;
 import br.com.femina.entities.Cargos;
 import br.com.femina.entities.Usuario;
@@ -55,11 +54,11 @@ public class UsuarioControllerTests {
         Usuario usuario = new Usuario("teste",
                                     "teste",
                                     "123",
-                                    Sexos.MASCULINO,
+                                    Enums.Sexos.MASCULINO,
                                     "teste@teste.com",
                                     "999999999",
-                cargos,
-                                    Provider.LOCAL);
+                                    cargos,
+                                    Enums.Provider.LOCAL);
         this.mockMvc.perform(post("/api/usuarios/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(usuario))
@@ -74,11 +73,11 @@ public class UsuarioControllerTests {
         Usuario usuario = new Usuario("teste",
                 "teste",
                 "123",
-                Sexos.MASCULINO,
+                Enums.Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
                 cargos,
-                Provider.LOCAL);
+                Enums.Provider.LOCAL);
         this.mockMvc.perform(post("/api/usuarios/new-user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(usuario))
@@ -93,11 +92,11 @@ public class UsuarioControllerTests {
         Usuario usuario = new Usuario("teste",
                 "teste",
                 "123",
-                Sexos.MASCULINO,
+                Enums.Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
                 cargos,
-                Provider.LOCAL);
+                Enums.Provider.LOCAL);
         List<Usuario> usuariosList = List.of(usuario);
         Page<Usuario> usuariosPage = new PageImpl<Usuario>(usuariosList);
         when(usuarioService.findAll(pageable)).thenReturn(usuariosPage);

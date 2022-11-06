@@ -1,7 +1,6 @@
 package br.com.femina.entities;
 
-import br.com.femina.enums.Provider;
-import br.com.femina.enums.Sexos;
+import br.com.femina.enums.Enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +35,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
     @Getter @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "sexo", nullable = false, length = 15, unique = true)
-    private Sexos sexo;
+    private Enums.Sexos sexo;
 
     @Getter @Setter
     @Column(name = "email", nullable = false, length = 30, unique = true)
@@ -55,7 +54,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
 
     @Enumerated(EnumType.STRING)
     @Getter @Setter
-    private Provider provider;
+    private Enums.Provider provider;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

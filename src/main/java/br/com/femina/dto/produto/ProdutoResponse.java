@@ -4,7 +4,7 @@ import br.com.femina.entities.Categorias;
 import br.com.femina.entities.Fornecedor;
 import br.com.femina.entities.Marca;
 import br.com.femina.entities.Modelo;
-import br.com.femina.enums.Tamanhos;
+import br.com.femina.enums.Enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class ProdutoResponse {
     @Getter @Setter
     private Fornecedor fornecedor;
     @Getter @Setter
-    private Tamanhos tamanho;
+    private Enums.Tamanhos tamanho;
     @Getter @Setter
     private String cor;
     @Getter @Setter

@@ -5,7 +5,7 @@ import br.com.femina.dto.usuario.UsuarioRequest;
 import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.entities.Cargos;
 import br.com.femina.entities.Usuario;
-import br.com.femina.enums.Provider;
+import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.PerfilRepository;
 import br.com.femina.repositories.UsuarioRepository;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,7 +108,7 @@ public class UsuarioService {
             Usuario newUser = new Usuario();
             newUser.setLogin(userEmail);
             newUser.setEmail(userEmail);
-            newUser.setProvider(Provider.FACEBOOK);
+            newUser.setProvider(Enums.Provider.FACEBOOK);
             saveUser(newUser);
         }
     }
@@ -141,7 +140,7 @@ public class UsuarioService {
     }
 
     private Usuario usuarioRequestToDbUsuario(UsuarioRequest newUsuario){
-        List<Cargos> cargos = perfilRepository.findCargosByCargoName(br.com.femina.enums.Cargos.USUARIO.toString());
+        List<Cargos> cargos = perfilRepository.findCargosByCargoName(Enums.Cargos.USUARIO.toString());
         return new Usuario(
             newUsuario.getNome(),
             newUsuario.getLogin(),
@@ -150,7 +149,7 @@ public class UsuarioService {
             newUsuario.getEmail(),
             newUsuario.getTelefone(),
             cargos,
-            Provider.LOCAL
+            Enums.Provider.LOCAL
         );
     }
     //</editor-fold>

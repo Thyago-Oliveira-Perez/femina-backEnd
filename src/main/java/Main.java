@@ -1,5 +1,5 @@
 import br.com.femina.entities.*;
-import br.com.femina.enums.Tamanhos;
+import br.com.femina.enums.Enums;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -24,7 +24,7 @@ public class Main {
                 valor, categorias,
                 modelos, fornecedor,
                 marca, "verde",
-                Tamanhos.M, "",
+                Enums.Tamanhos.M, "",
                 "teste", false);
 
         String json = mapper.writeValueAsString(produto);

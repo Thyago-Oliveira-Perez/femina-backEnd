@@ -2,9 +2,7 @@ package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
 import br.com.femina.entities.*;
-import br.com.femina.enums.Provider;
-import br.com.femina.enums.Sexos;
-import br.com.femina.enums.Tamanhos;
+import br.com.femina.enums.Enums;
 import br.com.femina.services.FavoritosService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -51,11 +49,11 @@ public class FavoritosControllerTests {
         usuario = new Usuario("teste",
                 "teste",
                 "123",
-                Sexos.MASCULINO,
+                Enums.Sexos.MASCULINO,
                 "teste@teste.com",
                 "999999999",
                 cargos,
-                Provider.LOCAL);
+                Enums.Provider.LOCAL);
         Categorias categorias = new Categorias("teste");
         Marca marca = new Marca("teste");
         Modelo modelo = new Modelo("teste");
@@ -67,7 +65,7 @@ public class FavoritosControllerTests {
                 valor, categorias,
                 modelos, fornecedor,
                 marca, "verde",
-                Tamanhos.M, "",
+                Enums.Tamanhos.M, "",
                 "teste", false);
     }
 

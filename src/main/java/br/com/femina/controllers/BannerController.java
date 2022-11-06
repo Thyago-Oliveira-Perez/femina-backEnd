@@ -2,7 +2,7 @@ package br.com.femina.controllers;
 
 import br.com.femina.dto.BannerResponse;
 import br.com.femina.entities.Banners;
-import br.com.femina.enums.TipoDeBanner;
+import br.com.femina.enums.Enums;
 import br.com.femina.services.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class BannerController {
     private BannerService bannerService;
 
     @GetMapping("/{typeBanner}")
-    public ResponseEntity<BannerResponse> findByType(@PathVariable("typeBanner") TipoDeBanner tipoDeBanner){
+    public ResponseEntity<BannerResponse> findByType(@PathVariable("typeBanner") Enums.TipoDeBanner tipoDeBanner){
         return bannerService.findByType(tipoDeBanner);
     }
 

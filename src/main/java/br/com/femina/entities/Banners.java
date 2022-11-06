@@ -1,6 +1,6 @@
 package br.com.femina.entities;
 
-import br.com.femina.enums.TipoDeBanner;
+import br.com.femina.enums.Enums;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +28,6 @@ public class Banners extends AbstractEntity {
     @Getter @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", length = 30, nullable = false)
-    private TipoDeBanner tipo;
+    private Enums.TipoDeBanner tipo;
 
 }

@@ -1,6 +1,6 @@
 package br.com.femina.entities;
 
-import br.com.femina.enums.Tamanhos;
+import br.com.femina.enums.Enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,7 +65,7 @@ public class Produto extends AbstractEntity {
     @Getter @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "tamanho", nullable = false, length = 10)
-    private Tamanhos tamanho;
+    private Enums.Tamanhos tamanho;
 
     @Getter @Setter
     @Column(name = "descricao", columnDefinition = "TEXT")

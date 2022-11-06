@@ -1,9 +1,7 @@
 package br.com.femina.configurations.seed;
 
 import br.com.femina.entities.*;
-import br.com.femina.enums.Provider;
-import br.com.femina.enums.Sexos;
-import br.com.femina.enums.Tamanhos;
+import br.com.femina.enums.Enums;
 import br.com.femina.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -88,7 +86,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                     fornecedor,
                                     marca,
                                     "Cinza Escuro",
-                                    Tamanhos.M,
+                                    Enums.Tamanhos.M,
                                     "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
                                             "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
                                             "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
@@ -103,7 +101,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
 
                             if(this.perfilRepository.count() <= 0){
                                 List<Cargos> perfis = new ArrayList<Cargos>(){{
-                                    add(new Cargos(br.com.femina.enums.Cargos.USUARIO.toString()));
+                                    add(new Cargos(Enums.Cargos.USUARIO.toString()));
                                 }};
                                 perfis.forEach(perfil -> perfil.setIsActive(true));
                                 this.perfilRepository.saveAll(perfis);
@@ -115,11 +113,11 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                             "Dayanne",
                                             "day123",
                                             senha.encode("123456"),
-                                            Sexos.FEMININO,
+                                            Enums.Sexos.FEMININO,
                                             "dayday@gmail.com",
                                             "45 0 0000-0000",
                                             perfis,
-                                            Provider.LOCAL
+                                            Enums.Provider.LOCAL
                                     );
                                     usuario.setIsActive(true);
                                     this.usuarioRepository.save(usuario);

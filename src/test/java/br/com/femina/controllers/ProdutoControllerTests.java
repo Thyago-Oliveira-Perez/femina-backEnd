@@ -2,7 +2,7 @@ package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
 import br.com.femina.entities.*;
-import br.com.femina.enums.Tamanhos;
+import br.com.femina.enums.Enums;
 import br.com.femina.services.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -58,7 +58,7 @@ public class ProdutoControllerTests {
                 this.valor, categorias,
                 modelos, fornecedor,
                 marca, "verde",
-                Tamanhos.M, "",
+                Enums.Tamanhos.M, "",
                 "teste", false);
         this.mockMvc.perform(post("/api/produtos")
                         .contentType(MediaType.APPLICATION_JSON)

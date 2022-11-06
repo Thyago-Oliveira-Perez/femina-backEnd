@@ -2,7 +2,7 @@ package br.com.femina.services;
 
 import br.com.femina.dto.BannerResponse;
 import br.com.femina.entities.Banners;
-import br.com.femina.enums.TipoDeBanner;
+import br.com.femina.enums.Enums;
 import br.com.femina.repositories.BannerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +87,7 @@ public class BannerService {
         }
     }
 
-    public ResponseEntity<BannerResponse> findByType(TipoDeBanner tipoDeBanner) {
+    public ResponseEntity<BannerResponse> findByType(Enums.TipoDeBanner tipoDeBanner) {
         Optional<Banners> banners = bannerRepository.findByTipo(tipoDeBanner);
         return banners.isPresent()
                 ? ResponseEntity.ok().body(this.dbBannerToBannerResponse(banners.get(), this.getFilesName(banners.get())))

@@ -1,8 +1,7 @@
 package br.com.femina.repositories;
 
 import br.com.femina.entities.Usuario;
-import br.com.femina.enums.Provider;
-import br.com.femina.enums.Sexos;
+import br.com.femina.enums.Enums;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class UsuarioRepositoryTests {
     @Order(1)
     @DisplayName("Inserir Usuario")
     public void insertUsuario() {
-        Usuario usuario = new Usuario("teste","teste","123", Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(), Provider.LOCAL);
+        Usuario usuario = new Usuario("teste","teste","123", Enums.Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(), Enums.Provider.LOCAL);
         usuarioRepository.save(usuario);
         int countUsuarios = usuarioRepository.findAll().size();
         assertThat(countUsuarios).isEqualTo(1);
@@ -52,7 +51,7 @@ public class UsuarioRepositoryTests {
     @Order(3)
     @DisplayName("Inserir Usuario com os mesmos valores(unique)")
     public void insertExistingUsuario() {
-        Usuario usuario = new Usuario("teste","teste","123", Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(),Provider.LOCAL);
+        Usuario usuario = new Usuario("teste","teste","123", Enums.Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(), Enums.Provider.LOCAL);
         usuarioRepository.save(usuario);
         usuarioRepository.save(usuario);
         int countUsuarios = usuarioRepository.findAll().size();
@@ -63,7 +62,7 @@ public class UsuarioRepositoryTests {
     @Order(4)
     @DisplayName("Listar Usuarios")
     public void listUsuarios() {
-        Usuario usuario = new Usuario("teste","teste","123", Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(),Provider.LOCAL);
+        Usuario usuario = new Usuario("teste","teste","123", Enums.Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(), Enums.Provider.LOCAL);
         usuarioRepository.save(usuario);
         List<Usuario> usuariosList = usuarioRepository.findAll();
         assertThat(usuariosList.size()).isGreaterThanOrEqualTo(1);
