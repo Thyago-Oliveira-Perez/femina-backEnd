@@ -39,9 +39,9 @@ public class ProdutoService {
 
     private String path = "./images/produto/";
 
-    public int countFiles(Produto produto) {
+    public String[] getFilesName(Produto produto) {
         File directory = new File(path+produto.getCodigo());
-        return directory.list().length;
+        return directory.list();
     }
 
     public int getLastFile(Produto produto) {
@@ -99,7 +99,7 @@ public class ProdutoService {
     public ResponseEntity<ProdutoResponse> findById(Long id){
         Optional<Produto> produto = this.produtoRepository.findById(id);
         return produto.isPresent() ?
-                ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto.get())) :
+                ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto.get(), getFilesName(produto.get()))) :
                 ResponseEntity.notFound().build();
     }
 
@@ -107,9 +107,10 @@ public class ProdutoService {
         try {
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
             if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
+                produto.setImagem(path+produto.getCodigo());
                 saveProduto(produto);
                 files.ifPresent(multipartFiles -> saveFile(produto, multipartFiles));
-                return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto));
+                return ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto, getFilesName(produto)));
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -208,14 +209,15 @@ public class ProdutoService {
                 dbProduto.getCor(),
                 dbProduto.getDescricao(),
                 dbProduto.getImagem(),
-                dbProduto.getDestaque()
+                dbProduto.getDestaque(),
+                getFilesName(dbProduto)
         )));
 
         Page<ProdutoResponse> pageProdutoResponse = new PageImpl<ProdutoResponse>(produtoResponseList);
         return pageProdutoResponse;
     }
 
-    private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto){
+    private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto, String[] imageNames){
         return new ProdutoResponse(
                 dbProduto.getNome(),
                 dbProduto.getCodigo(),
@@ -228,7 +230,8 @@ public class ProdutoService {
                 dbProduto.getCor(),
                 dbProduto.getDescricao(),
                 dbProduto.getImagem(),
-                dbProduto.getDestaque()
+                dbProduto.getDestaque(),
+                imageNames
         );
     }
 

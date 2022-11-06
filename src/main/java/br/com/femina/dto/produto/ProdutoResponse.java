@@ -37,7 +37,9 @@ public class ProdutoResponse {
     @Getter @Setter
     private String descricao;
     @Getter @Setter
-    private String imagem;
+    private String imagemUrl;
     @Getter @Setter
     private Boolean destaque;
+    @Getter @Setter
+    private String[] imageNames;
 }

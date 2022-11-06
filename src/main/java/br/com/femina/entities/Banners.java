@@ -30,7 +30,4 @@ public class Banners extends AbstractEntity {
     @Column(name = "tipo", length = 30, nullable = false)
     private TipoDeBanner tipo;
 
-    @Getter @Setter
-    @Column(name = "countImagens")
-    private Integer countImagens;
 }
