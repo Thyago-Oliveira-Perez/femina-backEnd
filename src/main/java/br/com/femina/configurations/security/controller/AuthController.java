@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002"})
 @RequestMapping("/auth")
 public class AuthController {
 

@@ -13,7 +13,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002"})
 @RequestMapping("/api/fornecedores")
 public class FornecedorController {
 

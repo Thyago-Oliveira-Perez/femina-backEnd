@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002"})
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
