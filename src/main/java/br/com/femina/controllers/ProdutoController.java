@@ -36,6 +36,11 @@ public class ProdutoController {
         return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }
 
+    @GetMapping("/estoque/list")
+    public ResponseEntity<Page<ProdutoResponse>> findAllProducts(Pageable pageable) {
+        return ResponseEntity.ok().body(this.produtoService.findAllProducts(pageable));
+    }
+
     @PutMapping("/estoque/{idProduto}")
     public ResponseEntity<?> update(
             String produto,

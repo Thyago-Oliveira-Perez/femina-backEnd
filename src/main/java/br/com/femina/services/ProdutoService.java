@@ -171,6 +171,11 @@ public class ProdutoService {
         return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
     }
 
+    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
+        Page<Produto> dbProdutosList = produtoRepository.findAll(pageable);
+        return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
+    }
+
     public ResponseEntity<?> updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){
             String mensagem = "";
