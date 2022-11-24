@@ -17,6 +17,8 @@ import java.util.Collection;
 @NoArgsConstructor
 public class ProdutoResponse {
     @Getter @Setter
+    private Long id;
+    @Getter @Setter
     private String nome;
     @Getter @Setter
     private String codigo;

@@ -214,6 +214,7 @@ public class ProdutoService {
     private Page<ProdutoResponse> pageDbProdutosToPageProdutoResponse(Page<Produto> dbProdutos){
         List<ProdutoResponse> produtoResponseList = new ArrayList<>();
         dbProdutos.map(dbProduto -> produtoResponseList.add(new ProdutoResponse(
+                dbProduto.getId(),
                 dbProduto.getNome(),
                 dbProduto.getCodigo(),
                 dbProduto.getValor(),
@@ -235,6 +236,7 @@ public class ProdutoService {
 
     private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto, String[] imageNames){
         return new ProdutoResponse(
+                dbProduto.getId(),
                 dbProduto.getNome(),
                 dbProduto.getCodigo(),
                 dbProduto.getValor(),
