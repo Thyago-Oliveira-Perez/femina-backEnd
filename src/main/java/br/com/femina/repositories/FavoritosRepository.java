@@ -24,7 +24,7 @@ public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
     void deleteFavoritosByProductId(@Param("idProduct")Long idProduct);
 
     @Modifying
-    @Query("DELETE FROM Favoritos favoritos WHERE favoritos.produto.id = :idProduct AND favoritos.usuario.id = : idUsuario")
+    @Query("DELETE FROM Favoritos favoritos WHERE favoritos.produto.id = :idProduct AND favoritos.usuario.id = :idUsuario")
     void deleteByUserIdAndProductId(@Param("idProduct")Long idProduct, @Param("idUsuario")Long idUsuario);
 
     boolean existsFavoritosByProdutoIdAndUsuarioId(Long produto_id, Long usuario_id);
