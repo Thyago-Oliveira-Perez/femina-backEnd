@@ -1,5 +1,6 @@
 package br.com.femina.services;
 
+import br.com.femina.dto.usuario.FavoritoDTO;
 import br.com.femina.entities.Favoritos;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
@@ -25,14 +26,15 @@ public class FavoritosService {
     @Autowired
     private TokenService tokenService;
 
-    public ResponseEntity<?> insert(Long idProduto, Long idUser) {
-        if(!this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(idProduto, idUser)){
+    public ResponseEntity<?> handleFavoritos(FavoritoDTO favorito) {
+        if(!this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(favorito.getIdProduto(), favorito.getIdUser())){
             Favoritos favoritos = new Favoritos();
-            favoritos.setUsuario(usuarioRepository.getById(idUser));
-            favoritos.setProduto(produtoRepository.getById(idProduto));
+            favoritos.setUsuario(usuarioRepository.getById(favorito.getIdUser()));
+            favoritos.setProduto(produtoRepository.getById(favorito.getIdProduto()));
             saveFavorito(favoritos);
             return ResponseEntity.ok().body("Favorito cadastrado com sucesoo!");
         }else{
+            this.favoritosRepository.deleteByUserIdAndProductId(favorito.getIdProduto(), favorito.getIdUser());
             return ResponseEntity.badRequest().body("Favorito já cadastrado.");
         }
     }
@@ -43,23 +45,9 @@ public class FavoritosService {
         return this.favoritosRepository.findFavoritosByUsuarioId(idUser, pageable);
     }
 
-    public ResponseEntity<?> deleteById(Long id) {
-        if (this.favoritosRepository.existsById(id)){
-            delete(id);
-            return ResponseEntity.ok().body("Favorito excluido com sucesso!");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @Transactional
     protected void saveFavorito(Favoritos favorito){
         this.favoritosRepository.save(favorito);
-    }
-
-    @Transactional
-    protected void delete(Long id){
-        this.favoritosRepository.deleteById(id);
     }
 
 }

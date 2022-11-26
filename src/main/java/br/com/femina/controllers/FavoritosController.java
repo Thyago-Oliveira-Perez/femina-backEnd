@@ -1,6 +1,6 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.usuario.FavoritoPost;
+import br.com.femina.dto.usuario.FavoritoDTO;
 import br.com.femina.entities.Favoritos;
 import br.com.femina.services.FavoritosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,7 @@ public class FavoritosController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody FavoritoPost newFavorito){
-        return this.favoritosService.insert(newFavorito.getIdProduto(), newFavorito.getIdUser());
+    public ResponseEntity<?> handleFavoritos(@RequestBody FavoritoDTO favorito){
+        return this.favoritosService.handleFavoritos(favorito);
     }
-
-    @DeleteMapping("/{idFavorito}")
-    public ResponseEntity<?> delete(@PathVariable("idFavorito") Long idFavorito){
-        return this.favoritosService.deleteById(idFavorito);
-    }
-
 }

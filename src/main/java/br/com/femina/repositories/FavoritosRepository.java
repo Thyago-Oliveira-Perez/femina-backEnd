@@ -13,16 +13,20 @@ import org.springframework.stereotype.Repository;
 public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
 
     @Query("FROM Favoritos favoritos WHERE favoritos.usuario.id = :idUsuario")
-    public Page<Favoritos> findFavoritosByUsuarioId(@Param("idUsuario") Long idUsuario, Pageable pageable);
+    Page<Favoritos> findFavoritosByUsuarioId(@Param("idUsuario") Long idUsuario, Pageable pageable);
 
     @Modifying
     @Query("DELETE FROM Favoritos favoritos WHERE favoritos.usuario.id = :idUsuario")
-    public void deleteFavoritosByUsuarioId(@Param("idUsuario")Long idUsuario);
+    void deleteFavoritosByUsuarioId(@Param("idUsuario")Long idUsuario);
 
     @Modifying
     @Query("DELETE FROM Favoritos favoritos WHERE favoritos.produto.id = :idProduct")
-    public void deleteFavoritosByProductId(@Param("idProduct")Long idProduct);
+    void deleteFavoritosByProductId(@Param("idProduct")Long idProduct);
 
-    public boolean existsFavoritosByProdutoIdAndUsuarioId(Long produto_id, Long usuario_id);
+    @Modifying
+    @Query("DELETE FROM Favoritos favoritos WHERE favoritos.produto.id = :idProduct AND favoritos.usuario.id = : idUsuario")
+    void deleteByUserIdAndProductId(@Param("idProduct")Long idProduct, @Param("idUsuario")Long idUsuario);
+
+    boolean existsFavoritosByProdutoIdAndUsuarioId(Long produto_id, Long usuario_id);
 
 }
