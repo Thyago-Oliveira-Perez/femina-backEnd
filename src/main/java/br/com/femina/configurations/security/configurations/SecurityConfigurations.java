@@ -73,6 +73,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             .antMatchers( "/oauth2/login").permitAll()
             .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
             .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/categorias").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/marcas").permitAll()
             .anyRequest()
             .authenticated()
                 .and()
