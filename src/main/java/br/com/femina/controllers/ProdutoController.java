@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002"})
+@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3002" ,"http://localhost:3002"})
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
@@ -22,7 +22,7 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping("/estoque/insert")
-    public ResponseEntity<?> insert(String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
+    public ResponseEntity<?> insert(@RequestParam("produto") String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
         return this.produtoService.insert(produto, files);
     }
 

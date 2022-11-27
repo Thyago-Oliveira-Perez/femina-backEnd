@@ -87,6 +87,7 @@ public class ProdutoService {
 
     public ResponseEntity<?> insert(String produtoString, MultipartFile[] files) {
         try {
+            //TODO rever Mapper por que esta quebrando -> descobrir o motivo
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
             produto.setImagem(path+produto.getCodigo());
             saveProduto(produto);
