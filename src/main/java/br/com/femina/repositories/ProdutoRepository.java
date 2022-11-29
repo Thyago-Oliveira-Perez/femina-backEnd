@@ -31,7 +31,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             @Param("cor") String cor,
             @Param("tamanho") String tamanho,
             Pageable pageable,
-            Boolean active
+            @Param("active") Boolean active
     );
 
     @Modifying
