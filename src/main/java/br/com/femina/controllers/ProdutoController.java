@@ -2,6 +2,7 @@ package br.com.femina.controllers;
 
 import br.com.femina.dto.produto.Filters;
 import br.com.femina.dto.produto.ProdutoResponse;
+import br.com.femina.entities.Produto;
 import br.com.femina.services.ProdutoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -32,12 +34,12 @@ public class ProdutoController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }
 
     @GetMapping("/estoque/list")
-    public ResponseEntity<Page<ProdutoResponse>> findAllProducts(Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> findAllProducts(Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAllProducts(pageable));
     }
 

@@ -24,10 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProdutoService {
@@ -150,7 +147,7 @@ public class ProdutoService {
         }
     }
 
-    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
+    public Map<String, Object> findAllByFilters(Filters filters, Pageable pageable){
 
         if(filters.getCategoriaIds().size() == 0 &&
            filters.getMarcaIds().size() == 0 &&
@@ -169,10 +166,11 @@ public class ProdutoService {
                 pageable,
                 true
         );
+
         return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
     }
 
-    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
+    public Map<String, Object> findAllProducts(Pageable pageable) {
         Page<Produto> dbProdutosList = produtoRepository.findAll(pageable);
         return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
     }
@@ -212,7 +210,7 @@ public class ProdutoService {
     }
 
     //<editor-fold desc="Helpers">
-    private Page<ProdutoResponse> pageDbProdutosToPageProdutoResponse(Page<Produto> dbProdutos){
+    private Map<String, Object> pageDbProdutosToPageProdutoResponse(Page<Produto> dbProdutos){
         List<ProdutoResponse> produtoResponseList = new ArrayList<>();
         dbProdutos.map(dbProduto -> produtoResponseList.add(new ProdutoResponse(
                 dbProduto.getId(),
@@ -231,7 +229,12 @@ public class ProdutoService {
                 getFilesName(dbProduto)
         )));
 
-        Page<ProdutoResponse> pageProdutoResponse = new PageImpl<ProdutoResponse>(produtoResponseList);
+        Map<String, Object> pageProdutoResponse = new HashMap<>();
+        pageProdutoResponse.put("content", produtoResponseList);
+        pageProdutoResponse.put("currentPage", dbProdutos.getNumber());
+        pageProdutoResponse.put("totalItems", dbProdutos.getTotalElements());
+        pageProdutoResponse.put("totalPages", dbProdutos.getTotalPages());
+
         return pageProdutoResponse;
     }
 
