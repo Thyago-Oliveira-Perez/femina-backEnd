@@ -96,8 +96,60 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                     "./images/produto/" + codigoProduto,
                                     true
                             );
-                            produto.setIsActive(true);
-                            this.produtoRepository.save(produto);
+
+                            String codigoProduto2 = "27502487532425";
+                            BigDecimal valorDefault2 = new BigDecimal((long)200.00);
+                            Produto produto2 = new Produto(
+                                    codigoProduto2,
+                                    "Camiseta Masculina Blessed com Bolso Polo Wear Preto Escuro",
+                                    valorDefault2,
+                                    categoriasDefault.get(0),
+                                    modelosDefault,
+                                    fornecedor,
+                                    marca,
+                                    "Pretp Escuro",
+                                    Enums.Tamanhos.G,
+                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
+                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
+                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
+                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
+                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
+                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
+                                    "./images/produto/" + codigoProduto2,
+                                    true
+                            );
+                            produto2.setIsActive(true);
+
+                            String codigoProduto3 = "957234958720";
+                            BigDecimal valorDefault3 = new BigDecimal((long)120.00);
+                            Produto produto3 = new Produto(
+                                    codigoProduto3,
+                                    "Camiseta Masculina Roxo Escuro",
+                                    valorDefault3,
+                                    categoriasDefault.get(0),
+                                    modelosDefault,
+                                    fornecedor,
+                                    marca,
+                                    "Roxo",
+                                    Enums.Tamanhos.G,
+                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
+                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
+                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
+                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
+                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
+                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
+                                    "./images/produto/" + codigoProduto3,
+                                    true
+                            );
+                            produto3.setIsActive(true);
+
+                            List<Produto> defaultProducts = new ArrayList<>(){{
+                                    add(produto);
+                                    add(produto2);
+                                    add(produto3);
+                                }};
+
+                            this.produtoRepository.saveAll(defaultProducts);
 
                             if(this.perfilRepository.count() <= 0){
                                 List<Cargos> perfis = new ArrayList<Cargos>(){{
