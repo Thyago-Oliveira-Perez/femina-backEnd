@@ -2,6 +2,8 @@ package br.com.femina.services;
 
 import br.com.femina.dto.usuario.FavoritoDTO;
 import br.com.femina.entities.Favoritos;
+import br.com.femina.entities.Produto;
+import br.com.femina.entities.Usuario;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import br.com.femina.repositories.UsuarioRepository;
@@ -27,8 +29,13 @@ public class FavoritosService {
     private TokenService tokenService;
 
     public ResponseEntity<?> handleFavoritos(FavoritoDTO favorito) {
-        if(!this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(favorito.getIdProduto(), favorito.getIdUser())){
+
+        Produto teste = produtoRepository.getById(favorito.getIdProduto());
+        System.out.println(teste);
+
+        if(this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(favorito.getIdProduto(), favorito.getIdUser()) != null){
             Favoritos favoritos = new Favoritos();
+
             favoritos.setUsuario(usuarioRepository.getById(favorito.getIdUser()));
             favoritos.setProduto(produtoRepository.getById(favorito.getIdProduto()));
             saveFavorito(favoritos);
