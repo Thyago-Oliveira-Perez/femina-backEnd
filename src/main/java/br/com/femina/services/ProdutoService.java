@@ -147,18 +147,17 @@ public class ProdutoService {
         }
     }
 
-    public Map<String, Object> findAllByFilters(Filters filters, Pageable pageable){
+    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
 
         if(filters.getCategoriaIds().size() == 0 &&
            filters.getMarcaIds().size() == 0 &&
            filters.getCor().equals("") &&
            filters.getTamanho().equals(Enums.Tamanhos.ALL)){
-            Page<Produto> dbProdutosList = this.produtoRepository.findAll(pageable);
 
-            return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
+            return this.produtoRepository.findAllProdutoResponse(pageable);
         }
 
-        Page<Produto> dbProdutosList = this.produtoRepository.findAllByFilters(
+        return this.produtoRepository.findAllByFilters(
                 filters.getCategoriaIds(),
                 filters.getMarcaIds(),
                 filters.getCor(),
@@ -166,13 +165,10 @@ public class ProdutoService {
                 pageable,
                 true
         );
-
-        return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
     }
 
-    public Map<String, Object> findAllProducts(Pageable pageable) {
-        Page<Produto> dbProdutosList = produtoRepository.findAll(pageable);
-        return this.pageDbProdutosToPageProdutoResponse(dbProdutosList);
+    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
+        return produtoRepository.findAllProdutoResponse(pageable);
     }
 
     public ResponseEntity<?> updateStatusById(Long id) {
@@ -210,34 +206,6 @@ public class ProdutoService {
     }
 
     //<editor-fold desc="Helpers">
-    private Map<String, Object> pageDbProdutosToPageProdutoResponse(Page<Produto> dbProdutos){
-        List<ProdutoResponse> produtoResponseList = new ArrayList<>();
-        dbProdutos.map(dbProduto -> produtoResponseList.add(new ProdutoResponse(
-                dbProduto.getId(),
-                dbProduto.getNome(),
-                dbProduto.getCodigo(),
-                dbProduto.getValor(),
-                dbProduto.getMarca(),
-                dbProduto.getCategoria(),
-                dbProduto.getModelo(),
-                dbProduto.getFornecedor(),
-                dbProduto.getTamanho(),
-                dbProduto.getCor(),
-                dbProduto.getDescricao(),
-                dbProduto.getImagem(),
-                dbProduto.getDestaque(),
-                getFilesName(dbProduto)
-        )));
-
-        Map<String, Object> pageProdutoResponse = new HashMap<>();
-        pageProdutoResponse.put("content", produtoResponseList);
-        pageProdutoResponse.put("currentPage", dbProdutos.getNumber());
-        pageProdutoResponse.put("totalItems", dbProdutos.getTotalElements());
-        pageProdutoResponse.put("totalPages", dbProdutos.getTotalPages());
-
-        return pageProdutoResponse;
-    }
-
     private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto, String[] imageNames){
         return new ProdutoResponse(
                 dbProduto.getId(),

@@ -34,12 +34,12 @@ public class ProdutoController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<Map<String, Object>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
+    public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }
 
     @GetMapping("/estoque/list")
-    public ResponseEntity<Map<String, Object>> findAllProducts(Pageable pageable) {
+    public ResponseEntity<Page<ProdutoResponse>> findAllProducts(Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAllProducts(pageable));
     }
 
