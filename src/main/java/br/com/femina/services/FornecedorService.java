@@ -40,7 +40,7 @@ public class FornecedorService {
     }
 
     public Page<FornecedorResponse> findAll(Pageable pageable) {
-        return this.pageDbFornecedoresToPageFornecedorResponse(this.fornecedorRepository.findAllByIsActive(pageable, true));
+        return this.fornecedorRepository.findAllByIsActive(pageable, true);
     }
 
     public ResponseEntity<FornecedorResponse> update(Long id, Fornecedor fornecedor) {
