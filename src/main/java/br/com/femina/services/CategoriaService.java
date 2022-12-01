@@ -43,8 +43,7 @@ public class CategoriaService {
     }
 
     public Page<CategoriaResponse> findAll(Pageable pageable){
-        Page<Categorias> dbCategoriasList = this.categoriaRepository.findAll(pageable);
-        return this.pageDbCategoriaToPageCategoriaResponse(dbCategoriasList);
+        return this.categoriaRepository.findAllCategoriaResponse(pageable);
     }
 
     public ResponseEntity<?> updateStatusById(Long id){

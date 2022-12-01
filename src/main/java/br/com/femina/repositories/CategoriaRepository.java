@@ -1,6 +1,9 @@
 package br.com.femina.repositories;
 
+import br.com.femina.dto.categoria.CategoriaResponse;
 import br.com.femina.entities.Categorias;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +19,15 @@ public interface CategoriaRepository extends JpaRepository<Categorias, Long> {
             "WHERE categorias.id = :id")
     public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
+    @Query("SELECT " +
+            "new br.com.femina.dto.categoria.CategoriaResponse (" +
+            "c.id,\n" +
+            "c.nome" +
+            ")" +
+            "FROM " +
+            "   Categorias c " +
+            "WHERE " +
+            "   c.isActive = :active"
+    )
+    Page<CategoriaResponse> findAllCategoriaResponse(Pageable pageable);
 }
