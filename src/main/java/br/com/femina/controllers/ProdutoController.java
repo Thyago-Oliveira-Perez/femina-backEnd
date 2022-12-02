@@ -33,15 +33,15 @@ public class ProdutoController {
         return this.produtoService.findById(idProduto);
     }
 
-    @PostMapping("/list")
-    public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
-        return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
-    }
+//    @PostMapping("/list")
+//    public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
+//        return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
+//    }
 
-    @GetMapping("/estoque/list")
-    public ResponseEntity<Page<ProdutoResponse>> findAllProducts(Pageable pageable) {
-        return ResponseEntity.ok().body(this.produtoService.findAllProducts(pageable));
-    }
+//    @GetMapping("/estoque/list")
+//    public ResponseEntity<Page<ProdutoResponse>> findAllProducts(Pageable pageable) {
+//        return ResponseEntity.ok().body(this.produtoService.findAllProducts(pageable));
+//    }
 
     @PutMapping("/estoque/{idProduto}")
     public ResponseEntity<?> update(

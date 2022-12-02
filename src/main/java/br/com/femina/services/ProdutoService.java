@@ -147,29 +147,29 @@ public class ProdutoService {
         }
     }
 
-    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
+//    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
+//
+//        if(filters.getCategoriaIds().size() == 0 &&
+//           filters.getMarcaIds().size() == 0 &&
+//           filters.getCor().equals("") &&
+//           filters.getTamanho().equals(Enums.Tamanhos.ALL)){
+//
+//            return this.produtoRepository.findAllProdutoResponse(pageable);
+//        }
+//
+//        return this.produtoRepository.findAllByFilters(
+//                filters.getCategoriaIds(),
+//                filters.getMarcaIds(),
+//                filters.getCor(),
+//                filters.getTamanho().toString(),
+//                pageable,
+//                true
+//        );
+//    }
 
-        if(filters.getCategoriaIds().size() == 0 &&
-           filters.getMarcaIds().size() == 0 &&
-           filters.getCor().equals("") &&
-           filters.getTamanho().equals(Enums.Tamanhos.ALL)){
-
-            return this.produtoRepository.findAllProdutoResponse(pageable);
-        }
-
-        return this.produtoRepository.findAllByFilters(
-                filters.getCategoriaIds(),
-                filters.getMarcaIds(),
-                filters.getCor(),
-                filters.getTamanho().toString(),
-                pageable,
-                true
-        );
-    }
-
-    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
-        return produtoRepository.findAllProdutoResponse(pageable);
-    }
+//    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
+//        return produtoRepository.findAllProdutoResponse(pageable);
+//    }
 
     public ResponseEntity<?> updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){

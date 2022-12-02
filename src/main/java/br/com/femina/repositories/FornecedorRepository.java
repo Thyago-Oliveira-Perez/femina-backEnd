@@ -15,23 +15,21 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
 
     @Query("SELECT " +
             "new br.com.femina.dto.fornecedor.FornecedorResponse (" +
-            "f.id,\n" +
-            "f.name,\n" +
-            "f.cnpj,\n" +
-            "f.telefone,\n" +
-            "f.email" +
-            ")" +
+            "f.id," +
+            "f.name," +
+            "f.cnpj," +
+            "f.telefone," +
+            "f.email) " +
             "FROM " +
             "   Fornecedor f " +
             "WHERE " +
-            "f.isActive = :active"
-    )
-    public Page<FornecedorResponse> findAllByIsActive(Pageable pageable, Boolean active);
+            "f.isActive = :active")
+    Page<FornecedorResponse> findAllByIsActive(Pageable pageable, Boolean active);
 
     @Modifying
     @Query("UPDATE Fornecedor fornecedor " +
             "SET fornecedor.isActive = :status " +
             "WHERE fornecedor.id = :id")
-    public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
+    void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
 }

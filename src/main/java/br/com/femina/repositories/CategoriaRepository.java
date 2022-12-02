@@ -20,14 +20,9 @@ public interface CategoriaRepository extends JpaRepository<Categorias, Long> {
     public void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
     @Query("SELECT " +
-            "new br.com.femina.dto.categoria.CategoriaResponse (" +
-            "c.id,\n" +
-            "c.nome" +
-            ")" +
+            "NEW br.com.femina.dto.categoria.CategoriaResponse(c.id, c.nome) " +
             "FROM " +
             "   Categorias c " +
-            "WHERE " +
-            "   c.isActive = :active"
-    )
-    Page<CategoriaResponse> findAllCategoriaResponse(Pageable pageable);
+            "WHERE c.isActive =:active")
+    Page<CategoriaResponse> findAllCategoriaResponse(Pageable pageable, @Param("active") boolean active);
 }

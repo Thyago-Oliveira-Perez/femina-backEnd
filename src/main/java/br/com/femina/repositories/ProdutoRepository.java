@@ -37,30 +37,28 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Query("SELECT " +
             "new br.com.femina.dto.produto.ProdutoResponse (" +
-                "p.id,\n" +
-                "p.nome,\n" +
-                "p.codigo,\n" +
-                "p.valor,\n" +
-                "p.marca,\n" +
-                "p.categoria,\n" +
-                "p.modelo,\n" +
-                "p.fornecedor,\n" +
-                "p.tamanho,\n" +
-                "p.cor,\n" +
-                "p.descricao,\n" +
-                "p.imagem,\n" +
+                "p.id," +
+                "p.nome," +
+                "p.codigo," +
+                "p.valor," +
+                "p.marca," +
+                "p.categoria," +
+                "p.modelo," +
+                "p.fornecedor," +
+                "p.tamanho," +
+                "p.cor," +
+                "p.descricao," +
+                "p.imagem," +
                 "p.destaque," +
-                "new string[]\n" +
-            ")" +
+                "new string[]) " +
             "FROM " +
             "   Produto p " +
             "WHERE " +
-                "produto.categoria.id IN :categoriaIds AND " +
-                "produto.marca.id IN :marcaIds AND " +
-                "produto.cor LIKE :cor AND " +
+            "   produto.categoria.id IN :categoriaIds AND " +
+            "   produto.marca.id IN :marcaIds AND " +
+            "   produto.cor LIKE :cor AND " +
             "CAST(produto.tamanho as string) LIKE :tamanho AND " +
-            "produto.isActive = :active"
-    )
+            "produto.isActive = :active")
     Page<ProdutoResponse> findAllByFilters(
             @Param("categoriaIds") List<Long> categoriaIds,
             @Param("marcaIds") List<Long> marcaIds,
@@ -76,31 +74,29 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             "WHERE produto.id = :id")
     void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
 
-    @Query("SELECT " +
+    @Query(value = "SELECT " +
             "new br.com.femina.dto.produto.ProdutoResponse (" +
-            "p.id,\n" +
-            "p.nome,\n" +
-            "p.codigo,\n" +
-            "p.valor,\n" +
-            "p.marca,\n" +
-            "p.categoria,\n" +
-            "p.modelo,\n" +
-            "p.fornecedor,\n" +
-            "p.tamanho,\n" +
-            "p.cor,\n" +
-            "p.descricao,\n" +
-            "p.imagem,\n" +
+            "p.id," +
+            "p.nome," +
+            "p.codigo," +
+            "p.valor," +
+            "p.marca," +
+            "p.categoria," +
+            "p.modelo," +
+            "p.fornecedor," +
+            "p.tamanho," +
+            "p.cor," +
+            "p.descricao," +
+            "p.imagem," +
             "p.destaque," +
-            "new string[]\n" +
-            ")" +
+            "new string[]) " +
             "FROM " +
-            "   Produto p " +
+            "   Produto AS p " +
             "WHERE " +
-            "produto.categoria.id IN :categoriaIds AND " +
-            "produto.marca.id IN :marcaIds AND " +
-            "produto.cor LIKE :cor AND " +
-            "CAST(produto.tamanho as string) LIKE :tamanho AND " +
-            "produto.isActive = :active"
-    )
+            "   p.categoria.id IN :categoriaIds AND " +
+            "   p.marca.id IN :marcaIds AND " +
+            "   p.cor LIKE :cor AND " +
+            "   CAST(p.tamanho as string) LIKE :tamanho AND " +
+            "   p.isActive = :active", nativeQuery = true)
     Page<ProdutoResponse> findAllProdutoResponse(Pageable pageable);
 }
