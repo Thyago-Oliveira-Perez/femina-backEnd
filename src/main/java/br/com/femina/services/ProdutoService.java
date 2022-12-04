@@ -1,13 +1,16 @@
 package br.com.femina.services;
 
 import br.com.femina.dto.produto.Filters;
+import br.com.femina.dto.produto.ProdutoRequest;
 import br.com.femina.dto.produto.ProdutoResponse;
+import br.com.femina.entities.Modelo;
 import br.com.femina.entities.Produto;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import br.com.femina.services.Specification.ProdutoSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.oauth2.sdk.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -51,12 +54,12 @@ public class ProdutoService {
         File directory = new File(path+produto.getCodigo());
         String[] files = directory.list();
         int[] numberFiles = new int[files.length];
+        if(files.length == 0) {
+            return 0;
+        }
         for(int i = 0;i < files.length;i++) {
             files[i] = files[i].substring(0, files[i].lastIndexOf('.'));
             numberFiles[i] = Integer.parseInt(files[i]);
-        }
-        if(files.length == 0) {
-            return 0;
         }
         return Arrays.stream(numberFiles).max().getAsInt();
     }
@@ -75,7 +78,10 @@ public class ProdutoService {
     public void saveFile(Produto produto, MultipartFile[] files) {
         createDirIfNotExist(produto);
         int count = getLastFile(produto);
-        for(int i = count+1;i < count+files.length;i++) {
+        if (count != 0){
+            count += 1;
+        }
+        for(int i = count;i < count+files.length;i++) {
             try {
                 byte[] bytes = files[i-count].getBytes();
                 ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
@@ -87,13 +93,13 @@ public class ProdutoService {
         }
     }
 
-    public ResponseEntity<?> insert(String produtoString, MultipartFile[] files) {
+    public ResponseEntity<?> insert(String produtoRequest, MultipartFile[] images) {
         try {
             //TODO rever Mapper por que esta quebrando -> descobrir o motivo
-            Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
+            Produto produto = new ObjectMapper().readValue(produtoRequest, Produto.class);
             produto.setImagem(path+produto.getCodigo());
             saveProduto(produto);
-            saveFile(produto, files);
+            saveFile(produto, images);
             return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
         } catch(Exception e) {
             return ResponseEntity.badRequest().body("Produto já cadastrado.");

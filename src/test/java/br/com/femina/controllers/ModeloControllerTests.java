@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -37,6 +38,8 @@ public class ModeloControllerTests {
 
     @MockBean
     private ModeloService modeloService;
+
+    UUID modeloId = UUID.randomUUID();
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -68,16 +71,16 @@ public class ModeloControllerTests {
     @Order(3)
     public void getModeloById() throws Exception {
         Modelo modelo = new Modelo("teste");
-        modelo.setId(1L);
-        when(modeloService.findById(1L)).thenReturn(ResponseEntity.ok(modelo));
-        this.mockMvc.perform(get("/api/modelos/"+1L))
+        modelo.setId(modeloId);
+        when(modeloService.findById(modeloId)).thenReturn(ResponseEntity.ok(modelo));
+        this.mockMvc.perform(get("/api/modelos/"+modeloId))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(4)
     public void disableModelo() throws Exception {
-        this.mockMvc.perform(put("/api/modelos/disable/"+1L))
+        this.mockMvc.perform(put("/api/modelos/disable/"+modeloId))
                 .andExpect(status().isOk());
     }
 

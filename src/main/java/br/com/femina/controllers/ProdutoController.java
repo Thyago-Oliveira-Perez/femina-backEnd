@@ -2,9 +2,8 @@ package br.com.femina.controllers;
 
 import br.com.femina.dto.produto.Filters;
 import br.com.femina.dto.produto.ProdutoResponse;
-import br.com.femina.entities.Produto;
+import br.com.femina.dto.produto.ProdutoRequest;
 import br.com.femina.services.ProdutoService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,8 +23,9 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping("/estoque/insert")
-    public ResponseEntity<?> insert(@RequestParam("produto") String produto, @RequestParam("image") MultipartFile[] files) throws JsonProcessingException {
-        return this.produtoService.insert(produto, files);
+    public ResponseEntity<?> insert(@RequestParam(name = "produto") String produto,
+                                    @RequestParam(name = "image") MultipartFile[] images) {
+        return this.produtoService.insert(produto, images);
     }
 
     @GetMapping("/{idProduto}")
