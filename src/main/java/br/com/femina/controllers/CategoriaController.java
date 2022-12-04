@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 @RestController
@@ -22,7 +24,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping("/{idCategoria}")
-    public ResponseEntity<CategoriaResponse> findById(@PathVariable("idCategoria") Long idCategoria) {
+    public ResponseEntity<CategoriaResponse> findById(@PathVariable("idCategoria") UUID idCategoria) {
         return this.categoriaService.findById(idCategoria);
     }
 
@@ -40,7 +42,7 @@ public class CategoriaController {
 
     @PutMapping("/disable/{idCategoria}")
     @CacheEvict(value = "categoriasFindAll")
-    public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") Long idCategoria){
+    public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") UUID idCategoria){
         return this.categoriaService.updateStatusById(idCategoria);
     }
 }

@@ -4,6 +4,9 @@ import br.com.femina.dto.fornecedor.FornecedorRequest;
 import br.com.femina.dto.fornecedor.FornecedorResponse;
 import br.com.femina.entities.Fornecedor;
 import br.com.femina.services.FornecedorService;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +24,7 @@ public class FornecedorController {
     private FornecedorService fornecedorService;
 
     @GetMapping("/{idFornecedor}")
-    public ResponseEntity<FornecedorResponse> findById(@PathVariable("idFornecedor") Long idFornecedor) {
+    public ResponseEntity<FornecedorResponse> findById(@PathVariable("idFornecedor") UUID idFornecedor) {
         return this.fornecedorService.findById(idFornecedor);
     }
 
@@ -39,14 +42,14 @@ public class FornecedorController {
 
     @PutMapping("/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
-    public ResponseEntity<FornecedorResponse> update(@PathVariable("idFornecedor") Long idFornecedor,
+    public ResponseEntity<FornecedorResponse> update(@PathVariable("idFornecedor") UUID idFornecedor,
                                     @RequestBody Fornecedor fornecedor) {
         return this.fornecedorService.update(idFornecedor, fornecedor);
     }
 
     @PutMapping("/disable/{idFornecedor}")
     @CacheEvict(value = "fornecedoresFindAll")
-    public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") Long idFornecedor) {
+    public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") UUID idFornecedor) {
         return this.fornecedorService.updateStatusById(idFornecedor);
     }
 }

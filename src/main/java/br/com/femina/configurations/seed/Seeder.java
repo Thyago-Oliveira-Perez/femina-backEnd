@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
@@ -175,7 +176,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                     this.usuarioRepository.save(usuario);
 
                                     if(this.favoritosRepository.count() <= 0){
-                                        Favoritos favoritos = new Favoritos(0l, usuario, produto);
+                                        Favoritos favoritos = new Favoritos(UUID.randomUUID(), usuario, produto);
                                         this.favoritosRepository.save(favoritos);
                                     }
                                 }

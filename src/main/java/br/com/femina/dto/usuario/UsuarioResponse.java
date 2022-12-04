@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioResponse {
     @Getter @Setter
-    private Long id;
+    private UUID id;
     @Getter @Setter
     private String nome;
     @Getter @Setter

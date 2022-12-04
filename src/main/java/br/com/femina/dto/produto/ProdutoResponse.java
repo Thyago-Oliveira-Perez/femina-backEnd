@@ -12,12 +12,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProdutoResponse {
     @Getter @Setter
-    private Long id;
+    private UUID id;
     @Getter @Setter
     private String nome;
     @Getter @Setter

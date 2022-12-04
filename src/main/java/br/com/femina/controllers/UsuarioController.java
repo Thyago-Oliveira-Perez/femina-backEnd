@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002", "http://localhost:3000"})
 @RequestMapping("/api/usuarios")
@@ -26,12 +28,12 @@ public class UsuarioController {
     }
 
     @PostMapping("/update-user/{id}")
-    public ResponseEntity<UsuarioResponse> updateUser(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
+    public ResponseEntity<UsuarioResponse> updateUser(@RequestBody Usuario usuario, @PathVariable("id") UUID idUsuario){
         return this.usuarioService.updateUser(usuario, idUsuario);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponse> findById(@PathVariable("id")Long id){
+    public ResponseEntity<UsuarioResponse> findById(@PathVariable("id")UUID id){
         return this.usuarioService.findById(id);
     }
 
@@ -41,7 +43,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> disableUserById(@PathVariable("id") Long id){
+    public ResponseEntity<?> disableUserById(@PathVariable("id") UUID id){
         return this.usuarioService.changeStatusById(id);
     }
     //</editor-fold>
@@ -53,7 +55,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<UsuarioResponse> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario){
+    public ResponseEntity<UsuarioResponse> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") UUID idUsuario){
         return this.usuarioService.updateUser(usuario, idUsuario);
     }
 

@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -72,7 +73,7 @@ public class FavoritosControllerTests {
     @Test
     @Order(1)
     public void postFavoritos() throws Exception {
-        Favoritos favoritos = new Favoritos(1L,usuario,produto);
+        Favoritos favoritos = new Favoritos(UUID.randomUUID(),usuario,produto);
         this.mockMvc.perform(post("/api/favoritos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(favoritos))
@@ -85,7 +86,7 @@ public class FavoritosControllerTests {
     public void getFavoritosByUsuario() throws Exception {
         Pageable pageable = PageRequest.of(1,4);
         HttpHeaders headers = new HttpHeaders();
-        Favoritos favoritos = new Favoritos(1L,usuario,produto);
+        Favoritos favoritos = new Favoritos(UUID.randomUUID(),usuario,produto);
         List<Favoritos> favoritosList = List.of(favoritos);
         Page<Favoritos> favoritosPage = new PageImpl<Favoritos>(favoritosList);
         when(favoritosService.findUserFavoritos(headers,pageable)).thenReturn(favoritosPage);

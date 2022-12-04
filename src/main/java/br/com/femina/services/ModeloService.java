@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ModeloService {
@@ -27,7 +28,7 @@ public class ModeloService {
         }
     }
 
-    public ResponseEntity<Modelo> findById(long id){
+    public ResponseEntity<Modelo> findById(UUID id){
         Optional<Modelo> modelo = this.modeloRepository.findById(id);
         return  modelo.isPresent() ? ResponseEntity.ok().body(modelo.get()) : ResponseEntity.notFound().build();
     }
@@ -36,7 +37,7 @@ public class ModeloService {
         return this.modeloRepository.findAllByIsActive(pageable, true);
     }
 
-    public ResponseEntity<?> updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(UUID id) {
         if(this.modeloRepository.existsById(id)){
             String mensagem = "";
             Boolean status = this.modeloRepository.getById(id).getIsActive();
@@ -57,7 +58,7 @@ public class ModeloService {
     }
 
     @Transactional
-    protected void updateStatus(Long id, Boolean status){
+    protected void updateStatus(UUID id, Boolean status){
         this.modeloRepository.updateStatus(id, status);
     }
 

@@ -9,25 +9,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface FavoritosRepository extends JpaRepository<Favoritos, Long> {
+public interface FavoritosRepository extends JpaRepository<Favoritos, UUID> {
 
     @Query("FROM Favoritos favoritos WHERE favoritos.usuario.id = :idUsuario")
-    Page<Favoritos> findFavoritosByUsuarioId(@Param("idUsuario") Long idUsuario, Pageable pageable);
+    Page<Favoritos> findFavoritosByUsuarioId(@Param("idUsuario") UUID idUsuario, Pageable pageable);
 
     @Modifying
     @Query("DELETE FROM Favoritos favoritos WHERE favoritos.usuario.id = :idUsuario")
-    void deleteFavoritosByUsuarioId(@Param("idUsuario")Long idUsuario);
+    void deleteFavoritosByUsuarioId(@Param("idUsuario") UUID idUsuario);
 
     @Modifying
     @Query("DELETE FROM Favoritos favoritos WHERE favoritos.produto.id = :idProduct")
-    void deleteFavoritosByProductId(@Param("idProduct")Long idProduct);
+    void deleteFavoritosByProductId(@Param("idProduct") UUID idProduct);
 
     @Modifying
     @Query("DELETE FROM Favoritos favoritos WHERE favoritos.produto.id = :idProduct AND favoritos.usuario.id = :idUsuario")
-    void deleteByUserIdAndProductId(@Param("idProduct")Long idProduct, @Param("idUsuario")Long idUsuario);
+    void deleteByUserIdAndProductId(@Param("idProduct") UUID idProduct, @Param("idUsuario") UUID idUsuario);
 
     @Query("FROM Favoritos favoritos WHERE favoritos.produto.id = :produto_id AND favoritos.usuario.id = :usuario_id")
-    Favoritos existsFavoritosByProdutoIdAndUsuarioId(@Param("produto_id") Long produto_id, @Param("usuario_id") Long usuario_id);
+    Favoritos existsFavoritosByProdutoIdAndUsuarioId(@Param("produto_id") UUID produto_id, @Param("usuario_id") UUID usuario_id);
 
 }

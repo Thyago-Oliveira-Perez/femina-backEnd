@@ -3,6 +3,7 @@ package br.com.femina.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @ToString
@@ -14,7 +15,7 @@ public class Favoritos {
     @Id
     @Getter @Setter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     @Getter
     @Setter

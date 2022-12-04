@@ -18,13 +18,18 @@ public class FavoritosController {
     @Autowired
     private FavoritosService favoritosService;
 
-    @GetMapping
+    @GetMapping("/my-favoritos")
     public ResponseEntity<Page<Favoritos>> findUserFavoritos(@RequestHeader HttpHeaders headers, Pageable pageable) {
         return ResponseEntity.ok().body(favoritosService.findUserFavoritos(headers, pageable));
     }
 
-    @PostMapping
-    public ResponseEntity<?> handleFavoritos(@RequestBody FavoritoDTO favorito){
-        return this.favoritosService.handleFavoritos(favorito);
+    @PostMapping("/insert")
+    public ResponseEntity<?> insertFavorito(@RequestBody FavoritoDTO favorito){
+        return this.favoritosService.insertFavoritos(favorito);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteFavorito(@RequestBody FavoritoDTO favorito){
+        return this.favoritosService.deleteFavorito(favorito);
     }
 }

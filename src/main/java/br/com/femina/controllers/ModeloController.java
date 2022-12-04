@@ -2,6 +2,9 @@ package br.com.femina.controllers;
 
 import br.com.femina.entities.Modelo;
 import br.com.femina.services.ModeloService;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,7 +22,7 @@ public class ModeloController {
     private ModeloService modeloService;
 
     @GetMapping("/{idModelo}")
-    public ResponseEntity<Modelo> findById(@PathVariable("idModelo") Long idModelo) {
+    public ResponseEntity<Modelo> findById(@PathVariable("idModelo") UUID idModelo) {
         return this.modeloService.findById(idModelo);
     }
 
@@ -37,7 +40,7 @@ public class ModeloController {
 
     @PutMapping("/disable/{idModelo}")
     @CacheEvict(value = "modeloFindAll")
-    public ResponseEntity<?> updateStatus(@PathVariable("idModelo") Long idModelo){
+    public ResponseEntity<?> updateStatus(@PathVariable("idModelo") UUID idModelo){
         return this.modeloService.updateStatusById(idModelo);
     }
 }

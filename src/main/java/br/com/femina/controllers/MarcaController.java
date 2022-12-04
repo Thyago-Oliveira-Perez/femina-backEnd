@@ -2,6 +2,9 @@ package br.com.femina.controllers;
 
 import br.com.femina.entities.Marca;
 import br.com.femina.services.MarcaService;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +22,7 @@ public class MarcaController {
     private MarcaService marcaService;
 
     @GetMapping("/{idMarca}")
-    public ResponseEntity<Marca> findById(@PathVariable("idMarca")Long idMarca) {
+    public ResponseEntity<Marca> findById(@PathVariable("idMarca") UUID idMarca) {
         return this.marcaService.findById(idMarca);
     }
 
@@ -37,7 +40,7 @@ public class MarcaController {
 
     @PutMapping("/disable/{idMarca}")
     @CacheEvict(value = "marcaFindAll")
-    public ResponseEntity<?> updateStatus(@PathVariable("idMarca") Long idMarca) {
+    public ResponseEntity<?> updateStatus(@PathVariable("idMarca") UUID idMarca) {
         return this.marcaService.updateStatusById(idMarca);
     }
 }

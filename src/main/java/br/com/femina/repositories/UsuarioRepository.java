@@ -10,19 +10,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     public Page<Usuario> findAllByIsActive(Pageable pageable, Boolean active);
 
     @Modifying
     @Query("UPDATE Usuario usuario SET usuario.isActive = :status WHERE usuario.id = :id")
-    void updateStatus(@Param("id") Long id, @Param("status") Boolean status);
+    void updateStatus(@Param("id") UUID id, @Param("status") Boolean status);
 
     boolean existsUsuarioByEmail(String userEmail);
 
-    Optional<Usuario> findUsuarioById(Long id);
+    Optional<Usuario> findUsuarioById(UUID id);
 
     @Query("FROM Usuario usuario WHERE usuario.email = :input OR usuario.login = :input")
     Optional<Usuario> findByLoginOrEmail(@Param("input")String input);

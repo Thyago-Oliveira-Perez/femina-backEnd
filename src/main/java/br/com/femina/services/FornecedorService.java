@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class FornecedorService {
@@ -32,7 +33,7 @@ public class FornecedorService {
         }
     }
 
-    public ResponseEntity<FornecedorResponse> findById(Long id) {
+    public ResponseEntity<FornecedorResponse> findById(UUID id) {
         Optional<Fornecedor> fornecedor = this.fornecedorRepository.findById(id);
         return fornecedor.isPresent() ?
                 ResponseEntity.ok().body(this.dbFornecedorToFornecedorResponse(fornecedor.get())) :
@@ -43,7 +44,7 @@ public class FornecedorService {
         return this.fornecedorRepository.findAllByIsActive(pageable, true);
     }
 
-    public ResponseEntity<FornecedorResponse> update(Long id, Fornecedor fornecedor) {
+    public ResponseEntity<FornecedorResponse> update(UUID id, Fornecedor fornecedor) {
         if (this.fornecedorRepository.existsById(id) && fornecedor.getId().equals(id)){
             saveFornecedor(fornecedor);
             return ResponseEntity.ok().body(this.dbFornecedorToFornecedorResponse(fornecedor));
@@ -52,7 +53,7 @@ public class FornecedorService {
         }
     }
 
-    public ResponseEntity<?> updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(UUID id) {
         String mensagem = "";
         if (this.fornecedorRepository.existsById(id)) {
             Boolean status = this.fornecedorRepository.getById(id).getIsActive();
@@ -73,7 +74,7 @@ public class FornecedorService {
     }
 
     @Transactional
-    protected void updateStatus(Long id, Boolean status){
+    protected void updateStatus(UUID id, Boolean status){
         this.fornecedorRepository.updateStatus(id, status);
     }
 

@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BannerService {
@@ -94,7 +95,7 @@ public class BannerService {
                 : ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<?> updateBanner(Long id, String bannerString, Optional<MultipartFile[]> files) {
+    public ResponseEntity<?> updateBanner(UUID id, String bannerString, Optional<MultipartFile[]> files) {
         try {
             Banners banners = new ObjectMapper().readValue(bannerString, Banners.class);
             if(bannerRepository.existsById(id) && id.equals(banners.getId())) {
@@ -110,7 +111,7 @@ public class BannerService {
         }
     }
 
-    public ResponseEntity<?> removeImage(Long id, String imageName) {
+    public ResponseEntity<?> removeImage(UUID id, String imageName) {
         if(bannerRepository.existsById(id)) {
             Banners banners = bannerRepository.getById(id);
             File fileToDelete = new File(path + banners.getTipo() + "/" + imageName);
@@ -124,7 +125,7 @@ public class BannerService {
         }
     }
 
-    public ResponseEntity<?> removeAllImages(Long id) {
+    public ResponseEntity<?> removeAllImages(UUID id) {
         if(bannerRepository.existsById(id)) {
             Banners banners = bannerRepository.getById(id);
             File dir = new File(path+banners.getTipo());

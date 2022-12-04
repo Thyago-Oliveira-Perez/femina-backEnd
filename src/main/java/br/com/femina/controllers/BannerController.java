@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002"})
@@ -31,7 +32,7 @@ public class BannerController {
 
     @PutMapping("/{idBanner}")
     public ResponseEntity<?> updateBanner(
-            @PathVariable("idBanner") Long id,
+            @PathVariable("idBanner") UUID id,
             String bannerString,
             @RequestParam("images") Optional<MultipartFile[]> files
     ) {
@@ -40,7 +41,7 @@ public class BannerController {
 
     @PutMapping("/remove/{idBanner}")
     public ResponseEntity<?> removeImage(
-            @PathVariable("idBanner") Long id,
+            @PathVariable("idBanner") UUID id,
             @RequestBody String nameImage
     ) {
         return bannerService.removeImage(id, nameImage);
@@ -48,7 +49,7 @@ public class BannerController {
 
     @PutMapping("/remove-all/{idBanner}")
     public ResponseEntity<?> removeAllImages(
-        @PathVariable("idBanner") Long id
+        @PathVariable("idBanner") UUID id
     ) {
        return bannerService.removeAllImages(id);
     }

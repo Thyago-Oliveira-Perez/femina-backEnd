@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class FornecedorControllerTests {
                                                 "00.000.000/0000-00",
                                                 "999999999",
                                                 "teste@teste.com");
-        fornecedor.setId(1L);
+        fornecedor.setId(UUID.randomUUID());
         fornecedor.setIsActive(true);
         this.mockMvc.perform(post("/api/fornecedores")
                         .contentType(MediaType.APPLICATION_JSON)

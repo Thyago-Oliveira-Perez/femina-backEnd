@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UsuarioService {
@@ -46,7 +47,7 @@ public class UsuarioService {
         }
     }
 
-    public ResponseEntity<UsuarioResponse> findById(Long id){
+    public ResponseEntity<UsuarioResponse> findById(UUID id){
         Optional<Usuario> usuario = this.usuarioRepository.findById(id);
         return usuario.isPresent() ? ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario.get())) : ResponseEntity.notFound().build();
     }
@@ -55,7 +56,7 @@ public class UsuarioService {
         return this.usuarioRepository.findAllByIsActive(pageable, true);
     }
 
-    public ResponseEntity<?> changeStatusById(Long id){
+    public ResponseEntity<?> changeStatusById(UUID id){
         if(this.usuarioRepository.existsById(id)){
             String mensagem = "";
             Boolean status = this.usuarioRepository.getById(id).getIsActive();
@@ -71,7 +72,7 @@ public class UsuarioService {
         }
     }
 
-    public ResponseEntity<UsuarioResponse> updateUser(Usuario usuario, Long id){
+    public ResponseEntity<UsuarioResponse> updateUser(Usuario usuario, UUID id){
         if(this.usuarioRepository.existsById(id) && usuario.getId().equals(id)){
             usuario.setSenha(senha.encode(usuario.getSenha()));
             saveUser(usuario);
@@ -94,7 +95,7 @@ public class UsuarioService {
     public ResponseEntity<UsuarioResponse> findByMyId(HttpHeaders headers){
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         assert token != null;
-        Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
+        UUID idUser = this.tokenService.getUserId(token.substring(7, token.length()));
         Optional<Usuario> usuario = this.usuarioRepository.findUsuarioById(idUser);
         return usuario.isPresent() ?
                 ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario.get())) :
@@ -114,7 +115,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    protected void changeStatus(Long id, Boolean status){
+    protected void changeStatus(UUID id, Boolean status){
         this.usuarioRepository.updateStatus(id, status);
     }
 
@@ -124,7 +125,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    protected void deleteFavoritosRelatedToUser(Long id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
+    protected void deleteFavoritosRelatedToUser(UUID id){this.favoritosRepository.deleteFavoritosByUsuarioId(id);}
 
     //<editor-fold desc="Helpers">
     private UsuarioResponse dbUsuarioToUsuarioResponse(Usuario usuario){

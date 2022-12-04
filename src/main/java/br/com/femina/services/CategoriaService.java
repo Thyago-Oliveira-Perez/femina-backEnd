@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CategoriaService {
@@ -35,7 +36,7 @@ public class CategoriaService {
         }
     }
 
-    public ResponseEntity<CategoriaResponse> findById(Long id){
+    public ResponseEntity<CategoriaResponse> findById(UUID id){
         Optional<Categorias> categoria = this.categoriaRepository.findById(id);
         return categoria.isPresent() ?
                 ResponseEntity.ok().body(this.dbCategoriaToCategoriaResponse(categoria.get())) :
@@ -46,7 +47,7 @@ public class CategoriaService {
         return this.categoriaRepository.findAllCategoriaResponse(pageable, true);
     }
 
-    public ResponseEntity<?> updateStatusById(Long id){
+    public ResponseEntity<?> updateStatusById(UUID id){
         String mensagem = "";
         if(this.categoriaRepository.existsById(id)){
             Boolean status = this.categoriaRepository.getById(id).getIsActive();
@@ -70,12 +71,12 @@ public class CategoriaService {
     }
 
     @Transactional
-    protected void updateStatus(Long id, Boolean status){
+    protected void updateStatus(UUID id, Boolean status){
         this.categoriaRepository.updateStatus(id, status);
     }
 
     @Transactional
-    protected void removeCategoriasDosProdutosRelacionados(Long id){
+    protected void removeCategoriasDosProdutosRelacionados(UUID id){
         this.produtoRepository.updateCategoriaByIdCategoria(id);
     }
 

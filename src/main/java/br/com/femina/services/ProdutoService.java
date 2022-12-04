@@ -100,14 +100,14 @@ public class ProdutoService {
         }
     }
 
-    public ResponseEntity<ProdutoResponse> findById(Long id){
+    public ResponseEntity<ProdutoResponse> findById(UUID id){
         Optional<Produto> produto = this.produtoRepository.findById(id);
         return produto.isPresent() ?
                 ResponseEntity.ok().body(this.dbProdutoToProdutoResponse(produto.get(), getFilesName(produto.get()))) :
                 ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<?> update(Long id, String produtoString, Optional<MultipartFile[]> files) {
+    public ResponseEntity<?> update(UUID id, String produtoString, Optional<MultipartFile[]> files) {
         try {
             Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
             if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
@@ -123,7 +123,7 @@ public class ProdutoService {
         }
     }
 
-    public ResponseEntity<?> removeImage(Long id, String imageName) {
+    public ResponseEntity<?> removeImage(UUID id, String imageName) {
         if(produtoRepository.existsById(id)) {
             Produto produto = produtoRepository.getById(id);
             File fileToDelete = new File(path + produto.getCodigo() + "/" + imageName);
@@ -137,7 +137,7 @@ public class ProdutoService {
         }
     }
 
-    public ResponseEntity<?> removeAllImages(Long id) {
+    public ResponseEntity<?> removeAllImages(UUID id) {
         if(produtoRepository.existsById(id)) {
             Produto produto = produtoRepository.getById(id);
             File dir = new File(path+produto.getCodigo());
@@ -167,7 +167,7 @@ public class ProdutoService {
          return pageDbProdutosToPageProdutoResponse(produtoRepository.findAll(pageable));
     }
 
-    public ResponseEntity<?> updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(UUID id) {
         if(this.produtoRepository.existsById(id)){
             String mensagem = "";
             Produto dbProduto = this.produtoRepository.getById(id);
@@ -187,7 +187,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    protected void changeStatus(Long id, Boolean status){
+    protected void changeStatus(UUID id, Boolean status){
         this.produtoRepository.updateStatus(id, status);
     }
 
@@ -197,7 +197,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    protected void deleteFavoritosRelatedToProduct(Long id){
+    protected void deleteFavoritosRelatedToProduct(UUID id){
         this.favoritosRepository.deleteFavoritosByProductId(id);
     }
 

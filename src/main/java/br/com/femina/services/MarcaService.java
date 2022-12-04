@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MarcaService {
@@ -27,7 +28,7 @@ public class MarcaService {
         }
     }
 
-    public ResponseEntity<Marca> findById(Long id) {
+    public ResponseEntity<Marca> findById(UUID id) {
         Optional<Marca> marca = this.marcaRepository.findById(id);
         return marca.isPresent() ? ResponseEntity.ok().body(marca.get()) : ResponseEntity.notFound().build();
     }
@@ -36,7 +37,7 @@ public class MarcaService {
         return this.marcaRepository.findAllByIsActive(pageable, true);
     }
 
-    public ResponseEntity<?> updateStatusById(Long id) {
+    public ResponseEntity<?> updateStatusById(UUID id) {
         String mensagem = "";
         if(this.marcaRepository.existsById(id)) {
             Boolean status = this.marcaRepository.getById(id).getIsActive();
@@ -57,7 +58,7 @@ public class MarcaService {
     }
 
     @Transactional
-    protected void updateStatus(Long id, Boolean status){
+    protected void updateStatus(UUID id, Boolean status){
         this.marcaRepository.updateStatus(id, status);
     }
 

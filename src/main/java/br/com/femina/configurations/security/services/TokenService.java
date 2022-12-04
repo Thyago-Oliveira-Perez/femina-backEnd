@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class TokenService {
@@ -45,9 +46,9 @@ public class TokenService {
         }
     }
 
-    public Long getUserId(String token){
+    public UUID getUserId(String token){
         Claims claim =  Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-        return Long.parseLong(claim.getSubject());
+        return UUID.fromString(claim.getSubject());
     }
 
     public String getUserName(Authentication authentication) {

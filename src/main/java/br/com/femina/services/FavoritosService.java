@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class FavoritosService {
 
@@ -28,27 +30,38 @@ public class FavoritosService {
     @Autowired
     private TokenService tokenService;
 
-    public ResponseEntity<?> handleFavoritos(FavoritoDTO favorito) {
+    public ResponseEntity<?> insertFavoritos(FavoritoDTO favorito) {
 
-        Produto teste = produtoRepository.getById(favorito.getIdProduto());
-        System.out.println(teste);
+        if(this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(favorito.getIdProduto(), favorito.getIdUser()) == null) {
+            Favoritos favoritos = new Favoritos(
+                    UUID.randomUUID(),
+                    usuarioRepository.getById(favorito.getIdUser()),
+                    produtoRepository.getById(favorito.getIdProduto())
+            );
+
+            saveFavorito(favoritos);
+            return ResponseEntity.ok().body("Favorito cadastrado com sucesso!");
+        }
+        return ResponseEntity.badRequest().body("Favorito já existe no banco!");
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteFavorito(FavoritoDTO favorito) {
+
+        var teste = this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(favorito.getIdProduto(), favorito.getIdUser());
 
         if(this.favoritosRepository.existsFavoritosByProdutoIdAndUsuarioId(favorito.getIdProduto(), favorito.getIdUser()) != null){
-            Favoritos favoritos = new Favoritos();
+            this.deleteByUserIdAndProductId(favorito);
 
-            favoritos.setUsuario(usuarioRepository.getById(favorito.getIdUser()));
-            favoritos.setProduto(produtoRepository.getById(favorito.getIdProduto()));
-            saveFavorito(favoritos);
-            return ResponseEntity.ok().body("Favorito cadastrado com sucesoo!");
-        }else{
-            this.favoritosRepository.deleteByUserIdAndProductId(favorito.getIdProduto(), favorito.getIdUser());
-            return ResponseEntity.badRequest().body("Favorito já cadastrado.");
+            return ResponseEntity.badRequest().body("Favorito deletado com sucesso!.");
         }
+
+        return ResponseEntity.badRequest().body("Favorito não existe no banco.");
     }
 
     public Page<Favoritos> findUserFavoritos(HttpHeaders headers, Pageable pageable) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        Long idUser = this.tokenService.getUserId(token.substring(7, token.length()));
+        UUID idUser = this.tokenService.getUserId(token.substring(7, token.length()));
         return this.favoritosRepository.findFavoritosByUsuarioId(idUser, pageable);
     }
 
@@ -57,4 +70,8 @@ public class FavoritosService {
         this.favoritosRepository.save(favorito);
     }
 
+    @Transactional
+    protected void deleteByUserIdAndProductId(FavoritoDTO favorito){
+        this.favoritosRepository.deleteByUserIdAndProductId(favorito.getIdProduto(), favorito.getIdUser());
+    }
 }

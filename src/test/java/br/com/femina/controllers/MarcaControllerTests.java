@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -39,6 +40,8 @@ public class MarcaControllerTests {
     private MarcaService marcaService;
 
     private static ObjectMapper mapper = new ObjectMapper();
+
+    UUID marcaId = UUID.randomUUID();
 
     @Test
     @Order(1)
@@ -68,16 +71,16 @@ public class MarcaControllerTests {
     @Order(3)
     public void getMarcaById() throws Exception {
         Marca marca = new Marca("teste");
-        marca.setId(1L);
-        when(marcaService.findById(1L)).thenReturn(ResponseEntity.ok(marca));
-        this.mockMvc.perform(get("/api/marcas/"+1L))
+        marca.setId(marcaId);
+        when(marcaService.findById(marcaId)).thenReturn(ResponseEntity.ok(marca));
+        this.mockMvc.perform(get("/api/marcas/"+marcaId))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(4)
     public void disableMarca() throws Exception {
-        this.mockMvc.perform(put("/api/marcas/disable/"+1L))
+        this.mockMvc.perform(put("/api/marcas/disable/"+marcaId))
                 .andExpect(status().isOk());
     }
 }

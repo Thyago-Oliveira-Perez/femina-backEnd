@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 @NoArgsConstructor
@@ -14,7 +15,7 @@ public abstract class AbstractEntity {
     @Id
     @Getter @Setter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     @Getter @Setter
     @Column(name="cadastrado")

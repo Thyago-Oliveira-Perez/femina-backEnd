@@ -1,5 +1,7 @@
 package br.com.femina.dto.fornecedor;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FornecedorResponse {
     @Getter @Setter
-    private Long id;
+    private UUID id;
     @Getter @Setter
     private String name;
     @Getter @Setter

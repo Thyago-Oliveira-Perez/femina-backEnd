@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,7 +86,7 @@ public class FavoritoRepositoryTests {
     @Order(1)
     @DisplayName("Inserir Favorito")
     public void insertFavorito() {
-        Favoritos favoritos = new Favoritos(1L, usuario, produto);
+        Favoritos favoritos = new Favoritos(UUID.randomUUID(), usuario, produto);
         favoritosRepository.save(favoritos);
         int countFavoritos = favoritosRepository.findAll().size();
         assertThat(countFavoritos).isEqualTo(1);
@@ -97,7 +98,7 @@ public class FavoritoRepositoryTests {
     public void listFavoritos() {
         Pageable pageable = PageRequest.of(0,10);
         List<Usuario> usuarios = usuarioRepository.findAll();
-        Favoritos favoritos = new Favoritos(1L, usuarios.get(0), produto);
+        Favoritos favoritos = new Favoritos(UUID.randomUUID(), usuarios.get(0), produto);
         favoritosRepository.save(favoritos);
         Page<Favoritos> favoritosList = favoritosRepository.findFavoritosByUsuarioId(usuarios.get(0).getId(), pageable);
         assertThat(favoritosList.getContent().size()).isGreaterThanOrEqualTo(1);

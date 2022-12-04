@@ -1,5 +1,7 @@
 package br.com.femina.dto;
 
+import java.util.UUID;
+
 import br.com.femina.enums.Enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +17,7 @@ public class BannerResponse {
     private String imagens;
     private Enums.TipoDeBanner tipoDeBanner;
     private String nomeUsuario;
-    private Long idUsuario;
+    private UUID idUsuario;
     private String[] imageNames;
 
 }

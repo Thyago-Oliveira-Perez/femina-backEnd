@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = {"http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3002" ,"http://localhost:3002"})
@@ -29,7 +30,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/{idProduto}")
-    public ResponseEntity<ProdutoResponse> findById(@PathVariable("idProduto") Long idProduto) {
+    public ResponseEntity<ProdutoResponse> findById(@PathVariable("idProduto") UUID idProduto) {
         return this.produtoService.findById(idProduto);
     }
 
@@ -46,7 +47,7 @@ public class ProdutoController {
     @PutMapping("/estoque/{idProduto}")
     public ResponseEntity<?> update(
             String produto,
-            @PathVariable Long idProduto,
+            @PathVariable UUID idProduto,
             @RequestParam("image") Optional<MultipartFile[]> files
     ) {
         return this.produtoService.update(idProduto, produto, files);
@@ -54,19 +55,19 @@ public class ProdutoController {
 
     @PutMapping("/estoque/remove-image/{idProduto}")
     public ResponseEntity<?> removeImage(
-            @PathVariable("idProduto") Long id,
+            @PathVariable("idProduto") UUID id,
             @RequestBody String nameImage
     ) {
         return produtoService.removeImage(id, nameImage);
     }
 
     @PutMapping("/estoque/remove-all-images/{idProduto}")
-    public ResponseEntity<?> removeAllImages(@PathVariable("idProduto") Long id) {
+    public ResponseEntity<?> removeAllImages(@PathVariable("idProduto") UUID id) {
         return produtoService.removeAllImages(id);
     }
 
     @PutMapping("/estoque/disable/{idProduto}")
-    public ResponseEntity<?> updateStatus(@PathVariable Long idProduto){
+    public ResponseEntity<?> updateStatus(@PathVariable UUID idProduto){
         return this.produtoService.updateStatusById(idProduto);
     }
 

@@ -87,7 +87,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .and()
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                        Authentication authentication) throws IOException, ServletException {
                         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
                         usuarioService.processOAuth2Login(oauthUser.getEmail());
