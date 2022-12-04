@@ -42,11 +42,8 @@ public class Produto extends AbstractEntity {
     private Categorias categoria;
 
     @Getter @Setter
-    @ManyToMany
-    @JoinTable(name = "produtos_modelos",
-            joinColumns = @JoinColumn(name = "id_produto", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_modelo", referencedColumnName = "id"))
-    private Collection<Modelo> modelo;
+    @ManyToOne
+    private Modelo modelo;
 
     @Getter @Setter
     @JoinColumn(name = "id_fornecedor")

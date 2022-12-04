@@ -30,7 +30,7 @@ public class ProdutoResponse {
     @Getter @Setter
     private Categorias categoria;
     @Getter @Setter
-    private Collection<Modelo> modelo;
+    private Modelo modelo;
     @Getter @Setter
     private Fornecedor fornecedor;
     @Getter @Setter
