@@ -10,25 +10,25 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BCryptPasswordEncoder senha = new BCryptPasswordEncoder();
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(senha.encode("teste"));
-        Categorias categorias = new Categorias("teste");
-        Marca marca = new Marca("teste");
-        Modelo modelo = new Modelo("teste");
-        Fornecedor fornecedor = new Fornecedor("teste", "00.000.000/0000-00","999999999","teste@email.com");
-        Collection<Modelo> modelos = List.of(modelo);
-        BigDecimal valor = new BigDecimal(99);
-        Produto produto = new Produto("codigo",
-                "teste",
-                valor, categorias,
-                modelos, fornecedor,
-                marca, "verde",
-                Enums.Tamanhos.M, "",
-                "teste", false);
-
-        String json = mapper.writeValueAsString(produto);
-        System.out.println(json);
+//        BCryptPasswordEncoder senha = new BCryptPasswordEncoder();
+//        ObjectMapper mapper = new ObjectMapper();
+//        System.out.println(senha.encode("teste"));
+//        Categorias categorias = new Categorias("teste");
+//        Marca marca = new Marca("teste");
+//        Modelo modelo = new Modelo("teste");
+//        Fornecedor fornecedor = new Fornecedor("teste", "00.000.000/0000-00","999999999","teste@email.com");
+//        Collection<Modelo> modelos = List.of(modelo);
+//        BigDecimal valor = new BigDecimal(99);
+//        Produto produto = new Produto("codigo",
+//                "teste",
+//                valor, categorias,
+//                modelos, fornecedor,
+//                marca, "verde",
+//                Enums.Tamanhos.M, "",
+//                "teste", false);
+//
+//        String json = mapper.writeValueAsString(produto);
+//        System.out.println(json);
     /*
     * INSERT INTO public.usuario(
 			id, atualizado, cadastrado, ativo, email, login, name, password, sexo, telefone)

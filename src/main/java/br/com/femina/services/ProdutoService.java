@@ -6,10 +6,12 @@ import br.com.femina.entities.Produto;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
+import br.com.femina.services.Specification.ProdutoSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,9 @@ public class ProdutoService {
 
     @Autowired
     private FavoritosRepository favoritosRepository;
+
+    @Autowired
+    private ProdutoSpecification produtoSpecification;
 
     private String path = "./images/produto/";
 
@@ -147,29 +152,20 @@ public class ProdutoService {
         }
     }
 
-//    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
-//
-//        if(filters.getCategoriaIds().size() == 0 &&
-//           filters.getMarcaIds().size() == 0 &&
-//           filters.getCor().equals("") &&
-//           filters.getTamanho().equals(Enums.Tamanhos.ALL)){
-//
-//            return this.produtoRepository.findAllProdutoResponse(pageable);
-//        }
-//
-//        return this.produtoRepository.findAllByFilters(
-//                filters.getCategoriaIds(),
-//                filters.getMarcaIds(),
-//                filters.getCor(),
-//                filters.getTamanho().toString(),
-//                pageable,
-//                true
-//        );
-//    }
+    public Page<ProdutoResponse> findAllByFilters(Filters filters, Pageable pageable){
 
-//    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
-//        return produtoRepository.findAllProdutoResponse(pageable);
-//    }
+        if(filters.getCategoriaIds().size() == 0 &&
+           filters.getMarcaIds().size() == 0 &&
+           filters.getCor().equals("") &&
+           filters.getTamanho().equals(Enums.Tamanhos.ALL)){
+            return pageDbProdutosToPageProdutoResponse(this.produtoRepository.findAllByIsActive(true, pageable));
+        }
+        return pageDbProdutosToPageProdutoResponse(this.produtoRepository.findAll(produtoSpecification.getProductsFilters(filters), pageable));
+    }
+
+    public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
+         return pageDbProdutosToPageProdutoResponse(produtoRepository.findAll(pageable));
+    }
 
     public ResponseEntity<?> updateStatusById(Long id) {
         if(this.produtoRepository.existsById(id)){
@@ -206,6 +202,28 @@ public class ProdutoService {
     }
 
     //<editor-fold desc="Helpers">
+    private Page<ProdutoResponse> pageDbProdutosToPageProdutoResponse(Page<Produto> dbProdutos) {
+        List<ProdutoResponse> produtoResponseList = new ArrayList<>();
+        dbProdutos.map(dbProduto -> produtoResponseList.add(new ProdutoResponse(
+                dbProduto.getId(),
+                dbProduto.getNome(),
+                dbProduto.getCodigo(),
+                dbProduto.getValor(),
+                dbProduto.getMarca(),
+                dbProduto.getCategoria(),
+                dbProduto.getModelo(),
+                dbProduto.getFornecedor(),
+                dbProduto.getTamanho(),
+                dbProduto.getCor(),
+                dbProduto.getDescricao(),
+                dbProduto.getImagem(),
+                dbProduto.getDestaque(),
+                getFilesName(dbProduto)
+        )));
+        Pageable pageable = PageRequest.of(dbProdutos.getPageable().getPageNumber(), dbProdutos.getSize());
+        Page<ProdutoResponse> pageProdutoResponse = new PageImpl<ProdutoResponse>(produtoResponseList, pageable, dbProdutos.getTotalElements());
+        return pageProdutoResponse;
+    }
     private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto, String[] imageNames){
         return new ProdutoResponse(
                 dbProduto.getId(),
@@ -224,6 +242,5 @@ public class ProdutoService {
                 imageNames
         );
     }
-
     //</editor-fold>
 }
