@@ -8,15 +8,16 @@ import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class Filters {
 
     @Getter @Setter
-    private List<Long> categoriaIds;
+    private List<UUID> categoriaIds;
     @Getter @Setter
-    private List<Long> marcaIds;
+    private List<UUID> marcaIds;
     @Getter @Setter
     private String cor;
     @Getter @Setter
