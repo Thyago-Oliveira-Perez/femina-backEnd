@@ -31,6 +31,11 @@ public class BannerController {
         return bannerService.findByType(tipoDeBanner);
     }
 
+    @GetMapping("/findId/{idBanner}")
+    public ResponseEntity<BannerResponse> findById(@PathVariable("idBanner") UUID idBanner) {
+        return bannerService.findById(idBanner);
+    }
+
     @PostMapping
     public ResponseEntity<?> insert(@RequestParam(name = "banner") String bannerString,
                                     @RequestParam(name = "images") MultipartFile[] files) {

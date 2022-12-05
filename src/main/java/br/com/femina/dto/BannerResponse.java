@@ -12,12 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BannerResponse {
-
+    private UUID id;
     private String nome;
     private String imagens;
     private Enums.TipoDeBanner tipoDeBanner;
     private String nomeUsuario;
     private UUID idUsuario;
     private String[] imageNames;
-
 }

@@ -1,7 +1,6 @@
 package br.com.femina.services;
 
 import br.com.femina.dto.BannerResponse;
-import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Banners;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.BannerRepository;
@@ -109,6 +108,13 @@ public class BannerService {
                 : ResponseEntity.notFound().build();
     }
 
+    public ResponseEntity<BannerResponse> findById(UUID idBanner) {
+        Optional<Banners> banners = bannerRepository.findById(idBanner);
+        return banners.isPresent()
+                ? ResponseEntity.ok().body(this.dbBannerToBannerResponse(banners.get(), this.getFilesName(banners.get())))
+                : ResponseEntity.notFound().build();
+    }
+
     public ResponseEntity<?> updateBanner(UUID id, String bannerString, Optional<MultipartFile[]> files) {
         try {
             Banners banners = new ObjectMapper().readValue(bannerString, Banners.class);
@@ -157,6 +163,7 @@ public class BannerService {
     private Page<BannerResponse> pageDbBannersToPageBannerResponse(Page<Banners> dbBanners) {
         List<BannerResponse> bannerResponseList = new ArrayList<>();
         dbBanners.map(dbBanner -> bannerResponseList.add(new BannerResponse(
+                dbBanner.getId(),
                 dbBanner.getName(),
                 dbBanner.getImagens(),
                 dbBanner.getTipo(),
@@ -171,6 +178,7 @@ public class BannerService {
 
     private BannerResponse dbBannerToBannerResponse(Banners dbBanner, String[] imageNames){
         return new BannerResponse(
+            dbBanner.getId(),
             dbBanner.getName(),
             dbBanner.getImagens(),
             dbBanner.getTipo(),
