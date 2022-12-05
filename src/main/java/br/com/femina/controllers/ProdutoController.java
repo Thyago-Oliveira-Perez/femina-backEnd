@@ -2,7 +2,6 @@ package br.com.femina.controllers;
 
 import br.com.femina.dto.produto.Filters;
 import br.com.femina.dto.produto.ProdutoResponse;
-import br.com.femina.dto.produto.ProdutoRequest;
 import br.com.femina.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

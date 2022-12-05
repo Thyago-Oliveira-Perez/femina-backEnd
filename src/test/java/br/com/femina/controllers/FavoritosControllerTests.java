@@ -59,12 +59,11 @@ public class FavoritosControllerTests {
         Marca marca = new Marca("teste");
         Modelo modelo = new Modelo("teste");
         Fornecedor fornecedor = new Fornecedor("teste", "00.000.000/0000-00","999999999","teste@email.com");
-        Collection<Modelo> modelos = List.of(modelo);
         BigDecimal valor = new BigDecimal(99);
         produto = new Produto("codigo",
                 "teste",
                 valor, categorias,
-                modelos, fornecedor,
+                modelo, fornecedor,
                 marca, "verde",
                 Enums.Tamanhos.M, "",
                 "teste", false);

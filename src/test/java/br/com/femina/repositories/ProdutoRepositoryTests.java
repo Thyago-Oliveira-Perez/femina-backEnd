@@ -40,7 +40,6 @@ public class ProdutoRepositoryTests {
     Marca marca;
     Modelo modelo, modelo2;
     Fornecedor fornecedor;
-    Collection<Modelo> modelos;
     BigDecimal valor;
 
     @BeforeEach
@@ -60,8 +59,6 @@ public class ProdutoRepositoryTests {
         fornecedor = new Fornecedor("teste", "00.000.000/0000-00","45999999999","teste@email.com");
         fornecedorRepository.save(fornecedor);
 
-        modelos = List.of(modelo, modelo2);
-
         valor = new BigDecimal(99);
     }
 
@@ -69,7 +66,7 @@ public class ProdutoRepositoryTests {
     @Order(1)
     @DisplayName("Inserir Produto")
     public void insertProduto() {
-        Produto produto = new Produto("codigo", "teste", this.valor, categorias, modelos, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
+        Produto produto = new Produto("codigo", "teste", this.valor, categorias, modelo, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
         produtoRepository.save(produto);
         int countProdutos = produtoRepository.findAll().size();
         assertThat(countProdutos).isEqualTo(1);
@@ -93,7 +90,7 @@ public class ProdutoRepositoryTests {
     @Order(3)
     @DisplayName("Inserir Produto com os mesmos valores(unique)")
     public void insertExistingProdutoUnsupportedOperation() {
-        Produto produto = new Produto("codigo", "teste", valor, categorias, modelos, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
+        Produto produto = new Produto("codigo", "teste", valor, categorias, modelo, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
         AtomicInteger countProdutos = new AtomicInteger();
         UnsupportedOperationException exception = Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             produtoRepository.save(produto);
@@ -107,7 +104,7 @@ public class ProdutoRepositoryTests {
     @Order(4)
     @DisplayName("Listar Produtos")
     public void listProdutos() {
-        Produto produto = new Produto("codigo", "teste", valor, categorias, modelos, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
+        Produto produto = new Produto("codigo", "teste", valor, categorias, modelo, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
         produtoRepository.save(produto);
         List<Produto> produtosList = produtoRepository.findAll();
         assertThat(produtosList.size()).isGreaterThanOrEqualTo(1);

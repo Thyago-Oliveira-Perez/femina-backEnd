@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002", "http://localhost:3000"})
+@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3002" ,"http://localhost:3002"})
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 

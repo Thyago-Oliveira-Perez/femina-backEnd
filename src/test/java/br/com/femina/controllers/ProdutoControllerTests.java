@@ -35,7 +35,6 @@ public class ProdutoControllerTests {
     Marca marca;
     Modelo modelo;
     Fornecedor fornecedor;
-    Collection<Modelo> modelos;
     BigDecimal valor;
 
     @BeforeEach
@@ -44,7 +43,6 @@ public class ProdutoControllerTests {
         marca = new Marca("teste");
         modelo = new Modelo("teste");
         fornecedor = new Fornecedor("teste", "00.000.000/0000-00","999999999","teste@email.com");
-        modelos = List.of(modelo);
         valor = new BigDecimal(99);
     }
 
@@ -56,7 +54,7 @@ public class ProdutoControllerTests {
         Produto produto = new Produto("codigo",
                 "teste",
                 this.valor, categorias,
-                modelos, fornecedor,
+                modelo, fornecedor,
                 marca, "verde",
                 Enums.Tamanhos.M, "",
                 "teste", false);

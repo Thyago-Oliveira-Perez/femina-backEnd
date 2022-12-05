@@ -75,7 +75,7 @@ public class FavoritoRepositoryTests {
 
         valor = new BigDecimal(99);
 
-        produto = new Produto("codigo", "teste", this.valor, categorias, modelos, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
+        produto = new Produto("codigo", "teste", this.valor, categorias, modelo, fornecedor, marca, "verde", Enums.Tamanhos.M, "", "teste", false);
         produtoRepository.save(produto);
 
         Usuario usuario = new Usuario("teste","teste","123", Enums.Sexos.MASCULINO, "teste@email.com", "45999999999", new ArrayList<>(), Enums.Provider.LOCAL);

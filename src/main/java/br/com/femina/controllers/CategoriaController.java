@@ -16,7 +16,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://127.0.0.1:3002"})
+@CrossOrigin(origins = {"http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:3002" ,"http://localhost:3002"})
 @RequestMapping("/api/categorias")
 public class CategoriaController {
 

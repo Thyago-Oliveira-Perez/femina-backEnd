@@ -144,10 +144,34 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                             );
                             produto3.setIsActive(true);
 
+                            String codigoProduto4 = "943558720";
+                            BigDecimal valorDefault4 = new BigDecimal((long)122.00);
+                            Produto produto4 = new Produto(
+                                    codigoProduto4,
+                                    "Camiseta Masculina Roxo Escuro",
+                                    valorDefault4,
+                                    categoriasDefault.get(0),
+                                    modelosDefault.get(0),
+                                    fornecedor,
+                                    marca,
+                                    "Roxo",
+                                    Enums.Tamanhos.G,
+                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
+                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
+                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
+                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
+                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
+                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
+                                    "./images/produto/" + codigoProduto4,
+                                    true
+                            );
+                            produto3.setIsActive(true);
+
                             List<Produto> defaultProducts = new ArrayList<>(){{
                                     add(produto);
                                     add(produto2);
                                     add(produto3);
+                                    add(produto4);
                                 }};
 
                             this.produtoRepository.saveAll(defaultProducts);
