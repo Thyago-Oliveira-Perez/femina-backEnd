@@ -1,10 +1,11 @@
 package br.com.femina.controllers;
 
 import br.com.femina.dto.BannerResponse;
-import br.com.femina.entities.Banners;
 import br.com.femina.enums.Enums;
 import br.com.femina.services.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +21,19 @@ public class BannerController {
     @Autowired
     private BannerService bannerService;
 
+    @GetMapping("/list")
+    public ResponseEntity<Page<BannerResponse>> findAll(Pageable pageable) {
+        return bannerService.findAll(pageable);
+    }
+
     @GetMapping("/{typeBanner}")
-    public ResponseEntity<BannerResponse> findByType(@PathVariable("typeBanner") Enums.TipoDeBanner tipoDeBanner){
+    public ResponseEntity<BannerResponse> findByType(@PathVariable("typeBanner") Enums.TipoDeBanner tipoDeBanner) {
         return bannerService.findByType(tipoDeBanner);
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(String bannerString, @RequestParam("images") MultipartFile[] files) {
+    public ResponseEntity<?> insert(@RequestParam(name = "banner") String bannerString,
+                                    @RequestParam(name = "images") MultipartFile[] files) {
         return bannerService.insert(bannerString, files);
     }
 

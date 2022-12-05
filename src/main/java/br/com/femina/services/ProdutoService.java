@@ -1,16 +1,13 @@
 package br.com.femina.services;
 
 import br.com.femina.dto.produto.Filters;
-import br.com.femina.dto.produto.ProdutoRequest;
 import br.com.femina.dto.produto.ProdutoResponse;
-import br.com.femina.entities.Modelo;
 import br.com.femina.entities.Produto;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import br.com.femina.services.Specification.ProdutoSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.oauth2.sdk.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -95,7 +92,6 @@ public class ProdutoService {
 
     public ResponseEntity<?> insert(String produtoRequest, MultipartFile[] images) {
         try {
-            //TODO rever Mapper por que esta quebrando -> descobrir o motivo
             Produto produto = new ObjectMapper().readValue(produtoRequest, Produto.class);
             produto.setImagem(path+produto.getCodigo());
             saveProduto(produto);

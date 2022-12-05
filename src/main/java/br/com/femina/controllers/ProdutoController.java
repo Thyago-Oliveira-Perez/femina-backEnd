@@ -44,9 +44,9 @@ public class ProdutoController {
 
     @PutMapping("/estoque/{idProduto}")
     public ResponseEntity<?> update(
-            String produto,
             @PathVariable UUID idProduto,
-            @RequestParam("image") Optional<MultipartFile[]> files
+            @RequestParam(name = "produto") String produto,
+            @RequestParam(name = "image") Optional<MultipartFile[]> files
     ) {
         return this.produtoService.update(idProduto, produto, files);
     }

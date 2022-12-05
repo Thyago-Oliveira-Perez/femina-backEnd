@@ -1,11 +1,16 @@
 package br.com.femina.services;
 
 import br.com.femina.dto.BannerResponse;
+import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Banners;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.BannerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BannerService {
@@ -64,6 +67,9 @@ public class BannerService {
     public void saveFile(Banners banners, MultipartFile[] files) {
         createDirIfNotExist(banners);
         int count = getLastFile(banners);
+        if (count != 0){
+            count += 1;
+        }
         for(int i = count+1;i < count+files.length;i++) {
             try {
                 byte[] bytes = files[i-count].getBytes();
@@ -85,6 +91,14 @@ public class BannerService {
             return ResponseEntity.ok().body("Banner cadastrado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Banner já cadastrado.");
+        }
+    }
+
+    public ResponseEntity<Page<BannerResponse>> findAll(Pageable pageable) {
+        try {
+            return ResponseEntity.ok(pageDbBannersToPageBannerResponse(bannerRepository.findAll(pageable)));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -138,6 +152,21 @@ public class BannerService {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private Page<BannerResponse> pageDbBannersToPageBannerResponse(Page<Banners> dbBanners) {
+        List<BannerResponse> bannerResponseList = new ArrayList<>();
+        dbBanners.map(dbBanner -> bannerResponseList.add(new BannerResponse(
+                dbBanner.getName(),
+                dbBanner.getImagens(),
+                dbBanner.getTipo(),
+                dbBanner.getUsuario().getNome(),
+                dbBanner.getUsuario().getId(),
+                getFilesName(dbBanner)
+        )));
+        Pageable pageable = PageRequest.of(dbBanners.getPageable().getPageNumber(), dbBanners.getSize());
+        Page<BannerResponse> pageBannerResponse = new PageImpl<BannerResponse>(bannerResponseList, pageable, dbBanners.getTotalElements());
+        return pageBannerResponse;
     }
 
     private BannerResponse dbBannerToBannerResponse(Banners dbBanner, String[] imageNames){
