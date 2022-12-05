@@ -17,7 +17,7 @@ public class Banners extends AbstractEntity {
     private String name;
 
     @Getter @Setter
-    @Column(name = "imagens", columnDefinition = "boolean default false", nullable = false)
+    @Column(name = "imagens", nullable = false)
     private String imagens;
 
     @Getter @Setter
