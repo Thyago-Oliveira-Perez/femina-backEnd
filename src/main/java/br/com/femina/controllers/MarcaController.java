@@ -27,19 +27,16 @@ public class MarcaController {
     }
 
     @GetMapping
-    @Cacheable(value = "marcaFindAll")
     public ResponseEntity<Page<Marca>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.marcaService.findAll(pageable));
     }
 
     @PostMapping
-    @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> insert(@RequestBody Marca marca) {
         return this.marcaService.insert(marca);
     }
 
     @PutMapping("/disable/{idMarca}")
-    @CacheEvict(value = "marcaFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idMarca") UUID idMarca) {
         return this.marcaService.updateStatusById(idMarca);
     }

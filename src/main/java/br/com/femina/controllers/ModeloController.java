@@ -27,19 +27,16 @@ public class ModeloController {
     }
 
     @GetMapping
-    @Cacheable(value = "modeloFindAll")
     public ResponseEntity<Page<Modelo>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.modeloService.findAll(pageable));
     }
 
     @PostMapping
-    @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> insert(@RequestBody Modelo modelo) {
         return this.modeloService.insert(modelo);
     }
 
     @PutMapping("/disable/{idModelo}")
-    @CacheEvict(value = "modeloFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idModelo") UUID idModelo){
         return this.modeloService.updateStatusById(idModelo);
     }

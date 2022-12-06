@@ -29,19 +29,16 @@ public class CategoriaController {
     }
 
     @GetMapping
-    @Cacheable(value = "categoriasFindAll")
     public ResponseEntity<Page<CategoriaResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.categoriaService.findAll(pageable));
     }
 
     @PostMapping
-    @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> insert(@RequestBody @Valid Categorias categorias) {
         return this.categoriaService.insert(categorias);
     }
 
     @PutMapping("/disable/{idCategoria}")
-    @CacheEvict(value = "categoriasFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idCategoria") UUID idCategoria){
         return this.categoriaService.updateStatusById(idCategoria);
     }
