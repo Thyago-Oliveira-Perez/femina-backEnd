@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,7 +31,10 @@ public abstract class AbstractEntity {
     private Boolean isActive;
 
     @PrePersist
-    private void dataCadastro() { this.cadastrado = LocalDateTime.now(); };
+    private void defaultValues() {
+        this.isActive = true;
+        this.cadastrado = LocalDateTime.now();
+    }
 
     @PreUpdate
     private void dataAtualizado() { this.atualizado = LocalDateTime.now(); };
