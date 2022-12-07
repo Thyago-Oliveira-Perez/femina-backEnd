@@ -1,5 +1,6 @@
 package br.com.femina.repositories;
 
+import br.com.femina.dto.modelo.ModeloResponse;
 import br.com.femina.entities.Modelo;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ModeloRepository extends JpaRepository<Modelo, UUID> {
 
-    public Page<Modelo> findAllByIsActive(Pageable pageable, Boolean active);
+    public Page<ModeloResponse> findAllByIsActive(Pageable pageable, Boolean active);
 
     @Modifying
     @Query("UPDATE Modelo modelo " +

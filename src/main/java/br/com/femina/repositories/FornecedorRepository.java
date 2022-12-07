@@ -19,7 +19,7 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, UUID> {
     @Query("SELECT " +
             "new br.com.femina.dto.fornecedor.FornecedorResponse (" +
             "f.id," +
-            "f.name," +
+            "f.nome," +
             "f.cnpj," +
             "f.telefone," +
             "f.email) " +

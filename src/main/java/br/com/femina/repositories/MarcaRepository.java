@@ -1,5 +1,6 @@
 package br.com.femina.repositories;
 
+import br.com.femina.dto.marca.MarcaResponse;
 import br.com.femina.entities.Marca;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MarcaRepository extends JpaRepository<Marca, UUID> {
 
-    public Page<Marca> findAllByIsActive(Pageable pageable, Boolean active);
+    public Page<MarcaResponse> findAllByIsActive(Pageable pageable, Boolean active);
 
     @Modifying
     @Query("UPDATE Marca marca " +

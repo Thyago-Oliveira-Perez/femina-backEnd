@@ -25,8 +25,9 @@ public class FornecedorService {
 
     public ResponseEntity<?> insert(FornecedorRequest fornecedor) {
         try{
+            System.out.println(this.fornecedorRequestToDbFornecedor(fornecedor));
             saveFornecedor(this.fornecedorRequestToDbFornecedor(fornecedor));
-            return ResponseEntity.ok().body("Fornecedor cadastrada com sucesso!");
+            return ResponseEntity.ok().body("Fornecedor cadastrado com sucesso!");
         }catch(Exception e){
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body("Fornecedor já cadastrado!");
@@ -84,7 +85,7 @@ public class FornecedorService {
 
         dbFornecedores.map(dbFornecedor -> fornecedorResponseList.add(new FornecedorResponse(
                 dbFornecedor.getId(),
-                dbFornecedor.getName(),
+                dbFornecedor.getNome(),
                 dbFornecedor.getCnpj(),
                 dbFornecedor.getTelefone(),
                 dbFornecedor.getEmail()
@@ -97,7 +98,7 @@ public class FornecedorService {
     private FornecedorResponse dbFornecedorToFornecedorResponse(Fornecedor dbFornecedor){
         return new FornecedorResponse(
             dbFornecedor.getId(),
-            dbFornecedor.getName(),
+            dbFornecedor.getNome(),
             dbFornecedor.getCnpj(),
             dbFornecedor.getTelefone(),
             dbFornecedor.getEmail()
@@ -106,7 +107,7 @@ public class FornecedorService {
 
     private Fornecedor fornecedorRequestToDbFornecedor(FornecedorRequest fornecedorRequest){
         return new Fornecedor(
-                fornecedorRequest.getName(),
+                fornecedorRequest.getNome(),
                 fornecedorRequest.getCnpj(),
                 fornecedorRequest.getTelefone(),
                 fornecedorRequest.getEmail()

@@ -1,6 +1,7 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
+import br.com.femina.dto.marca.MarcaResponse;
 import br.com.femina.entities.Marca;
 import br.com.femina.services.MarcaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,9 +59,9 @@ public class MarcaControllerTests {
     @Order(2)
     public void getMarca() throws Exception {
         Pageable pageable = PageRequest.of(1,4);
-        Marca marca = new Marca("teste");
-        List<Marca> marcasList = List.of(marca);
-        Page<Marca> marcaPage = new PageImpl<Marca>(marcasList);
+        MarcaResponse marca = new MarcaResponse(marcaId,"teste");
+        List<MarcaResponse> marcasList = List.of(marca);
+        Page<MarcaResponse> marcaPage = new PageImpl<MarcaResponse>(marcasList);
         when(marcaService.findAll(pageable)).thenReturn(marcaPage);
         this.mockMvc.perform(get("/api/marcas"))
                 .andExpect(status().isOk());

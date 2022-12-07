@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.modelo.ModeloResponse;
 import br.com.femina.entities.Modelo;
 import br.com.femina.services.ModeloService;
 
@@ -27,7 +28,7 @@ public class ModeloController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Modelo>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<ModeloResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.modeloService.findAll(pageable));
     }
 

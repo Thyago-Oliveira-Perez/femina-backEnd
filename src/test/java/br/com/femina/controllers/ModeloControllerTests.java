@@ -1,6 +1,7 @@
 package br.com.femina.controllers;
 
 import br.com.femina.config.TestSecurityConfig;
+import br.com.femina.dto.modelo.ModeloResponse;
 import br.com.femina.entities.Modelo;
 import br.com.femina.services.ModeloService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,9 +59,9 @@ public class ModeloControllerTests {
     @Order(2)
     public void getModelo() throws Exception {
         Pageable pageable = PageRequest.of(1,4);
-        Modelo modelo = new Modelo("teste");
-        List<Modelo> modelosList = List.of(modelo);
-        Page<Modelo> modelosPage = new PageImpl<Modelo>(modelosList);
+        ModeloResponse modelo = new ModeloResponse(modeloId, "teste");
+        List<ModeloResponse> modelosList = List.of(modelo);
+        Page<ModeloResponse> modelosPage = new PageImpl<ModeloResponse>(modelosList);
         when(modeloService.findAll(pageable)).thenReturn(modelosPage);
         this.mockMvc.perform(get("/api/modelos"))
                 .andExpect(status().isOk());

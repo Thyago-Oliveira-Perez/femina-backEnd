@@ -29,26 +29,22 @@ public class FornecedorController {
     }
 
     @GetMapping
-    @Cacheable(value = "fornecedoresFindAll")
     public ResponseEntity<Page<FornecedorResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.fornecedorService.findAll(pageable));
     }
 
     @PostMapping
-    @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> insert(@RequestBody FornecedorRequest fornecedor) {
         return this.fornecedorService.insert(fornecedor);
     }
 
     @PutMapping("/{idFornecedor}")
-    @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<FornecedorResponse> update(@PathVariable("idFornecedor") UUID idFornecedor,
                                     @RequestBody Fornecedor fornecedor) {
         return this.fornecedorService.update(idFornecedor, fornecedor);
     }
 
     @PutMapping("/disable/{idFornecedor}")
-    @CacheEvict(value = "fornecedoresFindAll")
     public ResponseEntity<?> updateStatus(@PathVariable("idFornecedor") UUID idFornecedor) {
         return this.fornecedorService.updateStatusById(idFornecedor);
     }

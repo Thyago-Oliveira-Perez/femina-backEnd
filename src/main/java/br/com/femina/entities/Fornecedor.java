@@ -18,7 +18,7 @@ public class Fornecedor extends AbstractEntity {
     @Getter @Setter
     @Column(name = "nome", nullable = false)
     @NotNull(message = "Nome é obrigatório")
-    private String name;
+    private String nome;
 
     @Getter @Setter
     @Pattern(regexp = "([0-9]{2}.[0-9]{3}.[0-9]{3}/[0-9]{4}-[0-9]{2}$)")

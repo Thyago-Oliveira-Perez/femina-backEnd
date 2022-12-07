@@ -13,7 +13,7 @@ public class FornecedorResponse {
     @Getter @Setter
     private UUID id;
     @Getter @Setter
-    private String name;
+    private String nome;
     @Getter @Setter
     private String cnpj;
     @Getter @Setter

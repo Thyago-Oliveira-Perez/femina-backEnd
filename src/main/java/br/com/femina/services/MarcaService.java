@@ -1,5 +1,6 @@
 package br.com.femina.services;
 
+import br.com.femina.dto.marca.MarcaResponse;
 import br.com.femina.entities.Marca;
 import br.com.femina.repositories.MarcaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class MarcaService {
         return marca.isPresent() ? ResponseEntity.ok().body(marca.get()) : ResponseEntity.notFound().build();
     }
 
-    public Page<Marca> findAll(Pageable pageable) {
+    public Page<MarcaResponse> findAll(Pageable pageable) {
         return this.marcaRepository.findAllByIsActive(pageable, true);
     }
 

@@ -1,5 +1,6 @@
 package br.com.femina.services;
 
+import br.com.femina.dto.modelo.ModeloResponse;
 import br.com.femina.entities.Modelo;
 import br.com.femina.repositories.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class ModeloService {
         return  modelo.isPresent() ? ResponseEntity.ok().body(modelo.get()) : ResponseEntity.notFound().build();
     }
 
-    public Page<Modelo> findAll(Pageable pageable){
+    public Page<ModeloResponse> findAll(Pageable pageable){
         return this.modeloRepository.findAllByIsActive(pageable, true);
     }
 

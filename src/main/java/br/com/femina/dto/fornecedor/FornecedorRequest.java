@@ -11,7 +11,7 @@ public class FornecedorRequest {
     @Getter @Setter
     private Long id;
     @Getter @Setter
-    private String name;
+    private String nome;
     @Getter @Setter
     private String cnpj;
     @Getter @Setter

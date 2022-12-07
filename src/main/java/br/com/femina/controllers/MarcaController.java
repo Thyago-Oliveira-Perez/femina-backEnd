@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.marca.MarcaResponse;
 import br.com.femina.entities.Marca;
 import br.com.femina.services.MarcaService;
 
@@ -27,7 +28,7 @@ public class MarcaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Marca>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<MarcaResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(this.marcaService.findAll(pageable));
     }
 
