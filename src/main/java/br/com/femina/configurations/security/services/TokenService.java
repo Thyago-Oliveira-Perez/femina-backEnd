@@ -14,15 +14,13 @@ import java.util.UUID;
 @Service
 public class TokenService {
 
-    @Value("${femina.jwt.expiration}")
+    @Value("${femina.jwt.tokenExpiration}")
     private String expirationDate;
 
     @Value("${femina.jwt.secret}")
     private String secret;
 
-    public String createToken(Authentication authentication){
-
-        Usuario user = (Usuario)authentication.getPrincipal();
+    public String generateToken(Usuario user){
 
         Date validFrom = new Date();
         Date validUntil = new Date(validFrom.getTime() + Long.parseLong(expirationDate));

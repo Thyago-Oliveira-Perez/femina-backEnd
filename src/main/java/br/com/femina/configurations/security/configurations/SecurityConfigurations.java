@@ -70,6 +70,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/produtos/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
             .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/refreshtoken").permitAll()
             .antMatchers( "/oauth2/login").permitAll()
             .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
             .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()

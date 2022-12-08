@@ -1,8 +1,13 @@
 package br.com.femina.configurations.security.controller;
 
+import br.com.femina.configurations.security.dto.TokenRefreshRequest;
+import br.com.femina.configurations.security.dto.TokenRefreshResponse;
+import br.com.femina.configurations.security.services.RefreshTokenService;
 import br.com.femina.dto.usuario.LoginRequest;
-import br.com.femina.dto.Token;
+import br.com.femina.configurations.security.dto.JwtResponse;
 import br.com.femina.configurations.security.services.TokenService;
+import br.com.femina.entities.RefreshToken;
+import br.com.femina.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,19 +29,39 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/login")
-    public ResponseEntity<Token> login(@RequestBody @Valid LoginRequest credentials){
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
-        UsernamePasswordAuthenticationToken loginCredentials =
-                new UsernamePasswordAuthenticationToken(credentials.getLogin(), credentials.getPassword());
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody @Valid LoginRequest credentials){
 
         try{
+
+            UsernamePasswordAuthenticationToken loginCredentials =
+                    new UsernamePasswordAuthenticationToken(credentials.getLogin(), credentials.getPassword());
+
             Authentication authentication = authenticationManager.authenticate(loginCredentials);
-            String token = tokenService.createToken(authentication);
-            String userName = tokenService.getUserName(authentication);
-            return ResponseEntity.ok().body(new Token(token));
+
+            Usuario user = (Usuario)authentication.getPrincipal();
+
+            String token = tokenService.generateToken(user);
+
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authentication);
+
+            return ResponseEntity.ok().body(new JwtResponse(token, refreshToken.getToken()));
         }catch (AuthenticationException e){
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<TokenRefreshResponse> refreshtoken(@RequestBody @Valid TokenRefreshRequest request) {
+
+        try{
+            return ResponseEntity.ok().body(refreshTokenService.generateTokenFromRefreshToken(request));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 }
