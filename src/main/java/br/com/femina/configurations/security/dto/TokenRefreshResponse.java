@@ -11,7 +11,6 @@ public class TokenRefreshResponse {
     private String accessToken;
     @Getter @Setter
     private String refreshToken;
-    @Getter @Setter
     public String authenticationType = "Bearer";
 
     public TokenRefreshResponse(String accessToken, String refreshToken) {
