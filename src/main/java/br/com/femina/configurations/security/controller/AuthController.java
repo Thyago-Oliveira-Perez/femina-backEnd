@@ -55,13 +55,13 @@ public class AuthController {
     }
 
     @PostMapping("/refreshtoken")
-    public ResponseEntity<TokenRefreshResponse> refreshtoken(@RequestBody @Valid TokenRefreshRequest request) {
+    public ResponseEntity<?> refreshtoken(@RequestBody @Valid TokenRefreshRequest request) {
 
         try{
             return ResponseEntity.ok().body(refreshTokenService.generateTokenFromRefreshToken(request));
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Token expirado. Por favor faça login novamente!");
         }
     }
 }
