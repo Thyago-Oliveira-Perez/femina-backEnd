@@ -69,7 +69,7 @@ public class BannerService {
         if (count != 0){
             count += 1;
         }
-        for(int i = count+1;i < count+files.length;i++) {
+        for(int i = count;i < count+files.length;i++) {
             try {
                 byte[] bytes = files[i-count].getBytes();
                 ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
@@ -164,7 +164,7 @@ public class BannerService {
         List<BannerResponse> bannerResponseList = new ArrayList<>();
         dbBanners.map(dbBanner -> bannerResponseList.add(new BannerResponse(
                 dbBanner.getId(),
-                dbBanner.getName(),
+                dbBanner.getNome(),
                 dbBanner.getImagens(),
                 dbBanner.getTipo(),
                 dbBanner.getUsuario().getNome(),
@@ -179,7 +179,7 @@ public class BannerService {
     private BannerResponse dbBannerToBannerResponse(Banners dbBanner, String[] imageNames){
         return new BannerResponse(
             dbBanner.getId(),
-            dbBanner.getName(),
+            dbBanner.getNome(),
             dbBanner.getImagens(),
             dbBanner.getTipo(),
             dbBanner.getUsuario().getNome(),
