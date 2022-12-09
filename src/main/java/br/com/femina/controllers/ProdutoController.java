@@ -27,12 +27,12 @@ public class ProdutoController {
         return this.produtoService.insert(produto, images);
     }
 
-    @GetMapping("/{idProduto}")
+    @GetMapping("/catalogo/{idProduto}")
     public ResponseEntity<ProdutoResponse> findById(@PathVariable("idProduto") UUID idProduto) {
         return this.produtoService.findById(idProduto);
     }
 
-    @PostMapping("/list")
+    @PostMapping("/catalogo/list")
     public ResponseEntity<Page<ProdutoResponse>> findAllByFilters(@RequestBody Filters filters, Pageable pageable) {
         return ResponseEntity.ok().body(this.produtoService.findAllByFilters(filters, pageable));
     }

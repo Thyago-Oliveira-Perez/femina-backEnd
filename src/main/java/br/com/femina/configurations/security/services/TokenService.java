@@ -15,7 +15,7 @@ import java.util.UUID;
 public class TokenService {
 
     @Value("${femina.jwt.tokenExpiration}")
-    private String expirationDate;
+    private Long expirationDate;
 
     @Value("${femina.jwt.secret}")
     private String secret;
@@ -23,7 +23,7 @@ public class TokenService {
     public String generateToken(Usuario user){
 
         Date validFrom = new Date();
-        Date validUntil = new Date(validFrom.getTime() + Long.parseLong(expirationDate));
+        Date validUntil = new Date(validFrom.getTime() + expirationDate);
 
         return Jwts.builder()
                 .setIssuer("API Femina")

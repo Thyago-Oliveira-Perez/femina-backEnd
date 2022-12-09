@@ -1,11 +1,8 @@
 package br.com.femina.configurations.security.configurations;
 
-import br.com.femina.configurations.security.services.AuthFilter;
 import br.com.femina.configurations.security.models.CustomOAuth2User;
-import br.com.femina.configurations.security.services.OAuth2Service;
+import br.com.femina.configurations.security.services.*;
 import br.com.femina.repositories.UsuarioRepository;
-import br.com.femina.configurations.security.services.AuthService;
-import br.com.femina.configurations.security.services.TokenService;
 import br.com.femina.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -63,26 +60,29 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     //Configurações de autorização(urls publicas e as que precisam de controller)
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-            .and()
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/api/produtos/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
-            .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-            .antMatchers(HttpMethod.POST, "/auth/refreshtoken").permitAll()
-            .antMatchers( "/oauth2/login").permitAll()
-            .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/categorias").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/marcas").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/banners").permitAll()
-            .anyRequest()
-            .authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(new AuthFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class)
+
+         http.cors()
+             .and()
+             .csrf().disable()
+             .authorizeRequests()
+             .antMatchers("/api/produtos/catalogo/**").permitAll()
+             .antMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
+             .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+             .antMatchers(HttpMethod.POST, "/auth/refreshtoken").permitAll()
+             .antMatchers( "/oauth2/login").permitAll()
+             .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+             .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
+             .antMatchers(HttpMethod.GET, "/api/categorias").permitAll()
+             .antMatchers(HttpMethod.GET, "/api/marcas").permitAll()
+             .antMatchers(HttpMethod.GET, "/api/banners").permitAll()
+             .anyRequest()
+             .authenticated()
+                 .and()
+                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                 .and()
+                 .addFilterBefore(new AuthFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+                 /**
+                 TODO -> refazer login com o facebook da forma correta
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(oauth2UserService)
@@ -98,8 +98,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("http://127.0.0.1:3000/home");
                     }
                 })
-//                .defaultSuccessUrl("")
                 .failureUrl("http://127.0.0.1:3000/login");
+                */
     }
 
     //Configurações de recursos estaticos(js, css, html, imagens, etc...)
@@ -113,5 +113,4 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/swagger-ui/**");
     }
-
 }
