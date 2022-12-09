@@ -6,6 +6,7 @@ import br.com.femina.services.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,8 +39,9 @@ public class BannerController {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestParam(name = "banner") String bannerString,
-                                    @RequestParam(name = "images") MultipartFile[] files) {
-        return bannerService.insert(bannerString, files);
+                                    @RequestParam(name = "images") MultipartFile[] files,
+                                    @RequestHeader HttpHeaders headers) {
+        return bannerService.insert(bannerString, files, headers);
     }
 
     @PutMapping("/{idBanner}")

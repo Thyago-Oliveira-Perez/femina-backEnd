@@ -1,18 +1,23 @@
 package br.com.femina.services;
 
+import br.com.femina.configurations.security.services.TokenService;
 import br.com.femina.dto.BannerResponse;
 import br.com.femina.entities.Banners;
+import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.BannerRepository;
+import br.com.femina.repositories.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -30,6 +35,12 @@ public class BannerService {
 
     @Autowired
     private BannerRepository bannerRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private TokenService tokenService;
 
     private String path = "./images/banners/";
 
@@ -81,9 +92,13 @@ public class BannerService {
         }
     }
 
-    public ResponseEntity<?> insert(String bannerString, MultipartFile[] files) {
+    public ResponseEntity<?> insert(String bannerString, MultipartFile[] files, HttpHeaders headers) {
         try {
             Banners banners = new ObjectMapper().readValue(bannerString, Banners.class);
+            String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+            UUID idUser = this.tokenService.getUserId(token.substring(7, token.length()));
+            Usuario usuario = usuarioRepository.getById(idUser);
+            banners.setUsuario(usuario);
             banners.setImagens(path+banners.getTipo());
             saveBanners(banners);
             saveFile(banners, files);
