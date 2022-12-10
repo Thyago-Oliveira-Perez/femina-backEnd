@@ -27,7 +27,7 @@ public class Banners extends AbstractEntity {
 
     @Getter @Setter
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", length = 30, nullable = false)
+    @Column(name = "tipo", length = 30, nullable = false, unique = true)
     private Enums.TipoDeBanner tipo;
 
 }

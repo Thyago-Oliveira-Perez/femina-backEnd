@@ -40,15 +40,17 @@ public class ProdutoService {
     @Autowired
     private ProdutoSpecification produtoSpecification;
 
-    private String path = "./images/produto/";
+    private String catalogPath = "../femina-webapp/public";
+    private String stockPath = "../femina-stockManager/public";
+    private String path = "/images/produto/";
 
     public String[] getFilesName(Produto produto) {
-        File directory = new File(path+produto.getCodigo());
+        File directory = new File(stockPath+path+produto.getCodigo());
         return directory.list();
     }
 
     public int getLastFile(Produto produto) {
-        File directory = new File(path+produto.getCodigo());
+        File directory = new File(stockPath+path+produto.getCodigo());
         String[] files = directory.list();
         int[] numberFiles = new int[files.length];
         if(files.length == 0) {
@@ -62,10 +64,12 @@ public class ProdutoService {
     }
 
     public void createDirIfNotExist(Produto produto) {
-        Path directory = Paths.get(path+produto.getCodigo());
-        if (!Files.exists(directory)) {
+        Path directory = Paths.get(stockPath+path+produto.getCodigo());
+        Path directoryCatalog = Paths.get(catalogPath+path+produto.getCodigo());
+        if (!Files.exists(directory) || !Files.exists(directoryCatalog)) {
             try {
                 Files.createDirectories(directory);
+                Files.createDirectories(directoryCatalog);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -83,7 +87,8 @@ public class ProdutoService {
                 byte[] bytes = files[i-count].getBytes();
                 ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
                 BufferedImage newImage = ImageIO.read(inStreambj);
-                ImageIO.write(newImage, "png", new File(path + produto.getCodigo() + "/" + i + ".png"));
+                ImageIO.write(newImage, "png", new File(stockPath + path + produto.getCodigo() + "/" + i + ".png"));
+                ImageIO.write(newImage, "png", new File(catalogPath + path + produto.getCodigo() + "/" + i + ".png"));
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -128,8 +133,9 @@ public class ProdutoService {
     public ResponseEntity<?> removeImage(UUID id, String imageName) {
         if(produtoRepository.existsById(id)) {
             Produto produto = produtoRepository.getById(id);
-            File fileToDelete = new File(path + produto.getCodigo() + "/" + imageName);
-            if(fileToDelete.delete()) {
+            File fileToDelete = new File(stockPath+ path + produto.getCodigo() + "/" + imageName);
+            File fileToDeleteCatalog = new File(catalogPath + path + produto.getCodigo() + "/" + imageName);
+            if(fileToDelete.delete() && fileToDeleteCatalog.delete()) {
                 return ResponseEntity.ok().body("Imagem deletada com Sucesso");
             } else {
                 return ResponseEntity.internalServerError().body("Imagem não encontrada");
@@ -142,8 +148,14 @@ public class ProdutoService {
     public ResponseEntity<?> removeAllImages(UUID id) {
         if(produtoRepository.existsById(id)) {
             Produto produto = produtoRepository.getById(id);
-            File dir = new File(path+produto.getCodigo());
+            File dir = new File(stockPath+path+produto.getCodigo());
+            File dirCatalog = new File(catalogPath+path+produto.getCodigo());
             for(File file: dir.listFiles()) {
+                if(!file.isDirectory()){
+                    file.delete();
+                }
+            }
+            for(File file: dirCatalog.listFiles()) {
                 if(!file.isDirectory()){
                     file.delete();
                 }

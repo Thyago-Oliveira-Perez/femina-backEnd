@@ -1,7 +1,7 @@
 package br.com.femina.services;
 
 import br.com.femina.configurations.security.services.TokenService;
-import br.com.femina.dto.BannerResponse;
+import br.com.femina.dto.banner.BannerResponse;
 import br.com.femina.entities.Banners;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Enums;
@@ -17,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -42,15 +41,17 @@ public class BannerService {
     @Autowired
     private TokenService tokenService;
 
-    private String path = "./images/banners/";
+    private String catalogPath = "../femina-webapp/public";
+    private String stockPath = "../femina-stockManager/public";
+    private String path = "/images/banners/";
 
     public String[] getFilesName(Banners banners) {
-        File directory = new File(path+banners.getTipo());
+        File directory = new File(stockPath+path+banners.getTipo());
         return directory.list();
     }
 
     public int getLastFile(Banners banners) {
-        File directory = new File(path+banners.getTipo());
+        File directory = new File(stockPath+path+banners.getTipo());
         String[] files = directory.list();
         int[] numberFiles = new int[files.length];
         for(int i = 0;i < files.length;i++) {
@@ -64,10 +65,12 @@ public class BannerService {
     }
 
     private void createDirIfNotExist(Banners banners) {
-        Path directory = Paths.get(path+banners.getTipo());
-        if (!Files.exists(directory)) {
+        Path directory = Paths.get(stockPath+path+banners.getTipo());
+        Path directoryCatalog = Paths.get(catalogPath+path+banners.getTipo());
+        if (!Files.exists(directory) || !Files.exists(directoryCatalog)) {
             try {
                 Files.createDirectories(directory);
+                Files.createDirectories(directoryCatalog);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -85,7 +88,8 @@ public class BannerService {
                 byte[] bytes = files[i-count].getBytes();
                 ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
                 BufferedImage newImage = ImageIO.read(inStreambj);
-                ImageIO.write(newImage, "png", new File(path + banners.getTipo() + "/" + i + ".png"));
+                ImageIO.write(newImage, "png", new File(stockPath + path + banners.getTipo() + "/" + i + ".png"));
+                ImageIO.write(newImage, "png", new File(catalogPath + path + banners.getTipo() + "/" + i + ".png"));
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -149,8 +153,9 @@ public class BannerService {
     public ResponseEntity<?> removeImage(UUID id, String imageName) {
         if(bannerRepository.existsById(id)) {
             Banners banners = bannerRepository.getById(id);
-            File fileToDelete = new File(path + banners.getTipo() + "/" + imageName);
-            if(fileToDelete.delete()) {
+            File fileToDelete = new File(stockPath+ path + banners.getTipo() + "/" + imageName);
+            File fileToDeleteCatalog = new File(catalogPath + path + banners.getTipo() + "/" + imageName);
+            if(fileToDelete.delete() && fileToDeleteCatalog.delete()) {
                 return ResponseEntity.ok().body(banners);
             } else {
                 return ResponseEntity.internalServerError().body("Imagem não encontrada");
@@ -163,8 +168,14 @@ public class BannerService {
     public ResponseEntity<?> removeAllImages(UUID id) {
         if(bannerRepository.existsById(id)) {
             Banners banners = bannerRepository.getById(id);
-            File dir = new File(path+banners.getTipo());
+            File dir = new File(stockPath+path+banners.getTipo());
+            File dirCatalog = new File(catalogPath+path+banners.getTipo());
             for(File file: dir.listFiles()) {
+                if(!file.isDirectory()){
+                    file.delete();
+                }
+            }
+            for(File file: dirCatalog.listFiles()) {
                 if(!file.isDirectory()){
                     file.delete();
                 }

@@ -1,4 +1,4 @@
-package br.com.femina.dto;
+package br.com.femina.dto.banner;
 
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ public class BannerResponse {
     private UUID id;
     private String nome;
     private String imagens;
-    private Enums.TipoDeBanner tipoDeBanner;
+    private Enums.TipoDeBanner tipo;
     private String nomeUsuario;
     private UUID idUsuario;
     private String[] imageNames;

@@ -1,6 +1,6 @@
 package br.com.femina.controllers;
 
-import br.com.femina.dto.BannerResponse;
+import br.com.femina.dto.banner.BannerResponse;
 import br.com.femina.enums.Enums;
 import br.com.femina.services.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
