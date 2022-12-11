@@ -21,7 +21,7 @@ public class ModeloService {
 
     public ResponseEntity<?> insert(Modelo modelo){
         try{
-            saveProduto(modelo);
+            saveModelo(modelo);
             return ResponseEntity.ok().body("Modelo cadastrado com sucesso!");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -53,8 +53,21 @@ public class ModeloService {
         }
     }
 
+    public ResponseEntity<?> update(UUID idModelo, Modelo modelo) {
+        try{
+            if(this.modeloRepository.existsById(idModelo)){
+                saveModelo(modelo);
+                return ResponseEntity.ok().body("Modelo atualizado com sucesso!");
+            }
+            return ResponseEntity.notFound().build();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return  ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @Transactional
-    protected void saveProduto(Modelo modelo){
+    protected void saveModelo(Modelo modelo){
         this.modeloRepository.save(modelo);
     }
 
@@ -62,5 +75,4 @@ public class ModeloService {
     protected void updateStatus(UUID id, Boolean status){
         this.modeloRepository.updateStatus(id, status);
     }
-
 }

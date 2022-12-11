@@ -37,6 +37,11 @@ public class ModeloController {
         return this.modeloService.insert(modelo);
     }
 
+    @PutMapping("/edit/{idModelo}")
+    public ResponseEntity<?> update(@RequestBody Modelo modelo, @PathVariable("idModelo") UUID idModelo){
+        return this.modeloService.update(idModelo, modelo);
+    }
+
     @PutMapping("/disable/{idModelo}")
     public ResponseEntity<?> updateStatus(@PathVariable("idModelo") UUID idModelo){
         return this.modeloService.updateStatusById(idModelo);
