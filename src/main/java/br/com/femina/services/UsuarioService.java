@@ -98,6 +98,7 @@ public class UsuarioService {
                 oldUsuario.setEmail(newUsuario.getEmail());
                 oldUsuario.setSexo(newUsuario.getSexo());
                 oldUsuario.setTelefone(newUsuario.getTelefone());
+                saveUser(oldUsuario);
                 return ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(oldUsuario));
             } catch (Exception e) {
                 return ResponseEntity.notFound().build();

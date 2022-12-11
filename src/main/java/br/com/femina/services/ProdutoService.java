@@ -217,17 +217,18 @@ public class ProdutoService {
          return pageDbProdutosToPageProdutoResponse(produtoRepository.findAllByIsActiveOrderByCadastradoAsc(true, pageable));
     }
 
+    @Transactional
     public ResponseEntity<?> updateStatusById(UUID id) {
         if(this.produtoRepository.existsById(id)){
             String mensagem = "";
             Produto dbProduto = this.produtoRepository.getById(id);
             Boolean status = dbProduto.getIsActive();
-            changeStatus(id, !status);
+            produtoRepository.updateStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativado";
             }
             if(status.equals(true)){
-                this.deleteFavoritosRelatedToProduct(dbProduto.getId());
+                favoritosRepository.deleteFavoritosByProductId(id);
                 mensagem = "desativado";
             }
             return ResponseEntity.ok().body("Produto " + mensagem + " com sucesso!");
@@ -237,18 +238,8 @@ public class ProdutoService {
     }
 
     @Transactional
-    protected void changeStatus(UUID id, Boolean status){
-        this.produtoRepository.updateStatus(id, status);
-    }
-
-    @Transactional
     protected void saveProduto(Produto produto){
         this.produtoRepository.save(produto);
-    }
-
-    @Transactional
-    protected void deleteFavoritosRelatedToProduct(UUID id){
-        this.favoritosRepository.deleteFavoritosByProductId(id);
     }
 
     //<editor-fold desc="Helpers">
