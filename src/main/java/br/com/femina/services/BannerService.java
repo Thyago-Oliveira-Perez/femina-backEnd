@@ -1,13 +1,17 @@
 package br.com.femina.services;
 
 import br.com.femina.configurations.security.services.TokenService;
+import br.com.femina.dto.ImageRequest;
 import br.com.femina.dto.banner.BannerResponse;
 import br.com.femina.entities.Banners;
+import br.com.femina.entities.Produto;
 import br.com.femina.entities.Usuario;
 import br.com.femina.enums.Enums;
 import br.com.femina.repositories.BannerRepository;
 import br.com.femina.repositories.UsuarioRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -41,6 +45,13 @@ public class BannerService {
     @Autowired
     private TokenService tokenService;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    public BannerService() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
     private String catalogPath = "../femina-webapp/public";
     private String stockPath = "../femina-stockManager/public";
     private String path = "/images/banners/";
@@ -61,6 +72,9 @@ public class BannerService {
         if(files.length == 0) {
             return 0;
         }
+        if (numberFiles.length == 1) {
+            return 1;
+        }
         return Arrays.stream(numberFiles).max().getAsInt();
     }
 
@@ -77,12 +91,31 @@ public class BannerService {
         }
     }
 
+    public void renameDir(Banners banners, String oldPath) {
+        Path directory = Paths.get(stockPath + oldPath);
+        Path directoryCatalog = Paths.get(catalogPath + oldPath);
+        if (Files.exists(directory) && Files.exists(directoryCatalog)) {
+            File oldDir = new File(stockPath + oldPath);
+            File oldDirCatalog = new File(stockPath + oldPath);
+            try {
+                oldDir.renameTo(new File(stockPath + path + banners.getTipo()));
+                oldDirCatalog.renameTo(new File(catalogPath + path + banners.getTipo()));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            try {
+                Files.createDirectories(directory);
+                Files.createDirectories(directoryCatalog);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     public void saveFile(Banners banners, MultipartFile[] files) {
         createDirIfNotExist(banners);
         int count = getLastFile(banners);
-        if (count != 0){
-            count += 1;
-        }
         for(int i = count;i < count+files.length;i++) {
             try {
                 byte[] bytes = files[i-count].getBytes();
@@ -136,8 +169,9 @@ public class BannerService {
 
     public ResponseEntity<?> updateBanner(UUID id, String bannerString, Optional<MultipartFile[]> files) {
         try {
-            Banners banners = new ObjectMapper().readValue(bannerString, Banners.class);
+            Banners banners = objectMapper.readValue(bannerString, Banners.class);
             if(bannerRepository.existsById(id) && id.equals(banners.getId())) {
+                renameDir(banners, banners.getImagens());
                 banners.setImagens(path+banners.getTipo());
                 Banners updatedBanner = updateBanners(banners);
                 files.ifPresent(multipartFiles -> saveFile(banners, multipartFiles));
@@ -153,11 +187,14 @@ public class BannerService {
     public ResponseEntity<?> removeImage(UUID id, String imageName) {
         if(bannerRepository.existsById(id)) {
             Banners banners = bannerRepository.getById(id);
-            File fileToDelete = new File(stockPath+ path + banners.getTipo() + "/" + imageName);
-            File fileToDeleteCatalog = new File(catalogPath + path + banners.getTipo() + "/" + imageName);
-            if(fileToDelete.delete() && fileToDeleteCatalog.delete()) {
-                return ResponseEntity.ok().body(banners);
-            } else {
+            try {
+                ImageRequest image = new ObjectMapper().readValue(imageName, ImageRequest.class);
+                File fileToDelete = new File(stockPath+ path + banners.getTipo() + "/" + image.getName());
+                File fileToDeleteCatalog = new File(catalogPath + path + banners.getTipo() + "/" + image.getName());
+                fileToDelete.delete();
+                fileToDeleteCatalog.delete();
+                return ResponseEntity.ok().body("Imagem deletada com Sucesso");
+            } catch(Exception e) {
                 return ResponseEntity.internalServerError().body("Imagem não encontrada");
             }
         } else {
@@ -194,7 +231,7 @@ public class BannerService {
                 dbBanner.getImagens(),
                 dbBanner.getTipo(),
                 dbBanner.getUsuario().getNome(),
-                dbBanner.getUsuario().getId(),
+                dbBanner.getUsuario(),
                 getFilesName(dbBanner)
         )));
         Pageable pageable = PageRequest.of(dbBanners.getPageable().getPageNumber(), dbBanners.getSize());
@@ -209,7 +246,7 @@ public class BannerService {
             dbBanner.getImagens(),
             dbBanner.getTipo(),
             dbBanner.getUsuario().getNome(),
-            dbBanner.getUsuario().getId(),
+            dbBanner.getUsuario(),
             imageNames
         );
     }

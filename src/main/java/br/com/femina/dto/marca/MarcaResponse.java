@@ -9,6 +9,8 @@ public class MarcaResponse {
     @Getter @Setter
     private UUID id;
     @Getter @Setter
+    private Boolean isActive;
+    @Getter @Setter
     private String nome;
 
     public MarcaResponse(UUID id, String nome) {

@@ -94,7 +94,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                             "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
                                             "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
                                             "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
-                                    "./images/produto/" + codigoProduto,
+                                    "/images/produto/" + codigoProduto,
                                     true
                             );
 
@@ -116,7 +116,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                             "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
                                             "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
                                             "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
-                                    "./images/produto/" + codigoProduto2,
+                                    "/images/produto/" + codigoProduto2,
                                     true
                             );
                             produto2.setIsActive(true);
@@ -139,7 +139,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                             "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
                                             "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
                                             "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
-                                    "./images/produto/" + codigoProduto3,
+                                    "/images/produto/" + codigoProduto3,
                                     true
                             );
                             produto3.setIsActive(true);
@@ -162,7 +162,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                             "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
                                             "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
                                             "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
-                                    "./images/produto/" + codigoProduto4,
+                                    "/images/produto/" + codigoProduto4,
                                     true
                             );
                             produto3.setIsActive(true);

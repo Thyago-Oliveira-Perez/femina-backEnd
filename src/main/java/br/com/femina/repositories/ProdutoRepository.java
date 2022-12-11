@@ -21,7 +21,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, UUID>, JpaSpec
     @Query("UPDATE Produto produto SET produto.categoria.id = null WHERE produto.categoria.id = :idCategoria")
     void updateCategoriaByIdCategoria(@Param("idCategoria") UUID id);
 
-    Page<Produto> findAllByIsActive(Boolean isActive, Pageable pageable);
+    Page<Produto> findAllByIsActiveOrderByCadastradoAsc(Boolean isActive, Pageable pageable);
 
     @Modifying
     @Query("UPDATE Produto produto " +

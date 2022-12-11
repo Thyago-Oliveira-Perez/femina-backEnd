@@ -11,6 +11,8 @@ public class CategoriaResponse {
     @Getter @Setter
     private UUID id;
     @Getter @Setter
+    private Boolean isActive;
+    @Getter @Setter
     private String nome;
 
     public CategoriaResponse(UUID id, String nome) {

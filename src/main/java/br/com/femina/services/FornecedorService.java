@@ -85,6 +85,7 @@ public class FornecedorService {
 
         dbFornecedores.map(dbFornecedor -> fornecedorResponseList.add(new FornecedorResponse(
                 dbFornecedor.getId(),
+                dbFornecedor.getIsActive(),
                 dbFornecedor.getNome(),
                 dbFornecedor.getCnpj(),
                 dbFornecedor.getTelefone(),
@@ -98,6 +99,7 @@ public class FornecedorService {
     private FornecedorResponse dbFornecedorToFornecedorResponse(Fornecedor dbFornecedor){
         return new FornecedorResponse(
             dbFornecedor.getId(),
+            dbFornecedor.getIsActive(),
             dbFornecedor.getNome(),
             dbFornecedor.getCnpj(),
             dbFornecedor.getTelefone(),

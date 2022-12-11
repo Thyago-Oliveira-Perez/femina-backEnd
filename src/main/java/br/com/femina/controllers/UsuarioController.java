@@ -1,5 +1,6 @@
 package br.com.femina.controllers;
 
+import br.com.femina.dto.usuario.UsuarioEditRequest;
 import br.com.femina.dto.usuario.UsuarioRequest;
 import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.entities.Usuario;
@@ -54,9 +55,9 @@ public class UsuarioController {
         return this.usuarioService.registerBySelf(newUser);
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<UsuarioResponse> updateBySelf(@RequestBody Usuario usuario, @PathVariable("id") UUID idUsuario){
-        return this.usuarioService.updateUser(usuario, idUsuario);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UsuarioResponse> updateBySelf(@RequestBody UsuarioEditRequest usuario, @PathVariable("id") UUID idUsuario){
+        return this.usuarioService.updateMySelf(usuario, idUsuario);
     }
 
     @GetMapping("/my-infos")

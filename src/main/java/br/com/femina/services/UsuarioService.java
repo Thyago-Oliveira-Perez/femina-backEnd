@@ -1,6 +1,8 @@
 package br.com.femina.services;
 
 import br.com.femina.configurations.security.services.TokenService;
+import br.com.femina.dto.ImageRequest;
+import br.com.femina.dto.usuario.UsuarioEditRequest;
 import br.com.femina.dto.usuario.UsuarioRequest;
 import br.com.femina.dto.usuario.UsuarioResponse;
 import br.com.femina.entities.Cargos;
@@ -9,6 +11,9 @@ import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.PerfilRepository;
 import br.com.femina.repositories.UsuarioRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.DataInput;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -77,6 +83,25 @@ public class UsuarioService {
             usuario.setSenha(senha.encode(usuario.getSenha()));
             saveUser(usuario);
             return ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(usuario));
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public ResponseEntity<UsuarioResponse> updateMySelf (UsuarioEditRequest usuarioRequest, UUID id){
+        if(this.usuarioRepository.existsById(id) && usuarioRequest.getId().equals(id)){
+            try {
+                Usuario oldUsuario = usuarioRepository.getById(id);
+                Usuario newUsuario = dbUsuarioEditRequestToUsuario(usuarioRequest);
+                oldUsuario.setLogin(newUsuario.getLogin());
+                oldUsuario.setNome(newUsuario.getNome());
+                oldUsuario.setEmail(newUsuario.getEmail());
+                oldUsuario.setSexo(newUsuario.getSexo());
+                oldUsuario.setTelefone(newUsuario.getTelefone());
+                return ResponseEntity.ok().body(this.dbUsuarioToUsuarioResponse(oldUsuario));
+            } catch (Exception e) {
+                return ResponseEntity.notFound().build();
+            }
         }else{
             return ResponseEntity.notFound().build();
         }
@@ -151,6 +176,19 @@ public class UsuarioService {
             newUsuario.getTelefone(),
             cargos,
             Enums.Provider.LOCAL
+        );
+    }
+
+    private Usuario dbUsuarioEditRequestToUsuario(UsuarioEditRequest usuario){
+        return new Usuario(
+                usuario.getNome(),
+                usuario.getLogin(),
+                null,
+                usuario.getSexo(),
+                usuario.getEmail(),
+                usuario.getTelefone(),
+                null,
+                Enums.Provider.LOCAL
         );
     }
     //</editor-fold>

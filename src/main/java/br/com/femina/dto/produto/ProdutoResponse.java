@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -19,6 +20,10 @@ import java.util.UUID;
 public class ProdutoResponse {
     @Getter @Setter
     private UUID id;
+    @Getter @Setter
+    private Boolean isActive;
+    @Getter @Setter
+    private LocalDateTime cadastrado;
     @Getter @Setter
     private String nome;
     @Getter @Setter
@@ -40,7 +45,7 @@ public class ProdutoResponse {
     @Getter @Setter
     private String descricao;
     @Getter @Setter
-    private String imagemUrl;
+    private String imagem;
     @Getter @Setter
     private Boolean destaque;
     @Getter @Setter

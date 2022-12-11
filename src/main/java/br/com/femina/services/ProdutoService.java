@@ -1,5 +1,6 @@
 package br.com.femina.services;
 
+import br.com.femina.dto.ImageRequest;
 import br.com.femina.dto.produto.Filters;
 import br.com.femina.dto.produto.ProdutoResponse;
 import br.com.femina.entities.Produto;
@@ -7,7 +8,9 @@ import br.com.femina.enums.Enums;
 import br.com.femina.repositories.FavoritosRepository;
 import br.com.femina.repositories.ProdutoRepository;
 import br.com.femina.services.Specification.ProdutoSpecification;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,6 +43,13 @@ public class ProdutoService {
     @Autowired
     private ProdutoSpecification produtoSpecification;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    public ProdutoService() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
     private String catalogPath = "../femina-webapp/public";
     private String stockPath = "../femina-stockManager/public";
     private String path = "/images/produto/";
@@ -60,13 +70,38 @@ public class ProdutoService {
             files[i] = files[i].substring(0, files[i].lastIndexOf('.'));
             numberFiles[i] = Integer.parseInt(files[i]);
         }
+        if (numberFiles.length == 1) {
+            return 1;
+        }
         return Arrays.stream(numberFiles).max().getAsInt();
     }
 
     public void createDirIfNotExist(Produto produto) {
-        Path directory = Paths.get(stockPath+path+produto.getCodigo());
-        Path directoryCatalog = Paths.get(catalogPath+path+produto.getCodigo());
+        Path directory = Paths.get(stockPath + path + produto.getCodigo());
+        Path directoryCatalog = Paths.get(catalogPath + path + produto.getCodigo());
         if (!Files.exists(directory) || !Files.exists(directoryCatalog)) {
+            try {
+                Files.createDirectories(directory);
+                Files.createDirectories(directoryCatalog);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void renameDir(Produto produto, String oldPath) {
+        Path directory = Paths.get(stockPath + oldPath);
+        Path directoryCatalog = Paths.get(catalogPath + oldPath);
+        if (Files.exists(directory) && Files.exists(directoryCatalog)) {
+            File oldDir = new File(stockPath + oldPath);
+            File oldDirCatalog = new File(stockPath + oldPath);
+            try {
+                oldDir.renameTo(new File(stockPath + path + produto.getCodigo()));
+                oldDirCatalog.renameTo(new File(catalogPath + path + produto.getCodigo()));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
             try {
                 Files.createDirectories(directory);
                 Files.createDirectories(directoryCatalog);
@@ -79,9 +114,6 @@ public class ProdutoService {
     public void saveFile(Produto produto, MultipartFile[] files) {
         createDirIfNotExist(produto);
         int count = getLastFile(produto);
-        if (count != 0){
-            count += 1;
-        }
         for(int i = count;i < count+files.length;i++) {
             try {
                 byte[] bytes = files[i-count].getBytes();
@@ -97,7 +129,7 @@ public class ProdutoService {
 
     public ResponseEntity<?> insert(String produtoRequest, MultipartFile[] images) {
         try {
-            Produto produto = new ObjectMapper().readValue(produtoRequest, Produto.class);
+            Produto produto = objectMapper.readValue(produtoRequest, Produto.class);
             produto.setImagem(path+produto.getCodigo());
             saveProduto(produto);
             saveFile(produto, images);
@@ -116,8 +148,9 @@ public class ProdutoService {
 
     public ResponseEntity<?> update(UUID id, String produtoString, Optional<MultipartFile[]> files) {
         try {
-            Produto produto = new ObjectMapper().readValue(produtoString, Produto.class);
+            Produto produto = objectMapper.readValue(produtoString, Produto.class);
             if(this.produtoRepository.existsById(id) && id.equals(produto.getId())) {
+                renameDir(produto, produto.getImagem());
                 produto.setImagem(path+produto.getCodigo());
                 saveProduto(produto);
                 files.ifPresent(multipartFiles -> saveFile(produto, multipartFiles));
@@ -133,11 +166,14 @@ public class ProdutoService {
     public ResponseEntity<?> removeImage(UUID id, String imageName) {
         if(produtoRepository.existsById(id)) {
             Produto produto = produtoRepository.getById(id);
-            File fileToDelete = new File(stockPath+ path + produto.getCodigo() + "/" + imageName);
-            File fileToDeleteCatalog = new File(catalogPath + path + produto.getCodigo() + "/" + imageName);
-            if(fileToDelete.delete() && fileToDeleteCatalog.delete()) {
+            try {
+                ImageRequest image = new ObjectMapper().readValue(imageName, ImageRequest.class);
+                File fileToDelete = new File(stockPath+ path + produto.getCodigo() + "/" + image.getName());
+                File fileToDeleteCatalog = new File(catalogPath + path + produto.getCodigo() + "/" + image.getName());
+                fileToDelete.delete();
+                fileToDeleteCatalog.delete();
                 return ResponseEntity.ok().body("Imagem deletada com Sucesso");
-            } else {
+            } catch(Exception e) {
                 return ResponseEntity.internalServerError().body("Imagem não encontrada");
             }
         } else {
@@ -172,13 +208,13 @@ public class ProdutoService {
            filters.getMarcaIds().size() == 0 &&
            filters.getCor().equals("") &&
            filters.getTamanho().equals(Enums.Tamanhos.ALL)){
-            return pageDbProdutosToPageProdutoResponse(this.produtoRepository.findAllByIsActive(true, pageable));
+            return pageDbProdutosToPageProdutoResponse(this.produtoRepository.findAllByIsActiveOrderByCadastradoAsc(true, pageable));
         }
         return pageDbProdutosToPageProdutoResponse(this.produtoRepository.findAll(produtoSpecification.getProductsFilters(filters), pageable));
     }
 
     public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
-         return pageDbProdutosToPageProdutoResponse(produtoRepository.findAll(pageable));
+         return pageDbProdutosToPageProdutoResponse(produtoRepository.findAllByIsActiveOrderByCadastradoAsc(true, pageable));
     }
 
     public ResponseEntity<?> updateStatusById(UUID id) {
@@ -220,6 +256,8 @@ public class ProdutoService {
         List<ProdutoResponse> produtoResponseList = new ArrayList<>();
         dbProdutos.map(dbProduto -> produtoResponseList.add(new ProdutoResponse(
                 dbProduto.getId(),
+                dbProduto.getIsActive(),
+                dbProduto.getCadastrado(),
                 dbProduto.getNome(),
                 dbProduto.getCodigo(),
                 dbProduto.getValor(),
@@ -241,6 +279,8 @@ public class ProdutoService {
     private ProdutoResponse dbProdutoToProdutoResponse(Produto dbProduto, String[] imageNames){
         return new ProdutoResponse(
                 dbProduto.getId(),
+                dbProduto.getIsActive(),
+                dbProduto.getCadastrado(),
                 dbProduto.getNome(),
                 dbProduto.getCodigo(),
                 dbProduto.getValor(),

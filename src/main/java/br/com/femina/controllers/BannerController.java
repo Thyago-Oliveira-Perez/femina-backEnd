@@ -47,7 +47,7 @@ public class BannerController {
     @PutMapping("/{idBanner}")
     public ResponseEntity<?> updateBanner(
             @PathVariable("idBanner") UUID id,
-            String bannerString,
+            @RequestParam(name = "banner") String bannerString,
             @RequestParam("images") Optional<MultipartFile[]> files
     ) {
         return bannerService.updateBanner(id, bannerString, files);

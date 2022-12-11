@@ -9,6 +9,8 @@ public class ModeloResponse {
     @Getter @Setter
     private UUID id;
     @Getter @Setter
+    private Boolean isActive;
+    @Getter @Setter
     private String nome;
 
     public ModeloResponse(UUID id, String nome) {
