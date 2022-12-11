@@ -53,6 +53,19 @@ public class MarcaService {
         }
     }
 
+    public ResponseEntity<?> update(UUID idMarca, Marca marca) {
+        try{
+            if(this.marcaRepository.existsById(idMarca)){
+                saveMarca(marca);
+                return ResponseEntity.ok().body("Marca atualizado com sucesso!");
+            }
+            return ResponseEntity.notFound().build();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return  ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @Transactional
     protected void saveMarca(Marca marca){
         this.marcaRepository.save(marca);
@@ -62,5 +75,4 @@ public class MarcaService {
     protected void updateStatus(UUID id, Boolean status){
         this.marcaRepository.updateStatus(id, status);
     }
-
 }

@@ -37,6 +37,11 @@ public class MarcaController {
         return this.marcaService.insert(marca);
     }
 
+    @PutMapping("/edit/{idMarca}")
+    public ResponseEntity<?> update(@RequestBody Marca marca, @PathVariable("idMarca") UUID idMarca) {
+        return this.marcaService.update(idMarca, marca);
+    }
+
     @PutMapping("/disable/{idMarca}")
     public ResponseEntity<?> updateStatus(@PathVariable("idMarca") UUID idMarca) {
         return this.marcaService.updateStatusById(idMarca);
