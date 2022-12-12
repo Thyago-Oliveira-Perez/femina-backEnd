@@ -34,6 +34,9 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private FavoritosRepository favoritosRepository;
 
+    @Autowired
+    private BannerRepository bannerRepository;
+
     public void populateDataBase(){
 
         if(this.categoriaRepository.count() <= 0){
@@ -203,7 +206,14 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                         Favoritos favoritos = new Favoritos(UUID.randomUUID(), usuario, produto);
                                         this.favoritosRepository.save(favoritos);
                                     }
+
+                                    if(this.bannerRepository.count() <= 0) {
+                                        Banners banner = new Banners("Banner default", "./images/584665", usuario, Enums.TipoDeBanner.DESTAQUE);
+                                        this.bannerRepository.save(banner);
+                                    }
                                 }
+
+
                             }
                         }
                     }
