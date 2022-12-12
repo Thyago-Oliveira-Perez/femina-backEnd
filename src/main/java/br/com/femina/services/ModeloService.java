@@ -38,11 +38,12 @@ public class ModeloService {
         return this.modeloRepository.findAllByIsActive(pageable, true);
     }
 
+    @Transactional
     public ResponseEntity<?> updateStatusById(UUID id) {
         if(this.modeloRepository.existsById(id)){
             String mensagem = "";
             Boolean status = this.modeloRepository.getById(id).getIsActive();
-            updateStatus(id, !status);
+            modeloRepository.updateStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativado";
             }
@@ -71,8 +72,4 @@ public class ModeloService {
         this.modeloRepository.save(modelo);
     }
 
-    @Transactional
-    protected void updateStatus(UUID id, Boolean status){
-        this.modeloRepository.updateStatus(id, status);
-    }
 }

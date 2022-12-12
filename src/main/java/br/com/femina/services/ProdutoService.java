@@ -214,7 +214,7 @@ public class ProdutoService {
     }
 
     public Page<ProdutoResponse> findAllProducts(Pageable pageable) {
-         return pageDbProdutosToPageProdutoResponse(produtoRepository.findAllByIsActiveOrderByCadastradoAsc(true, pageable));
+        return pageDbProdutosToPageProdutoResponse(produtoRepository.findAllByIsActiveOrderByCadastradoAsc(true, pageable));
     }
 
     @Transactional

@@ -47,16 +47,17 @@ public class CategoriaService {
         return this.categoriaRepository.findAllCategoriaResponse(pageable, true);
     }
 
+    @Transactional
     public ResponseEntity<?> updateStatusById(UUID id){
         String mensagem = "";
         if(this.categoriaRepository.existsById(id)){
             Boolean status = this.categoriaRepository.getById(id).getIsActive();
-            updateStatus(id, !status);
+            categoriaRepository.updateStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativada";
             }
             if(status.equals(true)){
-                this.removeCategoriasDosProdutosRelacionados(id);
+                produtoRepository.updateCategoriaByIdCategoria(id);
                 mensagem = "desativada";
             }
             return ResponseEntity.ok().body("Categoria " + mensagem + " com sucesso!");
@@ -68,16 +69,6 @@ public class CategoriaService {
     @Transactional
     protected void saveCategoria(Categorias categoria){
         this.categoriaRepository.save(categoria);
-    }
-
-    @Transactional
-    protected void updateStatus(UUID id, Boolean status){
-        this.categoriaRepository.updateStatus(id, status);
-    }
-
-    @Transactional
-    protected void removeCategoriasDosProdutosRelacionados(UUID id){
-        this.produtoRepository.updateCategoriaByIdCategoria(id);
     }
 
     //<editor-fold desc="Helpers">

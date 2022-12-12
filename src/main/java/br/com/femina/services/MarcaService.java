@@ -38,11 +38,12 @@ public class MarcaService {
         return this.marcaRepository.findAllByIsActive(pageable, true);
     }
 
+    @Transactional
     public ResponseEntity<?> updateStatusById(UUID id) {
         String mensagem = "";
         if(this.marcaRepository.existsById(id)) {
             Boolean status = this.marcaRepository.getById(id).getIsActive();
-            updateStatus(id, !status);
+            marcaRepository.updateStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativado";
             }
@@ -71,8 +72,4 @@ public class MarcaService {
         this.marcaRepository.save(marca);
     }
 
-    @Transactional
-    protected void updateStatus(UUID id, Boolean status){
-        this.marcaRepository.updateStatus(id, status);
-    }
 }

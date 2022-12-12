@@ -54,11 +54,12 @@ public class FornecedorService {
         }
     }
 
+    @Transactional
     public ResponseEntity<?> updateStatusById(UUID id) {
         String mensagem = "";
         if (this.fornecedorRepository.existsById(id)) {
             Boolean status = this.fornecedorRepository.getById(id).getIsActive();
-            updateStatus(id, !status);
+            fornecedorRepository.updateStatus(id, !status);
             if(!status.equals(true)){
                 mensagem = "ativada";
             }
@@ -72,11 +73,6 @@ public class FornecedorService {
     @Transactional
     protected void saveFornecedor(Fornecedor fornecedor){
         this.fornecedorRepository.save(fornecedor);
-    }
-
-    @Transactional
-    protected void updateStatus(UUID id, Boolean status){
-        this.fornecedorRepository.updateStatus(id, status);
     }
 
     //<editor-fold desc="Helpers">
