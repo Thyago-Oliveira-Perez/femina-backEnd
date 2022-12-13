@@ -41,31 +41,29 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
 
         if(this.categoriaRepository.count() <= 0){
             List<Categorias> categoriasDefault = new ArrayList<Categorias>(){{
-                add(new Categorias("Camiseta"));
-                add(new Categorias("Shorts e Bermudas"));
-                add(new Categorias("Polo"));
-                add(new Categorias("Camisa"));
-                add(new Categorias("Calça"));
-                add(new Categorias("Moletom"));
+                add(new Categorias("Calcinhas"));
+                add(new Categorias("Cuecas"));
+                add(new Categorias("Sutiã"));
+                add(new Categorias("Pijamas"));
+                add(new Categorias("Conjuntos"));
             }};
             categoriasDefault.forEach(categoria -> categoria.setIsActive(true));
             this.categoriaRepository.saveAll(categoriasDefault);
 
             if(this.modeloRepository.count() <= 0){
                 List<Modelo> modelosDefault = new ArrayList<Modelo>(){{
-                    add(new Modelo("Tradicional"));
-                    add(new Modelo("Longline"));
-                    add(new Modelo("Oversized"));
-                    add(new Modelo("Henley"));
-                    add(new Modelo("Raglan"));
-                    add(new Modelo("Polo"));
+                    add(new Modelo("Com Bojo"));
+                    add(new Modelo("Sem Bojo"));
+                    add(new Modelo("Renda"));
+                    add(new Modelo("Box"));
+                    add(new Modelo("Biquini"));
                 }};
                 modelosDefault.forEach(modelo -> modelo.setIsActive(true));
                 this.modeloRepository.saveAll(modelosDefault);
 
                 if(this.fornecedorRepository.count() <= 0){
                     Fornecedor fornecedor = new Fornecedor(
-                            "Polo Wear",
+                            "Femina",
                             "11.774.839/0001-01",
                             "(11) 3643-4900",
                             "controladoria@controladoria.com"
@@ -74,108 +72,66 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                     this.fornecedorRepository.save(fornecedor);
 
                     if(this.marcaRepository.count() <= 0){
-                        Marca marca = new Marca("Polo Wear");
-                        marca.setIsActive(true);
-                        this.marcaRepository.save(marca);
+                        List<Marca> marcasDefault = new ArrayList<Marca>(){{
+                            add(new Marca("Polo Wear"));
+                            add(new Marca("Hope"));
+                            add(new Marca("Scala"));
+                        }};
+                        marcasDefault.forEach(marca -> marca.setIsActive(true));
+                        this.marcaRepository.saveAll(marcasDefault);
 
                         if(this.produtoRepository.count() <= 0){
                             String codigoProduto = "7895582546878";
-                            BigDecimal valorDefault = new BigDecimal((long)230.56);
+                            BigDecimal valorDefault = new BigDecimal((long)23.56);
                             Produto produto = new Produto(
                                     codigoProduto,
-                                    "Camiseta Masculina Blessed com Bolso Polo Wear Cinza Escuro",
+                                    "Conjunto Olinda",
                                     valorDefault,
-                                    categoriasDefault.get(0),
-                                    modelosDefault.get(0),
+                                    categoriasDefault.get(4),
+                                    modelosDefault.get(4),
                                     fornecedor,
-                                    marca,
-                                    "Cinza Escuro",
+                                    marcasDefault.get(0),
+                                    "#000000",
                                     Enums.Tamanhos.M,
-                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
-                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
-                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
-                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
-                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
-                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
+                                    "\n" +
+                                            "COMPOSIÇÃO\n" +
+                                            "Poliamida-083 • " +
+                                            "Elastano-017 • " +
+                                            "Detalhe Poliamida-097 • " +
+                                            "Detalhe Elastano-003 • " +
+                                            "Detlahe Lateral Poli-065 • " +
+                                            "Detalhe Lateral Poli-035 • " +
+                                            "Forro Fundo Algodao-100.",
                                     "/images/produto/" + codigoProduto,
                                     true
                             );
 
                             String codigoProduto2 = "27502487532425";
-                            BigDecimal valorDefault2 = new BigDecimal((long)200.00);
+                            BigDecimal valorDefault2 = new BigDecimal((long)20.00);
                             Produto produto2 = new Produto(
                                     codigoProduto2,
-                                    "Camiseta Masculina Blessed com Bolso Polo Wear Preto Escuro",
+                                    "Calcinha Dona Olinda",
                                     valorDefault2,
                                     categoriasDefault.get(0),
-                                    modelosDefault.get(0),
+                                    modelosDefault.get(3),
                                     fornecedor,
-                                    marca,
-                                    "Pretp Escuro",
+                                    marcasDefault.get(1),
+                                    "#3f4f5f",
                                     Enums.Tamanhos.G,
-                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
-                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
-                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
-                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
-                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
-                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
+                                    "CUIDADOS\n" +
+                                            "Lavagem a mao, nao alvejar, " +
+                                            "nao secar em tambor, secagem em varal por gotejamento a sombra, " +
+                                            "nao passar ou utilizar vaporizacao, nao limpar a seco, " +
+                                            "nao limpar a umido.",
                                     "/images/produto/" + codigoProduto2,
-                                    true
+                                    false
                             );
                             produto2.setIsActive(true);
 
-                            String codigoProduto3 = "957234958720";
-                            BigDecimal valorDefault3 = new BigDecimal((long)120.00);
-                            Produto produto3 = new Produto(
-                                    codigoProduto3,
-                                    "Camiseta Masculina Roxo Escuro",
-                                    valorDefault3,
-                                    categoriasDefault.get(0),
-                                    modelosDefault.get(0),
-                                    fornecedor,
-                                    marca,
-                                    "Roxo",
-                                    Enums.Tamanhos.G,
-                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
-                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
-                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
-                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
-                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
-                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
-                                    "/images/produto/" + codigoProduto3,
-                                    true
-                            );
-                            produto3.setIsActive(true);
-
-                            String codigoProduto4 = "943558720";
-                            BigDecimal valorDefault4 = new BigDecimal((long)122.00);
-                            Produto produto4 = new Produto(
-                                    codigoProduto4,
-                                    "Camiseta Masculina Roxo Escuro",
-                                    valorDefault4,
-                                    categoriasDefault.get(0),
-                                    modelosDefault.get(0),
-                                    fornecedor,
-                                    marca,
-                                    "Roxo",
-                                    Enums.Tamanhos.G,
-                                    "As Camisetas São Itens Clássicos em Um Guarda-Roupa Moderno, Pois Oferecem " +
-                                            "Versatilidade Na Hora de Se Vestir. Combinam Perfeitamente em Looks Esportivos, " +
-                                            "Passeio com a Família, Festinha com Amigos e Curtir Um Dia em Casa. Nossas Peças " +
-                                            "Acompanham As Linhas do Corpo com Fluidez, Leveza e Conforto. Aposte Nas Camisetas " +
-                                            "Polo Wear, São Estilosas com Milhares de Opções de Looks Versateis, Irreverentes e " +
-                                            "Despojados, Abraçando Todos Os Estilos Valorizando a Pluralidade Urbana.",
-                                    "/images/produto/" + codigoProduto4,
-                                    true
-                            );
-                            produto3.setIsActive(true);
-
                             List<Produto> defaultProducts = new ArrayList<>(){{
-                                    add(produto);
-                                    add(produto2);
-                                    add(produto3);
-                                    add(produto4);
-                                }};
+                                add(produto);
+                                add(produto2);
+                            }};
 
                             this.produtoRepository.saveAll(defaultProducts);
 
@@ -208,12 +164,12 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
                                     }
 
                                     if(this.bannerRepository.count() <= 0) {
-                                        Banners banner = new Banners("Banner default", "./images/584665", usuario, Enums.TipoDeBanner.DESTAQUE);
-                                        this.bannerRepository.save(banner);
+                                        Banners bannerDestaque = new Banners("Banner default", "./images/DESTAQUE", usuario, Enums.TipoDeBanner.DESTAQUE);
+                                        this.bannerRepository.save(bannerDestaque);
+                                        Banners bannerColecao = new Banners("Banner default", "./images/COLECAO", usuario, Enums.TipoDeBanner.COLECAO);
+                                        this.bannerRepository.save(bannerColecao);
                                     }
                                 }
-
-
                             }
                         }
                     }
